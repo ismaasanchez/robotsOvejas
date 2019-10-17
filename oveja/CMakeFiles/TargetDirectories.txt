@@ -1,0 +1,14 @@
+/home/ismael/robocomp/components/robotsOvejas/oveja/CMakeFiles/install/strip.dir
+/home/ismael/robocomp/components/robotsOvejas/oveja/CMakeFiles/install.dir
+/home/ismael/robocomp/components/robotsOvejas/oveja/CMakeFiles/install/local.dir
+/home/ismael/robocomp/components/robotsOvejas/oveja/CMakeFiles/list_install_components.dir
+/home/ismael/robocomp/components/robotsOvejas/oveja/CMakeFiles/edit_cache.dir
+/home/ismael/robocomp/components/robotsOvejas/oveja/CMakeFiles/rebuild_cache.dir
+/home/ismael/robocomp/components/robotsOvejas/oveja/src/CMakeFiles/install/strip.dir
+/home/ismael/robocomp/components/robotsOvejas/oveja/src/CMakeFiles/edit_cache.dir
+/home/ismael/robocomp/components/robotsOvejas/oveja/src/CMakeFiles/MyFirstComp.dir
+/home/ismael/robocomp/components/robotsOvejas/oveja/src/CMakeFiles/rebuild_cache.dir
+/home/ismael/robocomp/components/robotsOvejas/oveja/src/CMakeFiles/list_install_components.dir
+/home/ismael/robocomp/components/robotsOvejas/oveja/src/CMakeFiles/install/local.dir
+/home/ismael/robocomp/components/robotsOvejas/oveja/src/CMakeFiles/install.dir
+/home/ismael/robocomp/components/robotsOvejas/oveja/src/CMakeFiles/MyFirstComp_autogen.dir
