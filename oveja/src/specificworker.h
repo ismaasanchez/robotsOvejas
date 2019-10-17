@@ -41,8 +41,13 @@ public:
 
 public slots:
 	void compute();
+    void walk();
+    void eat();
+    void drink();
+    void sleep();
 
 private:
+    RoboCompGenericBase::TBaseState &bState;
 	InnerModel *innerModel;
 
 };

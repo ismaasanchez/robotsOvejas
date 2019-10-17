@@ -55,33 +55,68 @@ bool SpecificWorker::setParams(RoboCompCommonBehavior::ParameterList params)
 	return true;
 }
 
-void SpecificWorker::compute( )
+void SpecificWorker::compute()
 {
     const float threshold = 200; // millimeters
     float rot = 0.6;  // rads per second
 
+        // read laser data
+        RoboCompLaser::TLaserData ldata = laser_proxy->getLaserData();
+	    //sort laser data from small to large distances using a lambda function.
+        std::sort( ldata.begin(), ldata.end(), [](RoboCompLaser::TData a, RoboCompLaser::TData b){ return     a.dist < b.dist; });
+
     try
     {
-    	// read laser data 
-        RoboCompLaser::TLaserData ldata = laser_proxy->getLaserData(); 
-	//sort laser data from small to large distances using a lambda function.
-        std::sort( ldata.begin(), ldata.end(), [](RoboCompLaser::TData a, RoboCompLaser::TData b){ return     a.dist < b.dist; });  
-        
-	if( ldata.front().dist < threshold)
-	{
-		std::cout << ldata.front().dist << std::endl;
- 		differentialrobot_proxy->setSpeedBase(5, rot);
-		usleep(rand()%(1500000-100000 + 1) + 100000);  // random wait between 1.5s and 0.1sec
-	}
-	else
-	{
-		differentialrobot_proxy->setSpeedBase(200, 0); 
-  	}
+        differentialrobot_proxy->getBaseState(bState);
+        switch (bState){
+            case 0: // andar
+                walk();
+                break;
+            case 1: // comer
+                eat();
+                break;
+            case 2: // beber
+                drink();
+                break;
+            case 3: // dormir
+                sleep();
+                break;
+        }
+
     }
     catch(const Ice::Exception &ex)
     {
         std::cout << ex << std::endl;
     }
+}
+
+void SpecificWorker::walk()
+{
+    if( ldata.front().dist < threshold)
+	    {
+		    std::cout << ldata.front().dist << std::endl;
+ 		    differentialrobot_proxy->setSpeedBase(5, rot);
+		    usleep(rand()%(1500000-100000 + 1) + 100000);  // random wait between 1.5s and 0.1sec
+	    }
+            else
+    {
+	    	differentialrobot_proxy->setSpeedBase(200, 0);
+    }
+}
+
+void SpecificWorker::eat()
+{
+
+}
+
+void SpecificWorker::drink()
+{
+
+}
+
+void SpecificWorker::sleep()
+{
+
 }
 
 

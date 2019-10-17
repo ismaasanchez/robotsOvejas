@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="robotsOvejas"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/ismael/robocomp/components/robotsOvejas/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/ismael/robocomp/components/robotsOvejas/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/ismael/robocomp/components/robotsOvejas/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/ismael/robocomp/components/robotsOvejas/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/ismael/robocomp/components/robotsOvejas/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/ismael/robocomp/components/robotsOvejas/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/ismael/robocomp/components/robotsOvejas/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/ismael/robocomp/components/robotsOvejas/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/ismael/robocomp/components/robotsOvejas/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/ismael/robocomp/components/robotsOvejas/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="robotsOvejas">
+				<Option output="/home/ismael/robocomp/components/robotsOvejas/cmake-build-debug/robotsOvejas" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ismael/robocomp/components/robotsOvejas/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/ismael/robocomp/components/robotsOvejas/oveja/src"/>
+					<Add directory="/home/ismael/robocomp/components/robotsOvejas/oveja/src/MyFirstComp_autogen/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/ismael/robocomp/components/robotsOvejas/cmake-build-debug/Makefile&quot;  VERBOSE=1 robotsOvejas"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/ismael/robocomp/components/robotsOvejas/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/ismael/robocomp/components/robotsOvejas/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/ismael/robocomp/components/robotsOvejas/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="robotsOvejas/fast">
+				<Option output="/home/ismael/robocomp/components/robotsOvejas/cmake-build-debug/robotsOvejas" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ismael/robocomp/components/robotsOvejas/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/ismael/robocomp/components/robotsOvejas/oveja/src"/>
+					<Add directory="/home/ismael/robocomp/components/robotsOvejas/oveja/src/MyFirstComp_autogen/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/ismael/robocomp/components/robotsOvejas/cmake-build-debug/Makefile&quot;  VERBOSE=1 robotsOvejas/fast"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/ismael/robocomp/components/robotsOvejas/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/ismael/robocomp/components/robotsOvejas/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/ismael/robocomp/components/robotsOvejas/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/ismael/robocomp/components/robotsOvejas/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/ismael/robocomp/components/robotsOvejas/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/ismael/robocomp/components/robotsOvejas/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/ismael/robocomp/components/robotsOvejas/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/ismael/robocomp/components/robotsOvejas/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/ismael/robocomp/components/robotsOvejas/oveja/src/CommonBehavior.cpp">
+			<Option target="robotsOvejas"/>
+		</Unit>
+		<Unit filename="/home/ismael/robocomp/components/robotsOvejas/oveja/src/CommonBehavior.h">
+			<Option target="robotsOvejas"/>
+		</Unit>
+		<Unit filename="/home/ismael/robocomp/components/robotsOvejas/oveja/src/DifferentialRobot.cpp">
+			<Option target="robotsOvejas"/>
+		</Unit>
+		<Unit filename="/home/ismael/robocomp/components/robotsOvejas/oveja/src/DifferentialRobot.h">
+			<Option target="robotsOvejas"/>
+		</Unit>
+		<Unit filename="/home/ismael/robocomp/components/robotsOvejas/oveja/src/GenericBase.cpp">
+			<Option target="robotsOvejas"/>
+		</Unit>
+		<Unit filename="/home/ismael/robocomp/components/robotsOvejas/oveja/src/GenericBase.h">
+			<Option target="robotsOvejas"/>
+		</Unit>
+		<Unit filename="/home/ismael/robocomp/components/robotsOvejas/oveja/src/Laser.cpp">
+			<Option target="robotsOvejas"/>
+		</Unit>
+		<Unit filename="/home/ismael/robocomp/components/robotsOvejas/oveja/src/Laser.h">
+			<Option target="robotsOvejas"/>
+		</Unit>
+		<Unit filename="/home/ismael/robocomp/components/robotsOvejas/oveja/src/MyFirstComp_autogen/EWIEGA46WW/moc_genericmonitor.cpp">
+			<Option target="robotsOvejas"/>
+		</Unit>
+		<Unit filename="/home/ismael/robocomp/components/robotsOvejas/oveja/src/MyFirstComp_autogen/EWIEGA46WW/moc_genericworker.cpp">
+			<Option target="robotsOvejas"/>
+		</Unit>
+		<Unit filename="/home/ismael/robocomp/components/robotsOvejas/oveja/src/MyFirstComp_autogen/EWIEGA46WW/moc_specificmonitor.cpp">
+			<Option target="robotsOvejas"/>
+		</Unit>
+		<Unit filename="/home/ismael/robocomp/components/robotsOvejas/oveja/src/MyFirstComp_autogen/EWIEGA46WW/moc_specificworker.cpp">
+			<Option target="robotsOvejas"/>
+		</Unit>
+		<Unit filename="/home/ismael/robocomp/components/robotsOvejas/oveja/src/MyFirstComp_autogen/include/moc_sigwatch.cpp">
+			<Option target="robotsOvejas"/>
+		</Unit>
+		<Unit filename="/home/ismael/robocomp/components/robotsOvejas/oveja/src/MyFirstComp_autogen/include/ui_mainUI.h">
+			<Option target="robotsOvejas"/>
+		</Unit>
+		<Unit filename="/home/ismael/robocomp/components/robotsOvejas/oveja/src/MyFirstComp_autogen/mocs_compilation.cpp">
+			<Option target="robotsOvejas"/>
+		</Unit>
+		<Unit filename="/home/ismael/robocomp/components/robotsOvejas/oveja/src/commonbehaviorI.cpp">
+			<Option target="robotsOvejas"/>
+		</Unit>
+		<Unit filename="/home/ismael/robocomp/components/robotsOvejas/oveja/src/commonbehaviorI.h">
+			<Option target="robotsOvejas"/>
+		</Unit>
+		<Unit filename="/home/ismael/robocomp/components/robotsOvejas/oveja/src/config.h">
+			<Option target="robotsOvejas"/>
+		</Unit>
+		<Unit filename="/home/ismael/robocomp/components/robotsOvejas/oveja/src/genericmonitor.cpp">
+			<Option target="robotsOvejas"/>
+		</Unit>
+		<Unit filename="/home/ismael/robocomp/components/robotsOvejas/oveja/src/genericmonitor.h">
+			<Option target="robotsOvejas"/>
+		</Unit>
+		<Unit filename="/home/ismael/robocomp/components/robotsOvejas/oveja/src/genericworker.cpp">
+			<Option target="robotsOvejas"/>
+		</Unit>
+		<Unit filename="/home/ismael/robocomp/components/robotsOvejas/oveja/src/genericworker.h">
+			<Option target="robotsOvejas"/>
+		</Unit>
+		<Unit filename="/home/ismael/robocomp/components/robotsOvejas/oveja/src/main.cpp">
+			<Option target="robotsOvejas"/>
+		</Unit>
+		<Unit filename="/home/ismael/robocomp/components/robotsOvejas/oveja/src/specificmonitor.cpp">
+			<Option target="robotsOvejas"/>
+		</Unit>
+		<Unit filename="/home/ismael/robocomp/components/robotsOvejas/oveja/src/specificmonitor.h">
+			<Option target="robotsOvejas"/>
+		</Unit>
+		<Unit filename="/home/ismael/robocomp/components/robotsOvejas/oveja/src/specificworker.cpp">
+			<Option target="robotsOvejas"/>
+		</Unit>
+		<Unit filename="/home/ismael/robocomp/components/robotsOvejas/oveja/src/specificworker.h">
+			<Option target="robotsOvejas"/>
+		</Unit>
+		<Unit filename="/home/ismael/robocomp/components/robotsOvejas/oveja/src/ui_mainUI.h">
+			<Option target="robotsOvejas"/>
+		</Unit>
+		<Unit filename="/home/ismael/robocomp/components/robotsOvejas/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
