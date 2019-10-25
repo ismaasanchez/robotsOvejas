@@ -6,5 +6,5 @@ CXX_FLAGS = -g   -std=gnu++14
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/ismael/robocomp/components/robotsOvejas/oveja/src -I/home/ismael/robocomp/components/robotsOvejas/oveja/src/MyFirstComp_autogen/include 
+CXX_INCLUDES = -I/home/robocomp/robocomp/components/robotsOvejas/oveja/src -I/home/robocomp/robocomp/components/robotsOvejas/oveja/src/MyFirstComp_autogen/include 
 

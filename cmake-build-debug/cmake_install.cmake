@@ -1,4 +1,4 @@
-# Install script for directory: /home/ismael/robocomp/components/robotsOvejas
+# Install script for directory: /home/robocomp/robocomp/components/robotsOvejas
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/ismael/robocomp/components/robotsOvejas/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/robocomp/robocomp/components/robotsOvejas/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
