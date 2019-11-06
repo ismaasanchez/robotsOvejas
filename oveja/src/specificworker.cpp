@@ -92,6 +92,7 @@ void SpecificWorker::compute()
                 break;
             case 1: // comer
                 eat();
+                x = 3;
                 break;
             case 2: // beber
                 drink();
@@ -125,23 +126,29 @@ void SpecificWorker::drink()
 
 void SpecificWorker::sleep()
 {
-
+   usleep(2000000000000000000);
 }
 
 void SpecificWorker::goToXY(QPointF t){
     float SpeedRotation = 0.6; //rads per second
     float angle = 0;
+    qDebug() << "EL ANGULO ES 0 POR AHORA : " << angle;
     QVec p = innerModel->transform("base", QVec::vec3(t.x(),0,t.y()), "world");
     angle = qAtan2(p.z(),p.x());
-
-    float gradeToRadian = (angle * M_PI)/180;
-    gradeToRadian = gradeToRadian * 1000000;
-    float time = gradeToRadian / SpeedRotation;
+    qDebug() << "ANGULO CALCULADO : " << angle;
+   // float gradeToRadian = (angle * M_PI)/180;
+   // gradeToRadian = gradeToRadian * 1000000;
+   // qDebug() << "EN RADIANES SON : " << gradeToRadian;
+    //float time = gradeToRadian / SpeedRotation;
+    float time = angle / SpeedRotation;
     if(angle > 0)
         differentialrobot_proxy -> setSpeedBase(0,SpeedRotation);
     else
         differentialrobot_proxy -> setSpeedBase(0,-SpeedRotation);
-    usleep(time); 
+    usleep(time);
+    differentialrobot_proxy -> setSpeedBase(100,0);
+    qDebug() << "ESTOY COLOCADO HACIA EL COMEDERO";
+
 }
 
 
