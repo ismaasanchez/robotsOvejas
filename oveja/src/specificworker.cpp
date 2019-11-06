@@ -58,18 +58,36 @@ bool SpecificWorker::setParams(RoboCompCommonBehavior::ParameterList params)
 void SpecificWorker::compute()
 {
     const float threshold = 200; // millimeters
-    float rot = 0.6;  // rads per second
-
+   // float rot = 0.6;  // rads per second
+  
+        foodDispenser.setX(2068.15);
+        foodDispenser.setY(1973.39);
+        waterDispenser.setX(-2078.81);
+        waterDispenser.setY(2105.77);
+        
+        differentialrobot_proxy->getBaseState(bState);  
+	    innerModel->updateTransformValues("base", bState.x, 0, bState.z, 0, bState.alpha, 0);
         // read laser data
-        RoboCompLaser::TLaserData ldata = laser_proxy->getLaserData();
-	    //sort laser data from small to large distances using a lambda function.
+	    RoboCompLaser::TLaserData ldata = laser_proxy->getLaserData();
+        //sort laser data from small to large distances using a lambda function.
         std::sort( ldata.begin(), ldata.end(), [](RoboCompLaser::TData a, RoboCompLaser::TData b){ return     a.dist < b.dist; });
 
     try
     {
         differentialrobot_proxy->getBaseState(bState);
-        switch (bState){
+        int x = 1;
+        switch (x){
             case 0: // andar
+                if( ldata.front().dist < threshold)
+	            {
+		             std::cout << ldata.front().dist << std::endl;
+ 		             differentialrobot_proxy->setSpeedBase(5, 0.6);
+		             usleep(rand()%(1500000-100000 + 1) + 100000);  // random wait between 1.5s and 0.1sec
+	             }
+                else
+                {
+        	    	 differentialrobot_proxy->setSpeedBase(200, 0);
+                }
                 walk();
                 break;
             case 1: // comer
@@ -92,21 +110,12 @@ void SpecificWorker::compute()
 
 void SpecificWorker::walk()
 {
-    if( ldata.front().dist < threshold)
-	    {
-		    std::cout << ldata.front().dist << std::endl;
- 		    differentialrobot_proxy->setSpeedBase(5, rot);
-		    usleep(rand()%(1500000-100000 + 1) + 100000);  // random wait between 1.5s and 0.1sec
-	    }
-            else
-    {
-	    	differentialrobot_proxy->setSpeedBase(200, 0);
-    }
+    
 }
 
 void SpecificWorker::eat()
 {
-
+    goToXY(foodDispenser);
 }
 
 void SpecificWorker::drink()
@@ -118,6 +127,23 @@ void SpecificWorker::sleep()
 {
 
 }
+
+void SpecificWorker::goToXY(QPointF t){
+    float SpeedRotation = 0.6; //rads per second
+    float angle = 0;
+    QVec p = innerModel->transform("base", QVec::vec3(t.x(),0,t.y()), "world");
+    angle = qAtan2(p.z(),p.x());
+
+    float gradeToRadian = (angle * M_PI)/180;
+    gradeToRadian = gradeToRadian * 1000000;
+    float time = gradeToRadian / SpeedRotation;
+    if(angle > 0)
+        differentialrobot_proxy -> setSpeedBase(0,SpeedRotation);
+    else
+        differentialrobot_proxy -> setSpeedBase(0,-SpeedRotation);
+    usleep(time); 
+}
+
 
 
 

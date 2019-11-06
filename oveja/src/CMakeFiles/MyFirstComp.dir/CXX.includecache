@@ -291,6 +291,10 @@ genericworker.h
 -
 innermodel/innermodel.h
 -
+QPointF
+-
+math.h
+-
 
 /opt/robocomp/include/innermodel/innermodel.h
 stdexcept

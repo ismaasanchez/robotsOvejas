@@ -29,6 +29,9 @@
 
 #include <genericworker.h>
 #include <innermodel/innermodel.h>
+#include <QPointF>
+#include <math.h>
+
 
 class SpecificWorker : public GenericWorker
 {
@@ -43,15 +46,17 @@ public slots:
 
 
 private:
-    RoboCompGenericBase::TBaseState &bState;
+    RoboCompGenericBase::TBaseState bState;
 	InnerModel *innerModel;
+    QPointF foodDispenser;
+    QPointF waterDispenser;
 
     void compute();
     void walk();
     void eat();
     void drink();
     void sleep();
-    void
+    void goToXY(QPointF t);
 };
 
 #endif
