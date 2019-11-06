@@ -38,13 +38,13 @@ bool SpecificWorker::setParams(RoboCompCommonBehavior::ParameterList params)
 {
 //       THE FOLLOWING IS JUST AN EXAMPLE
 //	To use innerModelPath parameter you should uncomment specificmonitor.cpp readConfig method content
-//	try
-//	{
-//		RoboCompCommonBehavior::Parameter par = params.at("InnerModelPath");
-//		std::string innermodel_path = par.value;
-//		innerModel = new InnerModel(innermodel_path);
-//	}
-//	catch(std::exception e) { qFatal("Error reading config params"); }
+	try
+	{
+		RoboCompCommonBehavior::Parameter par = params.at("InnerModelPath");
+		std::string innermodel_path = par.value;
+		innerModel = std::make_shared< InnerModel > (innermodel_path);
+	}
+	catch(std::exception e) { qFatal("Error reading config params"); }
 
 
 

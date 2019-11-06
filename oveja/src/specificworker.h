@@ -47,7 +47,7 @@ public slots:
 
 private:
     RoboCompGenericBase::TBaseState bState;
-	InnerModel *innerModel;
+	std::shared_ptr<InnerModel> innerModel;
     QPointF foodDispenser;
     QPointF waterDispenser;
 
