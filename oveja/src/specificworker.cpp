@@ -121,7 +121,7 @@ void SpecificWorker::eat()
 
 void SpecificWorker::drink()
 {
-
+    goToXY(waterDispenser);
 }
 
 void SpecificWorker::sleep()
@@ -132,18 +132,17 @@ void SpecificWorker::sleep()
 void SpecificWorker::goToXY(QPointF t){
     float SpeedRotation = 0.6; //rads per second
     float angle = 0;
-    qDebug() << "EL ANGULO ES POR AHORA : " << angle;
+   
+    //Paso el punto, de coord del mundo al robot
     QVec p = innerModel->transform("base", QVec::vec3(t.x(),0,t.y()), "world");
-    angle = qAtan2(p.z(),p.x());
-    qDebug() << "ANGULO CALCULADO : " << angle;
-    float time = (angle / SpeedRotation) * 1000000;
-    if(angle > 0)
-        differentialrobot_proxy -> setSpeedBase(0,SpeedRotation);
+    angle = qAtan2(p.z(),p.x()); // calculo angulo en rads
+    
+    float time = (angle / SpeedRotation) * 1000000; // multiplico por un segundo , para hacer el giro necesario en ese tiempo
+    if(angle > 0) // Compruebo si el giro debe ser a derecha o izquierda
+        differentialrobot_proxy -> setSpeedBase(0,SpeedRotation); // giro derecha
     else
-        differentialrobot_proxy -> setSpeedBase(0,-SpeedRotation);
-    usleep(time);
-    differentialrobot_proxy -> setSpeedBase(100,0);
-    qDebug() << "ESTOY COLOCADO HACIA EL COMEDERO";
+        differentialrobot_proxy -> setSpeedBase(0,-SpeedRotation); // giro izquierda
+    usleep(time); // Espero mientras gira al ángulo exacto
 
 }
 
