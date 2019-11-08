@@ -126,21 +126,17 @@ void SpecificWorker::drink()
 
 void SpecificWorker::sleep()
 {
-   usleep(2000000000000000000);
+   qDebug() << "Durmiendo ...";
 }
 
 void SpecificWorker::goToXY(QPointF t){
     float SpeedRotation = 0.6; //rads per second
     float angle = 0;
-    qDebug() << "EL ANGULO ES 0 POR AHORA : " << angle;
+    qDebug() << "EL ANGULO ES POR AHORA : " << angle;
     QVec p = innerModel->transform("base", QVec::vec3(t.x(),0,t.y()), "world");
     angle = qAtan2(p.z(),p.x());
     qDebug() << "ANGULO CALCULADO : " << angle;
-   // float gradeToRadian = (angle * M_PI)/180;
-   // gradeToRadian = gradeToRadian * 1000000;
-   // qDebug() << "EN RADIANES SON : " << gradeToRadian;
-    //float time = gradeToRadian / SpeedRotation;
-    float time = angle / SpeedRotation;
+    float time = (angle / SpeedRotation) * 1000000;
     if(angle > 0)
         differentialrobot_proxy -> setSpeedBase(0,SpeedRotation);
     else
