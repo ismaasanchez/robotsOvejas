@@ -57,6 +57,7 @@ private:
     void drink();
     void sleep();
     void goToXY(QPointF t);
+    void readRobotState();
 };
 
 #endif

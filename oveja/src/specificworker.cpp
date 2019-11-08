@@ -65,16 +65,15 @@ void SpecificWorker::compute()
         waterDispenser.setX(-2078.81);
         waterDispenser.setY(2105.77);
         
-        differentialrobot_proxy->getBaseState(bState);  
-	    innerModel->updateTransformValues("base", bState.x, 0, bState.z, 0, bState.alpha, 0);
-        // read laser data
-	    RoboCompLaser::TLaserData ldata = laser_proxy->getLaserData();
+        readRobotState();
+        
+        RoboCompLaser::TLaserData ldata = laser_proxy->getLaserData();
+
         //sort laser data from small to large distances using a lambda function.
         std::sort( ldata.begin(), ldata.end(), [](RoboCompLaser::TData a, RoboCompLaser::TData b){ return     a.dist < b.dist; });
 
     try
     {
-        differentialrobot_proxy->getBaseState(bState);
         int x = 1;
         switch (x){
             case 0: // andar
@@ -92,6 +91,7 @@ void SpecificWorker::compute()
                 break;
             case 1: // comer
                 eat();
+                qDebug() << "HOLA!";
                 x = 3;
                 break;
             case 2: // beber
@@ -131,21 +131,47 @@ void SpecificWorker::sleep()
 
 void SpecificWorker::goToXY(QPointF t){
     float SpeedRotation = 0.6; //rads per second
-    float angle = 0;
+    float angle = 90;
    
     //Paso el punto, de coord del mundo al robot
     QVec p = innerModel->transform("base", QVec::vec3(t.x(),0,t.y()), "world");
     angle = qAtan2(p.z(),p.x()); // calculo angulo en rads
-    
-    float time = (angle / SpeedRotation) * 1000000; // multiplico por un segundo , para hacer el giro necesario en ese tiempo
-    if(angle > 0) // Compruebo si el giro debe ser a derecha o izquierda
-        differentialrobot_proxy -> setSpeedBase(0,SpeedRotation); // giro derecha
-    else
-        differentialrobot_proxy -> setSpeedBase(0,-SpeedRotation); // giro izquierda
-    usleep(time); // Espero mientras gira al ángulo exacto
-
+    if(angle < -0.1 || angle > 0.1){
+        if(angle > 0){ // Compruebo si el giro debe ser a derecha o izquierda
+            if(angle > 0.6){
+                qDebug() << "angulo1: " << angle;
+                differentialrobot_proxy -> setSpeedBase(0,0.6); // giro derecha
+                angle = angle - 0.6;
+                qDebug() << "angulo2: " << angle;
+            }else{
+                differentialrobot_proxy -> setSpeedBase(0,angle); // giro derecha
+            }
+        }else
+        {
+            if(angle < -0.6)
+            {
+                differentialrobot_proxy -> setSpeedBase(0,-0.6); // giro derecha
+                angle = angle + 0.6;
+                differentialrobot_proxy -> setSpeedBase(0,-angle); // giro derecha
+            }    
+        }
+    }else{
+        qDebug() << "Estoy colocado";
+    }
 }
 
+void SpecificWorker::readRobotState()
+{
+    try
+    {
+        differentialrobot_proxy->getBaseState(bState);  
+        innerModel->updateTransformValues("base", bState.x, 0, bState.z, 0, bState.alpha, 0);
+    }      
+    catch(const Ice::Exception &e)
+    {
+        std::cout << "Error reading from Laser" << e << std::endl;
+    }
+} 
 
 
 
