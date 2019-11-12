@@ -91,8 +91,6 @@ void SpecificWorker::compute()
                 break;
             case 1: // comer
                 eat();
-                qDebug() << "HOLA!";
-                x = 3;
                 break;
             case 2: // beber
                 drink();
@@ -100,6 +98,9 @@ void SpecificWorker::compute()
             case 3: // dormir
                 sleep();
                 break;
+            case 4: //colocarse
+
+                break;    
         }
 
     }
@@ -116,12 +117,12 @@ void SpecificWorker::walk()
 
 void SpecificWorker::eat()
 {
-    goToXY(foodDispenser);
+    standTo(foodDispenser);
 }
 
 void SpecificWorker::drink()
 {
-    goToXY(waterDispenser);
+    standTo(waterDispenser);
 }
 
 void SpecificWorker::sleep()
@@ -129,35 +130,42 @@ void SpecificWorker::sleep()
    qDebug() << "Durmiendo ...";
 }
 
-void SpecificWorker::goToXY(QPointF t){
+void SpecificWorker::standTo(QPointF t){
     float SpeedRotation = 0.6; //rads per second
     float angle = 90;
    
     //Paso el punto, de coord del mundo al robot
     QVec p = innerModel->transform("base", QVec::vec3(t.x(),0,t.y()), "world");
-    angle = qAtan2(p.z(),p.x()); // calculo angulo en rads
-    if(angle < -0.1 || angle > 0.1){
-        if(angle > 0){ // Compruebo si el giro debe ser a derecha o izquierda
-            if(angle > 0.6){
-                qDebug() << "angulo1: " << angle;
-                differentialrobot_proxy -> setSpeedBase(0,0.6); // giro derecha
-                angle = angle - 0.6;
-                qDebug() << "angulo2: " << angle;
-            }else{
-                differentialrobot_proxy -> setSpeedBase(0,angle); // giro derecha
-            }
-        }else
-        {
-            if(angle < -0.6)
-            {
-                differentialrobot_proxy -> setSpeedBase(0,-0.6); // giro derecha
-                angle = angle + 0.6;
-                differentialrobot_proxy -> setSpeedBase(0,-angle); // giro derecha
-            }    
-        }
-    }else{
-        qDebug() << "Estoy colocado";
+    angle = qAtan2(p.x(),p.z()); // calculo angulo en rads
+    if( fabs(angle) < 0.1)
+    {
+        differentialrobot_proxy -> setSpeedBase(0,0);
+        exit(-1);
     }
+        differentialrobot_proxy -> setSpeedBase(0,angle);    
+
+    // if(angle < -0.1 || angle > 0.1){
+    //     if(angle > 0){ // Compruebo si el giro debe ser a derecha o izquierda
+    //         if(angle > 0.6){
+    //             qDebug() << "angulo1: " << angle;
+    //             differentialrobot_proxy -> setSpeedBase(0,0.6); // giro derecha
+    //             angle = angle - 0.6;
+    //             qDebug() << "angulo2: " << angle;
+    //         }else{
+    //             differentialrobot_proxy -> setSpeedBase(0,angle); // giro derecha
+    //         }
+    //     }else
+    //     {
+    //         if(angle < -0.6)
+    //         {
+    //             differentialrobot_proxy -> setSpeedBase(0,-0.6); // giro derecha
+    //             angle = angle + 0.6;
+    //             differentialrobot_proxy -> setSpeedBase(0,-angle); // giro derecha
+    //         }    
+    //     }
+    // }else{
+    //     qDebug() << "Estoy colocado";
+    // }
 }
 
 void SpecificWorker::readRobotState()

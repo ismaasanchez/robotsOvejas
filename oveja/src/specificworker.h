@@ -56,8 +56,12 @@ private:
     void eat();
     void drink();
     void sleep();
-    void goToXY(QPointF t);
+    void standTo(QPointF t);
     void readRobotState();
+
+    struct state{
+        int machineState;
+    };
 };
 
 #endif
