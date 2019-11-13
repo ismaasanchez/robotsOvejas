@@ -65,6 +65,8 @@ void SpecificWorker::compute()
         switch(state){
 		    case State::IDLE:
 		    {
+                qDebug() << "Proceso terminado";
+                exit(-1);
                 break;
 		    }
 		    case State::Andar:
@@ -98,6 +100,7 @@ void SpecificWorker::compute()
             }
             case State::IrHaciaTarget:
             {
+                goTo();
                 break;
             }
 
@@ -153,7 +156,7 @@ void SpecificWorker::standTo(QPointF t){
     if( fabs(angle) < 0.01)
     {
         differentialrobot_proxy -> setSpeedBase(0,0);
-        exit(-1);
+        state = State::IrHaciaTarget;
     }
         differentialrobot_proxy -> setSpeedBase(0,angle);    
 }
