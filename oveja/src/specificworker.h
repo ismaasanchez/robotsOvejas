@@ -58,10 +58,18 @@ private:
     void sleep();
     void standTo(QPointF t);
     void readRobotState();
+    void loadPoints();
+    void goTo();
+    void chooseAction();
 
-    struct state{
-        int machineState;
+    enum class State{IDLE,Andar,Comer,Beber,Dormir,Colocarse,IrHaciaTarget};
+	State state = State::Comer;
+
+    struct SharedData{
+        State stateInUse;
+        
     };
+    struct SharedData sd1;
 };
 
 #endif

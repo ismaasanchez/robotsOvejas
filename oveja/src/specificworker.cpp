@@ -56,52 +56,53 @@ bool SpecificWorker::setParams(RoboCompCommonBehavior::ParameterList params)
 }
 
 void SpecificWorker::compute()
-{
-    const float threshold = 200; // millimeters
-   // float rot = 0.6;  // rads per second
-  
-        foodDispenser.setX(2068.15);
-        foodDispenser.setY(1973.39);
-        waterDispenser.setX(-2078.81);
-        waterDispenser.setY(2105.77);
-        
+{   
         readRobotState();
-        
-        RoboCompLaser::TLaserData ldata = laser_proxy->getLaserData();
-
-        //sort laser data from small to large distances using a lambda function.
-        std::sort( ldata.begin(), ldata.end(), [](RoboCompLaser::TData a, RoboCompLaser::TData b){ return     a.dist < b.dist; });
+        loadPoints();
 
     try
     {
-        int x = 1;
-        switch (x){
-            case 0: // andar
-                if( ldata.front().dist < threshold)
-	            {
-		             std::cout << ldata.front().dist << std::endl;
- 		             differentialrobot_proxy->setSpeedBase(5, 0.6);
-		             usleep(rand()%(1500000-100000 + 1) + 100000);  // random wait between 1.5s and 0.1sec
-	             }
-                else
-                {
-        	    	 differentialrobot_proxy->setSpeedBase(200, 0);
-                }
-                walk();
+        switch(state){
+		    case State::IDLE:
+		    {
                 break;
-            case 1: // comer
-                eat();
-                break;
-            case 2: // beber
+		    }
+		    case State::Andar:
+		    {
+                sd1.stateInUse == State::Andar;
+		    	walk();
+		    	break;	
+	    	}
+	    	case State::Comer:
+		    {
+                sd1.stateInUse == State::Comer;
+		    	eat();
+		    	break;
+		    }
+            case State::Beber:
+            {
+                sd1.stateInUse == State::Beber;
                 drink();
                 break;
-            case 3: // dormir
+            }
+            case State::Dormir:
+            {
+                sd1.stateInUse == State::Dormir;
                 sleep();
                 break;
-            case 4: //colocarse
+            }
+            case State::Colocarse:
+            {
 
-                break;    
-        }
+                break;
+            }
+            case State::IrHaciaTarget:
+            {
+                break;
+            }
+
+	}
+        
 
     }
     catch(const Ice::Exception &ex)
@@ -112,7 +113,20 @@ void SpecificWorker::compute()
 
 void SpecificWorker::walk()
 {
-    
+    RoboCompLaser::TLaserData ldata = laser_proxy->getLaserData();
+    //sort laser data from small to large distances using a lambda function.
+    std::sort( ldata.begin(), ldata.end(), [](RoboCompLaser::TData a, RoboCompLaser::TData b){ return     a.dist < b.dist; });
+
+    if( ldata.front().dist < 200)
+	{
+		std::cout << ldata.front().dist << std::endl;
+ 		differentialrobot_proxy->setSpeedBase(5, 0.6);
+		usleep(rand()%(1500000-100000 + 1) + 100000);  // random wait between 1.5s and 0.1sec
+	}
+    else
+    {
+        differentialrobot_proxy->setSpeedBase(200, 0);
+    }
 }
 
 void SpecificWorker::eat()
@@ -131,41 +145,17 @@ void SpecificWorker::sleep()
 }
 
 void SpecificWorker::standTo(QPointF t){
-    float SpeedRotation = 0.6; //rads per second
     float angle = 90;
    
     //Paso el punto, de coord del mundo al robot
     QVec p = innerModel->transform("base", QVec::vec3(t.x(),0,t.y()), "world");
     angle = qAtan2(p.x(),p.z()); // calculo angulo en rads
-    if( fabs(angle) < 0.1)
+    if( fabs(angle) < 0.01)
     {
         differentialrobot_proxy -> setSpeedBase(0,0);
         exit(-1);
     }
         differentialrobot_proxy -> setSpeedBase(0,angle);    
-
-    // if(angle < -0.1 || angle > 0.1){
-    //     if(angle > 0){ // Compruebo si el giro debe ser a derecha o izquierda
-    //         if(angle > 0.6){
-    //             qDebug() << "angulo1: " << angle;
-    //             differentialrobot_proxy -> setSpeedBase(0,0.6); // giro derecha
-    //             angle = angle - 0.6;
-    //             qDebug() << "angulo2: " << angle;
-    //         }else{
-    //             differentialrobot_proxy -> setSpeedBase(0,angle); // giro derecha
-    //         }
-    //     }else
-    //     {
-    //         if(angle < -0.6)
-    //         {
-    //             differentialrobot_proxy -> setSpeedBase(0,-0.6); // giro derecha
-    //             angle = angle + 0.6;
-    //             differentialrobot_proxy -> setSpeedBase(0,-angle); // giro derecha
-    //         }    
-    //     }
-    // }else{
-    //     qDebug() << "Estoy colocado";
-    // }
 }
 
 void SpecificWorker::readRobotState()
@@ -181,5 +171,42 @@ void SpecificWorker::readRobotState()
     }
 } 
 
+void SpecificWorker::loadPoints(){
+    foodDispenser.setX(2068.15);
+    foodDispenser.setY(1973.39);
+    waterDispenser.setX(-2078.81);
+    waterDispenser.setY(2105.77);
+}
 
+void SpecificWorker::goTo(){
 
+    float coordX;
+    float coordY;
+    if(sd1.stateInUse == State::Comer){
+        coordX = foodDispenser.x();
+        coordY = foodDispenser.y();
+    }else{
+        coordX = waterDispenser.x();
+        coordX = waterDispenser.y();
+    }
+    if(coordX - bState.x < 3 && coordY - bState.z < 3)
+	{
+		differentialrobot_proxy -> setSpeedBase(0,0);
+		qDebug() << "He llegado";
+		state = State::IDLE;
+	}
+	else
+	{
+		differentialrobot_proxy -> setSpeedBase(500,0);
+	}	
+}
+
+void SpecificWorker::chooseAction(){
+    int num = rand() % 11;
+    if(num < 5){
+        state = State::Comer;
+    }else
+    {
+        state = State::Beber;
+    }
+}
