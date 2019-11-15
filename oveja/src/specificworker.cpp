@@ -50,7 +50,7 @@ bool SpecificWorker::setParams(RoboCompCommonBehavior::ParameterList params)
 
 
 	timer.start(Period);
-
+    srand(time(0));
 
 	return true;
 }
@@ -166,15 +166,15 @@ void SpecificWorker::sleep()
 }
 
 void SpecificWorker::standTo(){
-    qDebug() << "Estoy en standTo";
+    //qDebug() << "Estoy en standTo";
     QPointF t;
     if(stateInUse == State::Comer)
     {
-        qDebug() << "toca comer";
+     //   qDebug() << "toca comer";
         t = foodDispenser;
     }else
     {
-        qDebug() << "toca beber";
+      //  qDebug() << "toca beber";
         t = waterDispenser;
     }
 
@@ -183,15 +183,13 @@ void SpecificWorker::standTo(){
     //Paso el punto, de coord del mundo al robot
     QVec p = innerModel->transform("base", QVec::vec3(t.x(),0,t.y()), "world");
     angle = qAtan2(p.x(),p.z()); // calculo angulo en rads
-    qDebug() << angle;
-    if( fabs(angle) < 0.01)
+    qDebug() << "Angulo: " << angle;
+    if( fabs(angle) < 0.001)
     {
-        qDebug() << "Estoy en posicion";
         differentialrobot_proxy -> setSpeedBase(0,0);
         state = State::IrHaciaTarget;
     }else
     {
-        qDebug() << "Debo girarme";
         differentialrobot_proxy -> setSpeedBase(0,angle);  
     }
 }
@@ -214,26 +212,27 @@ void SpecificWorker::loadPoints(){
    // qDebug() << "Estoy en loadPoints";
     foodDispenser.setX(2068.15);
     foodDispenser.setY(1973.39);
-    waterDispenser.setX(-2078.81);
-    waterDispenser.setY(2105.77);
+    waterDispenser.setX(-2068.15);
+    waterDispenser.setY(1973.39);
 }
 
 void SpecificWorker::goTo(){
-    qDebug() << "Estoy en goTo";
     float coordX;
     float coordY;
     if(stateInUse == State::Comer){
-        qDebug() << "Cargo coordenadas del comedero";
         coordX = foodDispenser.x();
         coordY = foodDispenser.y();
     }else if(stateInUse == State::Beber){
-        qDebug() << "Cargo coordenadas de bebedero";
         coordX = waterDispenser.x();
-        coordX = waterDispenser.y();
+        coordY = waterDispenser.y();
     }else{
         qDebug() << "Error al cargar stateInUse en -> goTo";
     }
-    if(coordX - bState.x < 5 && coordY - bState.z < 5)
+    qDebug() << "Coordenada x del bebedero: " << coordX;
+    qDebug() << "Coordenada x del robot" << bState.x;
+    qDebug() << "Coordenada y del bebedero: " << coordY;
+    qDebug() << "Coordenada y del robot" << bState.z;
+    if((fabs(coordX) - fabs(bState.x)) < 3 && (fabs(coordY) - fabs(bState.z) < 3))
 	{
 		differentialrobot_proxy -> setSpeedBase(0,0);
 		qDebug() << "He llegado";
@@ -246,11 +245,12 @@ void SpecificWorker::goTo(){
 }
 
 void SpecificWorker::chooseAction(){
-    qDebug() << "Estoy en chooseAction";
+    //qDebug() << "Estoy en chooseAction";
     int num = rand() % 10;
+    qDebug() << "El random es : " << num;
     if(num < 3)
     {
-        state = State::Andar;
+        state = State::Dormir;
     }
     else if(num > 2 && num < 5)
     {
@@ -262,7 +262,7 @@ void SpecificWorker::chooseAction(){
     }
     else if(num > 6)
     {
-        state = State::Andar;
+        state = State::Dormir;
     }
     else
     {
@@ -280,7 +280,7 @@ void SpecificWorker::waitTime(){
     switch(stateInUse){
         case State::Comer:
         {
-            waitingTime = 7000; // 7 secs
+            waitingTime = 3000; // 7 secs
             msg = "Comiendo ...";
             break;
         }
@@ -293,7 +293,7 @@ void SpecificWorker::waitTime(){
         case State::Dormir:
         {
             msg = "Durmiendo ...";
-            waitingTime = 20000; // 20 secs
+            waitingTime = 2000; // 20 secs
             break;
         }
         default:
@@ -302,7 +302,7 @@ void SpecificWorker::waitTime(){
         }
     }
     while(tStart.elapsed() < waitingTime){
-        qDebug() << msg;
+       // qDebug() << msg;
     }
     int seg = tStart.elapsed() / 1000;
     qDebug() << "He estado " << msg << " durante " << seg << " segundos.";

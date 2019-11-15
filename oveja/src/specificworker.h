@@ -68,7 +68,7 @@ private:
     void waitTime();
 
     enum class State{IDLE,Andar,Comer,Beber,Dormir,Colocarse,IrHaciaTarget,RealizarAccion};
-	State state = State::IDLE;
+	State state = State::Beber;
     State stateInUse = State::IDLE;
 };
 

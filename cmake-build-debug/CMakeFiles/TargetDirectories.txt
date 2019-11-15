@@ -1,3 +1,0 @@
-/home/robocomp/robocomp/components/robotsOvejas/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/robocomp/robocomp/components/robotsOvejas/cmake-build-debug/CMakeFiles/robotsOvejas.dir
-/home/robocomp/robocomp/components/robotsOvejas/cmake-build-debug/CMakeFiles/edit_cache.dir
