@@ -90,13 +90,11 @@ void SpecificWorker::compute()
 		    }
             case State::Beber:
             {
-                stateInUse = State::Beber;
                 drink();
                 break;
             }
             case State::Dormir:
             {
-                stateInUse = State::Dormir;
                 sleep();
                 break;
             }
@@ -180,21 +178,22 @@ void SpecificWorker::standTo(){
         t = waterDispenser;
     }
 
-    float angle = 90;
+    float angle = 0;
    
     //Paso el punto, de coord del mundo al robot
     QVec p = innerModel->transform("base", QVec::vec3(t.x(),0,t.y()), "world");
     angle = qAtan2(p.x(),p.z()); // calculo angulo en rads
+    qDebug() << angle;
     if( fabs(angle) < 0.01)
     {
+        qDebug() << "Estoy en posicion";
         differentialrobot_proxy -> setSpeedBase(0,0);
         state = State::IrHaciaTarget;
     }else
     {
+        qDebug() << "Debo girarme";
         differentialrobot_proxy -> setSpeedBase(0,angle);  
     }
-    state = State::IrHaciaTarget;
-
 }
 
 void SpecificWorker::readRobotState()
@@ -234,7 +233,7 @@ void SpecificWorker::goTo(){
     }else{
         qDebug() << "Error al cargar stateInUse en -> goTo";
     }
-    if(coordX - bState.x < 3 && coordY - bState.z < 3)
+    if(coordX - bState.x < 5 && coordY - bState.z < 5)
 	{
 		differentialrobot_proxy -> setSpeedBase(0,0);
 		qDebug() << "He llegado";
