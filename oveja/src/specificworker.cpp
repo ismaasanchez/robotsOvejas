@@ -65,6 +65,7 @@ void SpecificWorker::compute()
         switch(state){
 		    case State::IDLE:
 		    {
+                waitTime();
                 qDebug() << "Proceso terminado";
                 exit(-1);
                 break;
@@ -134,20 +135,30 @@ void SpecificWorker::walk()
 
 void SpecificWorker::eat()
 {
-    standTo(foodDispenser);
+    standTo();
 }
 
 void SpecificWorker::drink()
 {
-    standTo(waterDispenser);
+    standTo();
 }
 
 void SpecificWorker::sleep()
 {
-   qDebug() << "Durmiendo ...";
+   
 }
 
-void SpecificWorker::standTo(QPointF t){
+void SpecificWorker::standTo(){
+    
+    QPointF t;
+    if(sd1.stateInUse == State::Comer)
+    {
+        t = foodDispenser;
+    }else
+    {
+        t = waterDispenser;
+    }
+
     float angle = 90;
    
     //Paso el punto, de coord del mundo al robot
@@ -212,4 +223,31 @@ void SpecificWorker::chooseAction(){
     {
         state = State::Beber;
     }
+}
+
+void SpecificWorker::showAction(){
+    if(sd1.stateInUse == State::Comer)
+    {
+        qDebug() << "Comiendo ...";	#include <QTime>
+    else if (sd1.stateInUse == State::Beber)
+    {
+        qDebug() << "Bebiendo ...";
+    }
+    else if(sd1.stateInUse == State::Andar)
+    {;
+        qDebug() << "Andando ...";
+    }
+    else if(sd1.stateInUse == State::Dormir)
+    {
+        qDebug() << "Durmiendo ...";
+    }
+    else
+    {
+        qDebug() << "Error en variable StateInUse";
+    }
+}
+
+void SpecificWorker::waitTime(){
+    Qtime start = currentTime();
+    qDebug() << start;
 }

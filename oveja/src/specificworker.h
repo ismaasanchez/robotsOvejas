@@ -31,6 +31,7 @@
 #include <innermodel/innermodel.h>
 #include <QPointF>
 #include <math.h>
+#include <QTime>
 
 
 class SpecificWorker : public GenericWorker
@@ -56,14 +57,16 @@ private:
     void eat();
     void drink();
     void sleep();
-    void standTo(QPointF t);
+    void standTo();
     void readRobotState();
     void loadPoints();
     void goTo();
     void chooseAction();
+    void showAction();
+    void waitTime();
 
     enum class State{IDLE,Andar,Comer,Beber,Dormir,Colocarse,IrHaciaTarget};
-	State state = State::Comer;
+	State state = State::IDLE;
 
     struct SharedData{
         State stateInUse;
