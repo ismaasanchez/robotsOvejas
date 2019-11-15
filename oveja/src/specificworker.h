@@ -34,6 +34,7 @@
 #include <QTime>
 
 
+
 class SpecificWorker : public GenericWorker
 {
 Q_OBJECT

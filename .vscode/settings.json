@@ -53,5 +53,6 @@
         "thread": "cpp",
         "typeinfo": "cpp",
         "qtime": "cpp"
-    }
+    },
+    "C_Cpp.errorSquiggles": "Disabled"
 }

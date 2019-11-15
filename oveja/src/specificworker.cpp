@@ -228,7 +228,8 @@ void SpecificWorker::chooseAction(){
 void SpecificWorker::showAction(){
     if(sd1.stateInUse == State::Comer)
     {
-        qDebug() << "Comiendo ...";	#include <QTime>
+        qDebug() << "Comiendo ...";
+    }
     else if (sd1.stateInUse == State::Beber)
     {
         qDebug() << "Bebiendo ...";
@@ -248,6 +249,7 @@ void SpecificWorker::showAction(){
 }
 
 void SpecificWorker::waitTime(){
-    Qtime start = currentTime();
-    qDebug() << start;
+    QTime tStart;
+    tStart = currentTime();
+    qDebug() << tStart;
 }
