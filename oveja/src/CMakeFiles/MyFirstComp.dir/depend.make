@@ -64,6 +64,7 @@ src/CMakeFiles/MyFirstComp.dir/MyFirstComp_autogen/mocs_compilation.cpp.o: /usr/
 src/CMakeFiles/MyFirstComp.dir/MyFirstComp_autogen/mocs_compilation.cpp.o: /usr/include/qt4/QtCore/QObject
 src/CMakeFiles/MyFirstComp.dir/MyFirstComp_autogen/mocs_compilation.cpp.o: /usr/include/qt4/QtCore/QPoint
 src/CMakeFiles/MyFirstComp.dir/MyFirstComp_autogen/mocs_compilation.cpp.o: /usr/include/qt4/QtCore/QPointF
+src/CMakeFiles/MyFirstComp.dir/MyFirstComp_autogen/mocs_compilation.cpp.o: /usr/include/qt4/QtCore/QString
 src/CMakeFiles/MyFirstComp.dir/MyFirstComp_autogen/mocs_compilation.cpp.o: /usr/include/qt4/QtCore/QTime
 src/CMakeFiles/MyFirstComp.dir/MyFirstComp_autogen/mocs_compilation.cpp.o: /usr/include/qt4/QtCore/QVariant
 src/CMakeFiles/MyFirstComp.dir/MyFirstComp_autogen/mocs_compilation.cpp.o: /usr/include/qt4/QtCore/QtCore
@@ -2269,6 +2270,7 @@ src/CMakeFiles/MyFirstComp.dir/main.cpp.o: /usr/include/qt4/QtCore/QList
 src/CMakeFiles/MyFirstComp.dir/main.cpp.o: /usr/include/qt4/QtCore/QObject
 src/CMakeFiles/MyFirstComp.dir/main.cpp.o: /usr/include/qt4/QtCore/QPoint
 src/CMakeFiles/MyFirstComp.dir/main.cpp.o: /usr/include/qt4/QtCore/QPointF
+src/CMakeFiles/MyFirstComp.dir/main.cpp.o: /usr/include/qt4/QtCore/QString
 src/CMakeFiles/MyFirstComp.dir/main.cpp.o: /usr/include/qt4/QtCore/QTime
 src/CMakeFiles/MyFirstComp.dir/main.cpp.o: /usr/include/qt4/QtCore/QVariant
 src/CMakeFiles/MyFirstComp.dir/main.cpp.o: /usr/include/qt4/QtCore/QtCore
@@ -3172,6 +3174,7 @@ src/CMakeFiles/MyFirstComp.dir/specificworker.cpp.o: /usr/include/qt4/QtCore/QLi
 src/CMakeFiles/MyFirstComp.dir/specificworker.cpp.o: /usr/include/qt4/QtCore/QObject
 src/CMakeFiles/MyFirstComp.dir/specificworker.cpp.o: /usr/include/qt4/QtCore/QPoint
 src/CMakeFiles/MyFirstComp.dir/specificworker.cpp.o: /usr/include/qt4/QtCore/QPointF
+src/CMakeFiles/MyFirstComp.dir/specificworker.cpp.o: /usr/include/qt4/QtCore/QString
 src/CMakeFiles/MyFirstComp.dir/specificworker.cpp.o: /usr/include/qt4/QtCore/QTime
 src/CMakeFiles/MyFirstComp.dir/specificworker.cpp.o: /usr/include/qt4/QtCore/QVariant
 src/CMakeFiles/MyFirstComp.dir/specificworker.cpp.o: /usr/include/qt4/QtCore/QtCore

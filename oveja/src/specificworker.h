@@ -32,6 +32,7 @@
 #include <QPointF>
 #include <math.h>
 #include <QTime>
+#include <QString>
 
 
 
@@ -42,6 +43,7 @@ public:
 	SpecificWorker(MapPrx& mprx);
 	~SpecificWorker();
 	bool setParams(RoboCompCommonBehavior::ParameterList params);
+    
 
 
 public slots:
@@ -63,16 +65,11 @@ private:
     void loadPoints();
     void goTo();
     void chooseAction();
-    void showAction();
     void waitTime();
 
     enum class State{IDLE,Andar,Comer,Beber,Dormir,Colocarse,IrHaciaTarget,RealizarAccion};
 	State state = State::IDLE;
-
-    struct SharedData{
-        State stateInUse;
-    };
-    struct SharedData sd1;
+    State stateInUse = State::IDLE;
 };
 
 #endif

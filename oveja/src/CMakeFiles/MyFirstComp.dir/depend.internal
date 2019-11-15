@@ -65,6 +65,7 @@ src/CMakeFiles/MyFirstComp.dir/MyFirstComp_autogen/mocs_compilation.cpp.o
  /usr/include/qt4/QtCore/QObject
  /usr/include/qt4/QtCore/QPoint
  /usr/include/qt4/QtCore/QPointF
+ /usr/include/qt4/QtCore/QString
  /usr/include/qt4/QtCore/QTime
  /usr/include/qt4/QtCore/QVariant
  /usr/include/qt4/QtCore/QtCore
@@ -2270,6 +2271,7 @@ src/CMakeFiles/MyFirstComp.dir/main.cpp.o
  /usr/include/qt4/QtCore/QObject
  /usr/include/qt4/QtCore/QPoint
  /usr/include/qt4/QtCore/QPointF
+ /usr/include/qt4/QtCore/QString
  /usr/include/qt4/QtCore/QTime
  /usr/include/qt4/QtCore/QVariant
  /usr/include/qt4/QtCore/QtCore
@@ -3173,6 +3175,7 @@ src/CMakeFiles/MyFirstComp.dir/specificworker.cpp.o
  /usr/include/qt4/QtCore/QObject
  /usr/include/qt4/QtCore/QPoint
  /usr/include/qt4/QtCore/QPointF
+ /usr/include/qt4/QtCore/QString
  /usr/include/qt4/QtCore/QTime
  /usr/include/qt4/QtCore/QVariant
  /usr/include/qt4/QtCore/QtCore
