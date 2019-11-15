@@ -65,6 +65,7 @@ void SpecificWorker::compute()
         switch(state){
 		    case State::IDLE:
 		    {
+                sd1.stateInUse == State::Comer;
                 waitTime();
                 qDebug() << "Proceso terminado";
                 exit(-1);
@@ -102,6 +103,10 @@ void SpecificWorker::compute()
             case State::IrHaciaTarget:
             {
                 goTo();
+                break;
+            }
+            case State::RealizarAccion:
+            {
                 break;
             }
 
@@ -250,6 +255,34 @@ void SpecificWorker::showAction(){
 
 void SpecificWorker::waitTime(){
     QTime tStart;
-    tStart = currentTime();
-    qDebug() << tStart;
+    tStart.start();
+    int waitingTime = 0;
+
+    if(sd1.stateInUse.Equals(State::Comer))
+    {
+        waitingTime = 7000; // 7 secs
+    }
+    else if(sd1.stateInUse == State::Beber)
+    {
+        waitingTime = 4000; // 4 secs
+    }
+    else if(sd1.stateInUse == State::Dormir)
+    {
+        waitingTime = 20000; // 20 secs
+    }
+    else if(sd1.stateInUse == State::Andar)
+    {
+        waitingTime = 15000; // 15 secs
+    }
+    else
+    {
+        qDebug() << "Error en metodo:waitTime al cargar stateInUse";
+    }
+
+    while(tStart.elapsed() < waitingTime){
+        qDebug() << "waiting ...";
+    }
+    int seg = tStart.elapsed() / 1000;
+    qDebug() << seg;
+    //qDebug() << "He estado en el estado : " << sd1.stateInUse << " durante " << seg << " segundos.";
 }

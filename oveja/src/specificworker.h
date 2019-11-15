@@ -66,12 +66,11 @@ private:
     void showAction();
     void waitTime();
 
-    enum class State{IDLE,Andar,Comer,Beber,Dormir,Colocarse,IrHaciaTarget};
+    enum class State{IDLE,Andar,Comer,Beber,Dormir,Colocarse,IrHaciaTarget,RealizarAccion};
 	State state = State::IDLE;
 
     struct SharedData{
         State stateInUse;
-        
     };
     struct SharedData sd1;
 };

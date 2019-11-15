@@ -295,6 +295,8 @@ QPointF
 -
 math.h
 -
+QTime
+-
 
 /opt/robocomp/include/innermodel/innermodel.h
 stdexcept
@@ -641,6 +643,10 @@ qpoint.h
 /usr/include/qt4/QtCore/QSocketNotifier
 qsocketnotifier.h
 /usr/include/qt4/QtCore/qsocketnotifier.h
+
+/usr/include/qt4/QtCore/QTime
+qdatetime.h
+/usr/include/qt4/QtCore/qdatetime.h
 
 /usr/include/qt4/QtCore/QVariant
 qvariant.h
