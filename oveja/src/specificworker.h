@@ -57,6 +57,7 @@ private:
 
     void compute();
     void walk();
+    void andar();
     void eat();
     void drink();
     void sleep();
@@ -68,7 +69,7 @@ private:
     void waitTime();
 
     enum class State{IDLE,Andar,Comer,Beber,Dormir,Colocarse,IrHaciaTarget,RealizarAccion};
-	State state = State::Beber;
+	State state = State::IDLE;
     State stateInUse = State::IDLE;
 };
 

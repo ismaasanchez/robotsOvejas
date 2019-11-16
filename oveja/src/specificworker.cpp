@@ -70,17 +70,7 @@ void SpecificWorker::compute()
 		    }
 		    case State::Andar:
 		    {
-                QTime sTime;
-                if(stateInUse != State::Andar){
-                    sTime.start();
-                }
-                if(sTime.elapsed() < 15000)
-                {
-                    walk();    
-                }else
-                {
-                    state = State::IDLE;
-                }
+                walk();
 		    	break;	
 	    	}
 	    	case State::Comer:
@@ -100,7 +90,7 @@ void SpecificWorker::compute()
             }
             case State::Colocarse:
             {
-
+                standTo();
                 break;
             }
             case State::IrHaciaTarget:
@@ -125,12 +115,24 @@ void SpecificWorker::compute()
 
 void SpecificWorker::walk()
 {
+    QTime sTime;
+    if(stateInUse != State::Andar){
+        sTime.start();
+    }
+    if(sTime.elapsed() < 15000)
+    {
+        andar();    
+    }else
+    {
+        state = State::IDLE;
+    }    
+}
+
+void SpecificWorker::andar(){
     stateInUse = State::Andar;
     RoboCompLaser::TLaserData ldata = laser_proxy->getLaserData();
     //sort laser data from small to large distances using a lambda function.
     std::sort( ldata.begin(), ldata.end(), [](RoboCompLaser::TData a, RoboCompLaser::TData b){ return     a.dist < b.dist; });
-
-    qDebug() << "Estoy en walk";
     
     if( ldata.front().dist < 200)
 	{
@@ -146,44 +148,37 @@ void SpecificWorker::walk()
 
 void SpecificWorker::eat()
 {
-    qDebug() << "Estoy en eat";
     stateInUse = State::Comer;
-    standTo();
+    state = State::Colocarse;
 }
 
 void SpecificWorker::drink()
 {
-    qDebug() << "Estoy en drink";
     stateInUse = State::Beber;
-    standTo();
+    state = State::Colocarse;
 }
 
 void SpecificWorker::sleep()
-{
-   qDebug() << "Estoy en sleep"; 
+{ 
    stateInUse = State::Dormir; 
    state = State::RealizarAccion;
 }
 
 void SpecificWorker::standTo(){
-    //qDebug() << "Estoy en standTo";
     QPointF t;
     if(stateInUse == State::Comer)
     {
-     //   qDebug() << "toca comer";
         t = foodDispenser;
+    }else if(stateInUse == State::Beber){
+        t = waterDispenser;
     }else
     {
-      //  qDebug() << "toca beber";
-        t = waterDispenser;
+        qDebug() << "Error al cargar la vble stateInUse en el metodo -> standTo";
     }
-
     float angle = 0;
-   
     //Paso el punto, de coord del mundo al robot
     QVec p = innerModel->transform("base", QVec::vec3(t.x(),0,t.y()), "world");
     angle = qAtan2(p.x(),p.z()); // calculo angulo en rads
-    qDebug() << "Angulo: " << angle;
     if( fabs(angle) < 0.001)
     {
         differentialrobot_proxy -> setSpeedBase(0,0);
@@ -196,7 +191,6 @@ void SpecificWorker::standTo(){
 
 void SpecificWorker::readRobotState()
 {
-    //qDebug() << "Estoy en readRobotState";
     try
     {
         differentialrobot_proxy->getBaseState(bState);  
@@ -209,7 +203,6 @@ void SpecificWorker::readRobotState()
 } 
 
 void SpecificWorker::loadPoints(){
-   // qDebug() << "Estoy en loadPoints";
     foodDispenser.setX(2068.15);
     foodDispenser.setY(1973.39);
     waterDispenser.setX(-2068.15);
@@ -228,14 +221,9 @@ void SpecificWorker::goTo(){
     }else{
         qDebug() << "Error al cargar stateInUse en -> goTo";
     }
-    qDebug() << "Coordenada x del bebedero: " << coordX;
-    qDebug() << "Coordenada x del robot" << bState.x;
-    qDebug() << "Coordenada y del bebedero: " << coordY;
-    qDebug() << "Coordenada y del robot" << bState.z;
     if((((coordX - bState.x) < 20) && (coordX - bState.x) > -20) && (((coordY - bState.z) < 20) && (coordY - bState.z) > -20))
 	{
 		differentialrobot_proxy -> setSpeedBase(0,0);
-		qDebug() << "He llegado";
 		state = State::RealizarAccion;
 	}
 	else
@@ -245,9 +233,7 @@ void SpecificWorker::goTo(){
 }
 
 void SpecificWorker::chooseAction(){
-    //qDebug() << "Estoy en chooseAction";
     int num = rand() % 10;
-    qDebug() << "El random es : " << num;
     if(num < 3)
     {
         state = State::Dormir;
@@ -271,7 +257,6 @@ void SpecificWorker::chooseAction(){
 }
 
 void SpecificWorker::waitTime(){
-    qDebug() << "Estoy en waitTime";
     QTime tStart;
     tStart.start();
     int waitingTime = 0;
@@ -280,20 +265,20 @@ void SpecificWorker::waitTime(){
     switch(stateInUse){
         case State::Comer:
         {
-            waitingTime = 3000; // 7 secs
-            msg = "Comiendo ...";
+            waitingTime = 7000; // 7 secs
+            msg = "Comiendo ...(7 segundos)";
             break;
         }
         case State::Beber:
         {
             waitingTime = 4000; // 4 secs
-            msg = "Bebiendo ...";
+            msg = "Bebiendo ...(4 segundos)";
             break;
         }
         case State::Dormir:
         {
-            msg = "Durmiendo ...";
-            waitingTime = 2000; // 20 secs
+            msg = "Durmiendo ...(20 segundos)";
+            waitingTime = 20000; // 20 secs
             break;
         }
         default:
@@ -301,8 +286,9 @@ void SpecificWorker::waitTime(){
             qDebug() << "Error al cargar vble stateInUse en metodo -> waitTime";
         }
     }
+    qDebug() << msg;
     while(tStart.elapsed() < waitingTime){
-       // qDebug() << msg;
+      
     }
     int seg = tStart.elapsed() / 1000;
     qDebug() << "He estado " << msg << " durante " << seg << " segundos.";
