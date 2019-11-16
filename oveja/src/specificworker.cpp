@@ -232,7 +232,7 @@ void SpecificWorker::goTo(){
     qDebug() << "Coordenada x del robot" << bState.x;
     qDebug() << "Coordenada y del bebedero: " << coordY;
     qDebug() << "Coordenada y del robot" << bState.z;
-    if((fabs(coordX) - fabs(bState.x)) < 3 && (fabs(coordY) - fabs(bState.z) < 3))
+    if((((coordX - bState.x) < 20) && (coordX - bState.x) > -20) && (((coordY - bState.z) < 20) && (coordY - bState.z) > -20))
 	{
 		differentialrobot_proxy -> setSpeedBase(0,0);
 		qDebug() << "He llegado";
