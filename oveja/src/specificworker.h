@@ -71,6 +71,7 @@ private:
     enum class State{IDLE,Andar,Comer,Beber,Dormir,Colocarse,IrHaciaTarget,RealizarAccion};
 	State state = State::IDLE;
     State stateInUse = State::IDLE;
+    State lastStateUsed;
 };
 
 #endif

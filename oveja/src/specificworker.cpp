@@ -234,10 +234,12 @@ void SpecificWorker::goTo(){
 
 void SpecificWorker::chooseAction(){
     int num = rand() % 10;
+    lastStateUsed = stateInUse;
+   
     if(num < 3)
     {
         state = State::Dormir;
-    }
+    }   
     else if(num > 2 && num < 5)
     {
         state = State::Comer;
@@ -247,13 +249,18 @@ void SpecificWorker::chooseAction(){
         state = State::Beber;
     }
     else if(num > 6)
-    {
+    {   
         state = State::Dormir;
     }
     else
     {
         qDebug() << "Error al elegir accion a relizar en el metodo -> chooseAction";
     }
+    while (lastStateUsed == state)
+    {
+        chooseAction();
+    }
+
 }
 
 void SpecificWorker::waitTime(){
