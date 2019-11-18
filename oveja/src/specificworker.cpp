@@ -119,31 +119,43 @@ void SpecificWorker::walk()
     if(stateInUse != State::Andar){
         sTime.start();
     }
-    if(sTime.elapsed() < 15000)
+    if(sTime.elapsed() < 5000) // 15 segundos
     {
         andar();    
     }else
     {
+        qDebug() << "He andado duante 5 segundos";
         state = State::IDLE;
     }    
 }
 
 void SpecificWorker::andar(){
     stateInUse = State::Andar;
+    int stateWalk;
     RoboCompLaser::TLaserData ldata = laser_proxy->getLaserData();
     //sort laser data from small to large distances using a lambda function.
     std::sort( ldata.begin(), ldata.end(), [](RoboCompLaser::TData a, RoboCompLaser::TData b){ return     a.dist < b.dist; });
     
-    if( ldata.front().dist < 200)
-	{
-		std::cout << ldata.front().dist << std::endl;
- 		differentialrobot_proxy->setSpeedBase(5, 0.6);
-		usleep(rand()%(1500000-100000 + 1) + 100000);  // random wait between 1.5s and 0.1sec
+    stateWalk = 0;
+	if( ldata.front().dist < threshold){		
+		if(ldata.front().dist < 350 && ldata.back().dist < 350){			
+			stateWalk = 2;
+		}else{			
+			stateWalk = 1;
+		}
+		
 	}
-    else
-    {
-        differentialrobot_proxy->setSpeedBase(700, 0);
-    }
+    switch(stateWalk){
+		case 1:			
+			caseObject(ldata.front().angle);			
+		break;
+		case 2:
+			caseCorner();	
+		break;
+		default:
+			caseGo();
+		break;
+	};
 }
 
 void SpecificWorker::eat()
@@ -162,6 +174,29 @@ void SpecificWorker::sleep()
 { 
    stateInUse = State::Dormir; 
    state = State::RealizarAccion;
+}
+
+void SpecificWorker::caseObject(float a){
+	int dir = 1; //1 derecha, -1 izq
+	if (a < 0)
+	{
+		dir = 1; //derecha
+	}
+	else
+	{
+		dir = -1; // izquierda
+	}
+	differentialrobot_proxy->setSpeedBase(5, 0.75*dir);
+	usleep(rand()%(1500000-100000 + 1) + 100000);  // random wait between 1.5s and 0.1sec
+}
+
+void SpecificWorker::caseGo(){
+	differentialrobot_proxy->setSpeedBase(950, 0.25 * 1);			
+}
+
+void SpecificWorker::caseCorner(){
+	differentialrobot_proxy->setSpeedBase(5, 0.75);
+	usleep(2000000);
 }
 
 void SpecificWorker::standTo(){
@@ -238,7 +273,7 @@ void SpecificWorker::chooseAction(){
    
     if(num < 3)
     {
-        state = State::Dormir;
+        state = State::Andar;
     }   
     else if(num > 2 && num < 5)
     {
