@@ -30,6 +30,7 @@
 #include <genericworker.h>
 #include <innermodel/innermodel.h>
 #include <QPointF>
+#include <BrainTree.h>
 #include <math.h>
 #include <QTime>
 #include <QString>
@@ -56,22 +57,16 @@ private:
     QPointF waterDispenser;
 
     void compute();
-    void walk();
+    BrainTree::Status walk();
     void andar();
-    void eat();
-    void drink();
-    void sleep();
-    void standTo();
+    BrainTree::Status standTo(int x);
     void readRobotState();
     void loadPoints();
-    void goTo();
+    BrainTree::Status goTo(int x);
     void chooseAction();
-    void waitTime();
-
-    enum class State{IDLE,Andar,Comer,Beber,Dormir,Colocarse,IrHaciaTarget,RealizarAccion};
-	State state = State::IDLE;
-    State stateInUse = State::IDLE;
-    State lastStateUsed;
+    void waitTime(int x);
+    void createTreeBuilders();
+    void createTreeManually();
 };
 
 #endif

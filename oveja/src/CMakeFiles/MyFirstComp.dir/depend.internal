@@ -485,6 +485,7 @@ src/CMakeFiles/MyFirstComp.dir/MyFirstComp_autogen/mocs_compilation.cpp.o
  /usr/include/qt4/QtGui/qwmatrix.h
  /usr/include/qt4/QtGui/qworkspace.h
  /usr/include/qt4/QtGui/qwsembedwidget.h
+ src/BrainTree.h
  src/CommonBehavior.h
  src/DifferentialRobot.h
  src/GenericBase.h
@@ -2691,6 +2692,7 @@ src/CMakeFiles/MyFirstComp.dir/main.cpp.o
  /usr/include/qt4/QtGui/qwmatrix.h
  /usr/include/qt4/QtGui/qworkspace.h
  /usr/include/qt4/QtGui/qwsembedwidget.h
+ src/BrainTree.h
  src/CommonBehavior.h
  src/DifferentialRobot.h
  src/GenericBase.h
@@ -3595,6 +3597,7 @@ src/CMakeFiles/MyFirstComp.dir/specificworker.cpp.o
  /usr/include/qt4/QtGui/qwmatrix.h
  /usr/include/qt4/QtGui/qworkspace.h
  /usr/include/qt4/QtGui/qwsembedwidget.h
+ src/BrainTree.h
  src/CommonBehavior.h
  src/DifferentialRobot.h
  src/GenericBase.h

@@ -55,65 +55,81 @@ bool SpecificWorker::setParams(RoboCompCommonBehavior::ParameterList params)
 	return true;
 }
 
-void SpecificWorker::compute()
-{   
-        readRobotState();
-        loadPoints();
+class Action : public BrainTree::node {
+    public:
+        Status update() override 
+        {
+            std::cout << "Hello, World!" << std::endl;
+            return node::Status::Success;
+        }
+};
 
-    try
-    {
-        switch(state){
-		    case State::IDLE:
-		    {
-                chooseAction();
-                break;
-		    }
-		    case State::Andar:
-		    {
-                walk();
-		    	break;	
-	    	}
-	    	case State::Comer:
-		    {
-		    	eat();
-		    	break;
-		    }
-            case State::Beber:
-            {
-                drink();
-                break;
-            }
-            case State::Dormir:
-            {
-                sleep();
-                break;
-            }
-            case State::Colocarse:
-            {
-                standTo();
-                break;
-            }
-            case State::IrHaciaTarget:
-            {
-                goTo();
-                break;
-            }
-            case State::RealizarAccion:
-            {
-                waitTime();
-                break;
-            }
-	}
-        
+void SpecificWorker::createTreeBuilders()
+{
+    auto btree = BrainTree::Builder()
+        .composite<BrainTree::Sequence>() // Dormir
+            .leaf(waitTime(2))
+        .composite<BrainTree::Sequence>() // Comer
+            .leaf(standTo(0))
+            .leaf(goTo(0))
+            .leaf(waitTime(0))
+        .composite<BrainTree::Sequence>() // Beber
+            .leaf(standTo(1))
+            .leaf(goTo(1))
+            .leaf(waitTime(1))
+        .composite<BrainTree::Sequence>() // Andar
+            .leaf(walk())
+        .end()
+        .build();
+}   
 
-    }
-    catch(const Ice::Exception &ex)
-    {
-        std::cout << ex << std::endl;
-    }
+void SpecificWorker::createTreeManually()
+{
+    BrainTree::BehaviorTree btree;
+    
+    auto mainSequence = std::make_shared<BrainTree::Sequence>();
+    auto sleepSequence = std::make_shared<BrainTree::Sequence>();
+    auto eatSequence = std::make_shared<BrainTree::Sequence>();
+    auto drinkSequence = std::make_shared<BrainTree::Sequence>();
+    auto walkSequence = std::make_shared<BrainTree::Sequence>();
+
+    auto realizarAccionDormir = std::make_shared<Action>(waitTime(2));
+    auto realizarAccionBeber = std::make_shared<Action>(waitTime(1));
+    auto realizarAccionComer = std::make_shared<Action>(waitTime(0));
+
+    auto colocarseComer = std::make_shared<Action>(standTo(0));
+    auto colocarseBeber = std::make_shared<Action>(standTo(1));
+
+    auto irComer = std::make_shared<Action>(goTo(0));
+    auto irBeber = std::make_shared<Action>(goTo(1));
+
+    auto andar = std::make_shared<Action>(walk());
+
+    mainSequence->addChild(sleepSequence);
+    mainSequence->addChild(eatSequence);
+    mainSequence->addChild(drinkSequence);
+    mainSequence->addChild(walkSequence);
+
+    sleepSequence->addChild(realizarAccionDormir);
+    eatSequence->addChild(colocarseComer);
+    eatSequence->addChild(irComer);
+    eatSequence->addChild(realizarAccionComer);
+    drinkSequence->addChild(colocarseBeber);
+    drinkSequence->addChild(irBeber);
+    drinkSequence->addChild(realizarAccionBeber);
+    walkSequence->addChild(andar);
+
+    btree.setRoot(mainSequence);
+    btree.update();
 }
 
-void SpecificWorker::walk()
+void SpecificWorker::compute()
+{   
+      btree->update();
+	
+}
+
+BrainTree::Status SpecificWorker::walk()
 {
     QTime sTime;
     if(stateInUse != State::Andar){
@@ -124,7 +140,7 @@ void SpecificWorker::walk()
         andar();    
     }else
     {
-        state = State::IDLE;
+        return node::Status::Success;
     }    
 }
 
@@ -146,30 +162,12 @@ void SpecificWorker::andar(){
     }
 }
 
-void SpecificWorker::eat()
-{
-    stateInUse = State::Comer;
-    state = State::Colocarse;
-}
-
-void SpecificWorker::drink()
-{
-    stateInUse = State::Beber;
-    state = State::Colocarse;
-}
-
-void SpecificWorker::sleep()
-{ 
-   stateInUse = State::Dormir; 
-   state = State::RealizarAccion;
-}
-
-void SpecificWorker::standTo(){
+BrainTree::Status SpecificWorker::standTo(int x){
     QPointF t;
-    if(stateInUse == State::Comer)
+    if(x == 0)
     {
         t = foodDispenser;
-    }else if(stateInUse == State::Beber){
+    }else if(x == 1){
         t = waterDispenser;
     }else
     {
@@ -182,7 +180,7 @@ void SpecificWorker::standTo(){
     if( fabs(angle) < 0.001)
     {
         differentialrobot_proxy -> setSpeedBase(0,0);
-        state = State::IrHaciaTarget;
+        return node::Status::Success;
     }else
     {
         differentialrobot_proxy -> setSpeedBase(0,angle);  
@@ -209,22 +207,23 @@ void SpecificWorker::loadPoints(){
     waterDispenser.setY(1973.39);
 }
 
-void SpecificWorker::goTo(){
+BrainTree::Status SpecificWorker::goTo(int x){
     float coordX;
     float coordY;
-    if(stateInUse == State::Comer){
+    if(x == 0){
         coordX = foodDispenser.x();
         coordY = foodDispenser.y();
-    }else if(stateInUse == State::Beber){
+    }else if(x == 1){
         coordX = waterDispenser.x();
         coordY = waterDispenser.y();
     }else{
         qDebug() << "Error al cargar stateInUse en -> goTo";
+        return node::Status::Failure;
     }
     if((((coordX - bState.x) < 20) && (coordX - bState.x) > -20) && (((coordY - bState.z) < 20) && (coordY - bState.z) > -20))
 	{
 		differentialrobot_proxy -> setSpeedBase(0,0);
-		state = State::RealizarAccion;
+		return node::Status::Success;
 	}
 	else
 	{
@@ -260,29 +259,28 @@ void SpecificWorker::chooseAction(){
     {
         chooseAction();
     }
-
 }
 
-void SpecificWorker::waitTime(){
+BrainTree::Status SpecificWorker::waitTime(int x){
     QTime tStart;
     tStart.start();
     int waitingTime = 0;
     QString msg;
 
-    switch(stateInUse){
-        case State::Comer:
+    switch(x){
+        case 0:
         {
             waitingTime = 7000; // 7 secs
             msg = "Comiendo ...(7 segundos)";
             break;
         }
-        case State::Beber:
+        case 1:
         {
             waitingTime = 4000; // 4 secs
             msg = "Bebiendo ...(4 segundos)";
             break;
         }
-        case State::Dormir:
+        case 2:
         {
             msg = "Durmiendo ...(20 segundos)";
             waitingTime = 20000; // 20 secs
@@ -300,6 +298,5 @@ void SpecificWorker::waitTime(){
     int seg = tStart.elapsed() / 1000;
     qDebug() << "He estado " << msg << " durante " << seg << " segundos.";
 
-    state = State::IDLE;
-
+    return node::Status::Success;
 }

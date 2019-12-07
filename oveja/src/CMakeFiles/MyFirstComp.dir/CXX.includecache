@@ -293,6 +293,8 @@ innermodel/innermodel.h
 -
 QPointF
 -
+BrainTree.h
+-
 math.h
 -
 QTime
@@ -4410,6 +4412,18 @@ QtGui/qwidget.h
 
 /usr/include/qt4/QtGui/qwsembedwidget.h
 QtGui/qwidget.h
+-
+
+src/BrainTree.h
+memory
+-
+vector
+-
+string
+-
+unordered_map
+-
+cassert
 -
 
 src/CommonBehavior.h

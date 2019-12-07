@@ -484,6 +484,7 @@ src/CMakeFiles/MyFirstComp.dir/MyFirstComp_autogen/mocs_compilation.cpp.o: /usr/
 src/CMakeFiles/MyFirstComp.dir/MyFirstComp_autogen/mocs_compilation.cpp.o: /usr/include/qt4/QtGui/qwmatrix.h
 src/CMakeFiles/MyFirstComp.dir/MyFirstComp_autogen/mocs_compilation.cpp.o: /usr/include/qt4/QtGui/qworkspace.h
 src/CMakeFiles/MyFirstComp.dir/MyFirstComp_autogen/mocs_compilation.cpp.o: /usr/include/qt4/QtGui/qwsembedwidget.h
+src/CMakeFiles/MyFirstComp.dir/MyFirstComp_autogen/mocs_compilation.cpp.o: src/BrainTree.h
 src/CMakeFiles/MyFirstComp.dir/MyFirstComp_autogen/mocs_compilation.cpp.o: src/CommonBehavior.h
 src/CMakeFiles/MyFirstComp.dir/MyFirstComp_autogen/mocs_compilation.cpp.o: src/DifferentialRobot.h
 src/CMakeFiles/MyFirstComp.dir/MyFirstComp_autogen/mocs_compilation.cpp.o: src/GenericBase.h
@@ -2690,6 +2691,7 @@ src/CMakeFiles/MyFirstComp.dir/main.cpp.o: /usr/include/qt4/QtGui/qwizard.h
 src/CMakeFiles/MyFirstComp.dir/main.cpp.o: /usr/include/qt4/QtGui/qwmatrix.h
 src/CMakeFiles/MyFirstComp.dir/main.cpp.o: /usr/include/qt4/QtGui/qworkspace.h
 src/CMakeFiles/MyFirstComp.dir/main.cpp.o: /usr/include/qt4/QtGui/qwsembedwidget.h
+src/CMakeFiles/MyFirstComp.dir/main.cpp.o: src/BrainTree.h
 src/CMakeFiles/MyFirstComp.dir/main.cpp.o: src/CommonBehavior.h
 src/CMakeFiles/MyFirstComp.dir/main.cpp.o: src/DifferentialRobot.h
 src/CMakeFiles/MyFirstComp.dir/main.cpp.o: src/GenericBase.h
@@ -3594,6 +3596,7 @@ src/CMakeFiles/MyFirstComp.dir/specificworker.cpp.o: /usr/include/qt4/QtGui/qwiz
 src/CMakeFiles/MyFirstComp.dir/specificworker.cpp.o: /usr/include/qt4/QtGui/qwmatrix.h
 src/CMakeFiles/MyFirstComp.dir/specificworker.cpp.o: /usr/include/qt4/QtGui/qworkspace.h
 src/CMakeFiles/MyFirstComp.dir/specificworker.cpp.o: /usr/include/qt4/QtGui/qwsembedwidget.h
+src/CMakeFiles/MyFirstComp.dir/specificworker.cpp.o: src/BrainTree.h
 src/CMakeFiles/MyFirstComp.dir/specificworker.cpp.o: src/CommonBehavior.h
 src/CMakeFiles/MyFirstComp.dir/specificworker.cpp.o: src/DifferentialRobot.h
 src/CMakeFiles/MyFirstComp.dir/specificworker.cpp.o: src/GenericBase.h
