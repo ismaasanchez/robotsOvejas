@@ -55,13 +55,43 @@ bool SpecificWorker::setParams(RoboCompCommonBehavior::ParameterList params)
 	return true;
 }
 
-class Action : public BrainTree::Node {
+class ActionSleep : public BrainTree::Node {
     public:
         Status update() override 
         {
-            std::cout << "Hello, World!" << std::endl;
+            std::cout << "Estoy durmiendo!" << std::endl;
             return Node::Status::Success;
         }
+    
+};
+
+class ActionEat : public BrainTree::Node {
+    public:
+        Status update() override 
+        {
+            std::cout << "Estoy comiendo!" << std::endl;
+            return Node::Status::Success;
+        }
+};
+
+class ActionDrink : public BrainTree::Node {
+    public:
+        Status update() override 
+        {
+            std::cout << "EStoy bebiendo!" << std::endl;
+            return Node::Status::Success;
+        }
+};
+
+class ActionWalk : public BrainTree::Node {
+    public:
+        Status update() override 
+        {
+            std::cout << "Estoy andando!" << std::endl;
+            return Node::Status::Success;
+        }       
+    private:
+        
 };
 
 void SpecificWorker::createTreeBuilders()
@@ -93,17 +123,17 @@ void SpecificWorker::createTreeManually()
     auto drinkSequence = std::make_shared<BrainTree::Sequence>();
     auto walkSequence = std::make_shared<BrainTree::Sequence>();
 
-    auto realizarAccionDormir = std::make_shared<Action>(); //waitTime(2);
-    auto realizarAccionBeber = std::make_shared<Action>(); //waitTime(1);
-    auto realizarAccionComer = std::make_shared<Action>(); //waitTime(0);
+    auto realizarAccionDormir = std::make_shared<ActionSleep>(); //waitTime(2);
+    auto realizarAccionBeber = std::make_shared<ActionDrink>(); //waitTime(1);
+    auto realizarAccionComer = std::make_shared<ActionEat>(); //waitTime(0);
 
-    auto colocarseComer = std::make_shared<Action>(); //standTo(0);
-    auto colocarseBeber = std::make_shared<Action>(); //standTo(1);
+    auto colocarseComer = std::make_shared<ActionEat>(); //standTo(0);
+    auto colocarseBeber = std::make_shared<ActionDrink>(); //standTo(1);
 
-    auto irComer = std::make_shared<Action>(); //goTo(0);
-    auto irBeber = std::make_shared<Action>(); //goTo(1);
+    auto irComer = std::make_shared<ActionEat>(); //goTo(0);
+    auto irBeber = std::make_shared<ActionDrink>(); //goTo(1);
 
-    auto andar = std::make_shared<Action>(); //walk();
+    auto andar = std::make_shared<ActionWalk>(); //walk();
 
     mainSequence->addChild(sleepSequence);
     mainSequence->addChild(eatSequence);

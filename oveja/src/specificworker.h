@@ -44,11 +44,8 @@ public:
 	SpecificWorker(MapPrx& mprx);
 	~SpecificWorker();
 	bool setParams(RoboCompCommonBehavior::ParameterList params);
-    
 
-
-public slots:
-
+    void walk();
 
 private:
     RoboCompGenericBase::TBaseState bState;
@@ -57,7 +54,7 @@ private:
     QPointF waterDispenser;
 
     void compute();
-    void walk();
+    
     void andar();
     void standTo(int x);
     void readRobotState();
