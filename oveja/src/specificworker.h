@@ -57,13 +57,12 @@ private:
     QPointF waterDispenser;
 
     void compute();
-    BrainTree::Status walk();
+    void walk();
     void andar();
-    BrainTree::Status standTo(int x);
+    void standTo(int x);
     void readRobotState();
     void loadPoints();
-    BrainTree::Status goTo(int x);
-    void chooseAction();
+    void goTo(int x);
     void waitTime(int x);
     void createTreeBuilders();
     void createTreeManually();

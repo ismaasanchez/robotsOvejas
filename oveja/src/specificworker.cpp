@@ -55,18 +55,18 @@ bool SpecificWorker::setParams(RoboCompCommonBehavior::ParameterList params)
 	return true;
 }
 
-class Action : public BrainTree::node {
+class Action : public BrainTree::Node {
     public:
         Status update() override 
         {
             std::cout << "Hello, World!" << std::endl;
-            return node::Status::Success;
+            return Node::Status::Success;
         }
 };
 
 void SpecificWorker::createTreeBuilders()
 {
-    auto btree = BrainTree::Builder()
+   /* auto btree = BrainTree::Builder()
         .composite<BrainTree::Sequence>() // Dormir
             .leaf(waitTime(2))
         .composite<BrainTree::Sequence>() // Comer
@@ -80,7 +80,7 @@ void SpecificWorker::createTreeBuilders()
         .composite<BrainTree::Sequence>() // Andar
             .leaf(walk())
         .end()
-        .build();
+        .build(); */
 }   
 
 void SpecificWorker::createTreeManually()
@@ -93,17 +93,17 @@ void SpecificWorker::createTreeManually()
     auto drinkSequence = std::make_shared<BrainTree::Sequence>();
     auto walkSequence = std::make_shared<BrainTree::Sequence>();
 
-    auto realizarAccionDormir = std::make_shared<Action>(waitTime(2));
-    auto realizarAccionBeber = std::make_shared<Action>(waitTime(1));
-    auto realizarAccionComer = std::make_shared<Action>(waitTime(0));
+    auto realizarAccionDormir = std::make_shared<Action>(); //waitTime(2);
+    auto realizarAccionBeber = std::make_shared<Action>(); //waitTime(1);
+    auto realizarAccionComer = std::make_shared<Action>(); //waitTime(0);
 
-    auto colocarseComer = std::make_shared<Action>(standTo(0));
-    auto colocarseBeber = std::make_shared<Action>(standTo(1));
+    auto colocarseComer = std::make_shared<Action>(); //standTo(0);
+    auto colocarseBeber = std::make_shared<Action>(); //standTo(1);
 
-    auto irComer = std::make_shared<Action>(goTo(0));
-    auto irBeber = std::make_shared<Action>(goTo(1));
+    auto irComer = std::make_shared<Action>(); //goTo(0);
+    auto irBeber = std::make_shared<Action>(); //goTo(1);
 
-    auto andar = std::make_shared<Action>(walk());
+    auto andar = std::make_shared<Action>(); //walk();
 
     mainSequence->addChild(sleepSequence);
     mainSequence->addChild(eatSequence);
@@ -125,27 +125,24 @@ void SpecificWorker::createTreeManually()
 
 void SpecificWorker::compute()
 {   
-      btree->update();
+ //     btree->update();
 	
 }
 
-BrainTree::Status SpecificWorker::walk()
+void SpecificWorker::walk()
 {
     QTime sTime;
-    if(stateInUse != State::Andar){
-        sTime.start();
-    }
+    sTime.start();
     if(sTime.elapsed() < 15000)
     {
         andar();    
     }else
     {
-        return node::Status::Success;
+  //      return node::Status::Success;
     }    
 }
 
 void SpecificWorker::andar(){
-    stateInUse = State::Andar;
     RoboCompLaser::TLaserData ldata = laser_proxy->getLaserData();
     //sort laser data from small to large distances using a lambda function.
     std::sort( ldata.begin(), ldata.end(), [](RoboCompLaser::TData a, RoboCompLaser::TData b){ return     a.dist < b.dist; });
@@ -162,7 +159,7 @@ void SpecificWorker::andar(){
     }
 }
 
-BrainTree::Status SpecificWorker::standTo(int x){
+void SpecificWorker::standTo(int x){
     QPointF t;
     if(x == 0)
     {
@@ -180,7 +177,7 @@ BrainTree::Status SpecificWorker::standTo(int x){
     if( fabs(angle) < 0.001)
     {
         differentialrobot_proxy -> setSpeedBase(0,0);
-        return node::Status::Success;
+    //    return node::Status::Success;
     }else
     {
         differentialrobot_proxy -> setSpeedBase(0,angle);  
@@ -207,7 +204,7 @@ void SpecificWorker::loadPoints(){
     waterDispenser.setY(1973.39);
 }
 
-BrainTree::Status SpecificWorker::goTo(int x){
+void SpecificWorker::goTo(int x){
     float coordX;
     float coordY;
     if(x == 0){
@@ -218,12 +215,12 @@ BrainTree::Status SpecificWorker::goTo(int x){
         coordY = waterDispenser.y();
     }else{
         qDebug() << "Error al cargar stateInUse en -> goTo";
-        return node::Status::Failure;
+   //     return node::Status::Failure;
     }
     if((((coordX - bState.x) < 20) && (coordX - bState.x) > -20) && (((coordY - bState.z) < 20) && (coordY - bState.z) > -20))
 	{
 		differentialrobot_proxy -> setSpeedBase(0,0);
-		return node::Status::Success;
+	//	return node::Status::Success;
 	}
 	else
 	{
@@ -231,37 +228,7 @@ BrainTree::Status SpecificWorker::goTo(int x){
 	}	
 }
 
-void SpecificWorker::chooseAction(){
-    int num = rand() % 10;
-    lastStateUsed = stateInUse;
-   
-    if(num < 3)
-    {
-        state = State::Dormir;
-    }   
-    else if(num > 2 && num < 5)
-    {
-        state = State::Comer;
-    }
-    else if(num > 4 && num < 7)
-    {
-        state = State::Beber;
-    }
-    else if(num > 6)
-    {   
-        state = State::Dormir;
-    }
-    else
-    {
-        qDebug() << "Error al elegir accion a relizar en el metodo -> chooseAction";
-    }
-    while (lastStateUsed == state)
-    {
-        chooseAction();
-    }
-}
-
-BrainTree::Status SpecificWorker::waitTime(int x){
+void SpecificWorker::waitTime(int x){
     QTime tStart;
     tStart.start();
     int waitingTime = 0;
@@ -298,5 +265,5 @@ BrainTree::Status SpecificWorker::waitTime(int x){
     int seg = tStart.elapsed() / 1000;
     qDebug() << "He estado " << msg << " durante " << seg << " segundos.";
 
-    return node::Status::Success;
+ //   return node::Status::Success;
 }
