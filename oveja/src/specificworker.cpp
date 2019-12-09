@@ -156,6 +156,7 @@ void SpecificWorker::createTreeManually()
 void SpecificWorker::compute()
 {   
  //     btree->update();
+    createTreeManually();
 	
 }
 
