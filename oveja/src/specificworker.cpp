@@ -46,9 +46,6 @@ bool SpecificWorker::setParams(RoboCompCommonBehavior::ParameterList params)
 	}
 	catch(std::exception e) { qFatal("Error reading config params"); }
 
-
-
-
 	timer.start(Period);
     srand(time(0));
 
@@ -59,10 +56,29 @@ class ActionSleep : public BrainTree::Node {
     public:
         Status update() override 
         {
+            
             std::cout << "Estoy durmiendo!" << std::endl;
             return Node::Status::Success;
         }
     
+};
+
+class ActionStandToEat : public BrainTree::Node {
+    public:
+        Status update() override 
+        {
+            std::cout << "Posicionandome para ir al comedero!" << std::endl;
+            return Node::Status::Success;
+        }
+};
+
+class ActionGoToEat : public BrainTree::Node {
+    public:
+        Status update() override 
+        {
+            std::cout << "En camino hacia el comedero!" << std::endl;
+            return Node::Status::Success;
+        }
 };
 
 class ActionEat : public BrainTree::Node {
@@ -74,11 +90,29 @@ class ActionEat : public BrainTree::Node {
         }
 };
 
+class ActionStandToDrink : public BrainTree::Node {
+    public:
+        Status update() override 
+        {
+            std::cout << "Posicionandome para ir al bebedero!" << std::endl;
+            return Node::Status::Success;
+        }
+};
+
+class ActionGoToDrink : public BrainTree::Node {
+    public:
+        Status update() override 
+        {
+            std::cout << "De camino hacia el bebedero!" << std::endl;
+            return Node::Status::Success;
+        }
+};
+
 class ActionDrink : public BrainTree::Node {
     public:
         Status update() override 
         {
-            std::cout << "EStoy bebiendo!" << std::endl;
+            std::cout << "Estoy bebiendo!" << std::endl;
             return Node::Status::Success;
         }
 };
@@ -127,11 +161,11 @@ void SpecificWorker::createTreeManually()
     auto realizarAccionBeber = std::make_shared<ActionDrink>(); //waitTime(1);
     auto realizarAccionComer = std::make_shared<ActionEat>(); //waitTime(0);
 
-    auto colocarseComer = std::make_shared<ActionEat>(); //standTo(0);
-    auto colocarseBeber = std::make_shared<ActionDrink>(); //standTo(1);
+    auto colocarseComer = std::make_shared<ActionStandToEat>(); //standTo(0);
+    auto colocarseBeber = std::make_shared<ActionStandToDrink>(); //standTo(1);
 
-    auto irComer = std::make_shared<ActionEat>(); //goTo(0);
-    auto irBeber = std::make_shared<ActionDrink>(); //goTo(1);
+    auto irComer = std::make_shared<ActionGoToEat>(); //goTo(0);
+    auto irBeber = std::make_shared<ActionGoToDrink>(); //goTo(1);
 
     auto andar = std::make_shared<ActionWalk>(); //walk();
 
@@ -157,6 +191,7 @@ void SpecificWorker::compute()
 {   
  //     btree->update();
     createTreeManually();
+    
 	
 }
 

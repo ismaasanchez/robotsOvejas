@@ -53,6 +53,7 @@ private:
     QPointF foodDispenser;
     QPointF waterDispenser;
 
+
     void compute();
     
     void andar();
