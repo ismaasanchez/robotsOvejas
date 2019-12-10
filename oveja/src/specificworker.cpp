@@ -87,10 +87,12 @@ class ActionStandToEat : public BrainTree::Node
             if( fabs(angle) < 0.001)
             {
                 sp->differentialrobot_proxy -> setSpeedBase(0,0);
+                qDebug() << "Stand to eat --------> SUCCESS";
                 return Node::Status::Success;
             }else
             {
                 sp->differentialrobot_proxy -> setSpeedBase(0,angle);  
+                qDebug() << "Stand to eat --------> RUNNING";
                 return Node::Status::Running;
             }
         }
@@ -114,11 +116,13 @@ class ActionGoToEat : public BrainTree::Node
             if((((coordX - sp->bState.x) < 20) && (coordX - sp->bState.x) > -20) && (((coordY - sp->bState.z) < 20) && (coordY - sp->bState.z) > -20))
 	        {
 	        	sp->differentialrobot_proxy -> setSpeedBase(0,0);
+                qDebug() << "Go to eat --------> SUCCESS";
 	        	return Node::Status::Success;
 	        }
 	        else
 	        {
 		        sp->differentialrobot_proxy -> setSpeedBase(500,0);
+                qDebug() << "Go to eat --------> RUNNING";
                 return Node::Status::Running;
 	        }	
         }
