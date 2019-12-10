@@ -79,7 +79,7 @@ class ActionStandToEat : public BrainTree::Node
         Status update() override 
         {
             QPointF t;
-            t = sp->foodDispenser;
+            t = sp->getFoodDispenser();
             float angle = 0;
             //Paso el punto, de coord del mundo al robot
             QVec p = sp->innerModel->transform("base", QVec::vec3(t.x(),0,t.y()), "world");
@@ -415,4 +415,33 @@ void SpecificWorker::waitTime(int x){
     qDebug() << "He estado " << msg << " durante " << seg << " segundos.";
 
     //return node::Status::Success;
+}
+
+int SpecificWorker::getCoordXFood()
+{
+    return foodDispenser.x();
+}
+
+int SpecificWorker::getCoordYFood()
+{
+    return foodDispenser.y();
+}
+
+int SpecificWorker::getCoordXWater()
+{
+    return waterDispenser.x();
+}
+
+int SpecificWorker::getCoordYWater()
+{
+    return waterDispenser.y();
+}
+
+QPointF SpecificWorker::getFoodDispenser()
+{
+    return foodDispenser;
+}
+QPointF SpecificWorker::getWaterDispenser()
+{
+    return waterDispenser;
 }

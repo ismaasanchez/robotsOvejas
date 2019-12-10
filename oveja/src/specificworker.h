@@ -56,6 +56,13 @@ public:
     void waitTime(int x);
     void createTreeBuilders();
     void createTreeManually();
+    int getCoordXFood();
+    int getCoordYFood();
+    int getCoordXWater();
+    int getCoordYWater();
+    QPointF getFoodDispenser();
+    QPointF getWaterDispenser();
+    
     QPointF foodDispenser;
     QPointF waterDispenser;
     RoboCompGenericBase::TBaseState bState;
