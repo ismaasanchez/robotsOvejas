@@ -56,11 +56,13 @@ public:
     void waitTime(int x);
     void createTreeBuilders();
     void createTreeManually();
-private:
-    RoboCompGenericBase::TBaseState bState;
-	std::shared_ptr<InnerModel> innerModel;
     QPointF foodDispenser;
     QPointF waterDispenser;
+    RoboCompGenericBase::TBaseState bState;
+	std::shared_ptr<InnerModel> innerModel;
+private:
+    
+    
 
 
     
