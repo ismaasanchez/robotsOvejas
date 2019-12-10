@@ -46,14 +46,6 @@ public:
 	bool setParams(RoboCompCommonBehavior::ParameterList params);
 
     void walk();
-
-private:
-    RoboCompGenericBase::TBaseState bState;
-	std::shared_ptr<InnerModel> innerModel;
-    QPointF foodDispenser;
-    QPointF waterDispenser;
-
-
     void compute();
     
     void andar();
@@ -64,6 +56,14 @@ private:
     void waitTime(int x);
     void createTreeBuilders();
     void createTreeManually();
+private:
+    RoboCompGenericBase::TBaseState bState;
+	std::shared_ptr<InnerModel> innerModel;
+    QPointF foodDispenser;
+    QPointF waterDispenser;
+
+
+    
 };
 
 #endif

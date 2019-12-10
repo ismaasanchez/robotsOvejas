@@ -52,18 +52,25 @@ bool SpecificWorker::setParams(RoboCompCommonBehavior::ParameterList params)
 	return true;
 }
 
-class ActionSleep : public BrainTree::Node {
+class ActionSleep : public BrainTree::Node 
+{
     public:
+        ActionSleep(SpecificWorker* x)
+        {
+            this->sp = x;
+        }
         Status update() override 
         {
-            
-            std::cout << "Estoy durmiendo!" << std::endl;
+            sp->waitTime(2);
             return Node::Status::Success;
         }
+    private:
+        SpecificWorker* sp;
     
 };
 
-class ActionStandToEat : public BrainTree::Node {
+class ActionStandToEat : public BrainTree::Node 
+{
     public:
         Status update() override 
         {
@@ -72,8 +79,10 @@ class ActionStandToEat : public BrainTree::Node {
         }
 };
 
-class ActionGoToEat : public BrainTree::Node {
+class ActionGoToEat : public BrainTree::Node 
+{
     public:
+    
         Status update() override 
         {
             std::cout << "En camino hacia el comedero!" << std::endl;
@@ -81,7 +90,8 @@ class ActionGoToEat : public BrainTree::Node {
         }
 };
 
-class ActionEat : public BrainTree::Node {
+class ActionEat : public BrainTree::Node 
+{
     public:
         Status update() override 
         {
@@ -90,7 +100,8 @@ class ActionEat : public BrainTree::Node {
         }
 };
 
-class ActionStandToDrink : public BrainTree::Node {
+class ActionStandToDrink : public BrainTree::Node 
+{
     public:
         Status update() override 
         {
@@ -99,7 +110,8 @@ class ActionStandToDrink : public BrainTree::Node {
         }
 };
 
-class ActionGoToDrink : public BrainTree::Node {
+class ActionGoToDrink : public BrainTree::Node 
+{
     public:
         Status update() override 
         {
@@ -108,7 +120,8 @@ class ActionGoToDrink : public BrainTree::Node {
         }
 };
 
-class ActionDrink : public BrainTree::Node {
+class ActionDrink : public BrainTree::Node 
+{
     public:
         Status update() override 
         {
@@ -117,7 +130,8 @@ class ActionDrink : public BrainTree::Node {
         }
 };
 
-class ActionWalk : public BrainTree::Node {
+class ActionWalk : public BrainTree::Node 
+{
     public:
         Status update() override 
         {
@@ -157,7 +171,7 @@ void SpecificWorker::createTreeManually()
     auto drinkSequence = std::make_shared<BrainTree::Sequence>();
     auto walkSequence = std::make_shared<BrainTree::Sequence>();
 
-    auto realizarAccionDormir = std::make_shared<ActionSleep>(); //waitTime(2);
+    auto realizarAccionDormir = std::make_shared<ActionSleep>(this); //waitTime(2);
     auto realizarAccionBeber = std::make_shared<ActionDrink>(); //waitTime(1);
     auto realizarAccionComer = std::make_shared<ActionEat>(); //waitTime(0);
 
@@ -316,7 +330,7 @@ void SpecificWorker::waitTime(int x){
         case 2:
         {
             msg = "Durmiendo ...(20 segundos)";
-            waitingTime = 20000; // 20 secs
+            waitingTime = 10000; // 20 secs
             break;
         }
         default:
@@ -326,10 +340,10 @@ void SpecificWorker::waitTime(int x){
     }
     qDebug() << msg;
     while(tStart.elapsed() < waitingTime){
-      
+        qDebug() << "Durmiendo ...";
     }
     int seg = tStart.elapsed() / 1000;
     qDebug() << "He estado " << msg << " durante " << seg << " segundos.";
 
- //   return node::Status::Success;
+    //return node::Status::Success;
 }
