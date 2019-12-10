@@ -111,8 +111,10 @@ class ActionGoToEat : public BrainTree::Node
         {
             float coordX;
             float coordY;
-            coordX = sp->foodDispenser.x();
-            coordY = sp->foodDispenser.y();
+            coordX = sp->getCoordXFood();
+            coordY = sp->getCoordYFood();
+            qDebug() << "Coordenada x = " << coordX;
+            qDebug() << "Coordenada y = " << coordY;
             if((((coordX - sp->bState.x) < 20) && (coordX - sp->bState.x) > -20) && (((coordY - sp->bState.z) < 20) && (coordY - sp->bState.z) > -20))
 	        {
 	        	sp->differentialrobot_proxy -> setSpeedBase(0,0);
