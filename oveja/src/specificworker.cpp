@@ -77,7 +77,8 @@ class ActionSleep : public BrainTree::Node
             {
                 return Node::Status::Running;
             }   */
-            std::cout << "Durmiendo!" << std::endl;
+            sp->waitTime(2);
+            //std::cout << "Durmiendo!" << std::endl;
             return Node::Status::Success;
         }
     private:
@@ -97,11 +98,6 @@ class ActionStandToEat : public BrainTree::Node
             std::cout << "En Stand to eat!" << std::endl;
             QPointF t;
             t = sp->getFoodDispenser();
-            qDebug() << "Coordenada x = " << t.x();
-            qDebug() << "Coordenada y = " << t.y();
-            t = sp->foodDispenser;
-            qDebug() << "Coordenada x = " << t.x();
-            qDebug() << "Coordenada y = " << t.y();
             float angle = 0;
             //Paso el punto, de coord del mundo al robot
             QVec p = sp->innerModel->transform("base", QVec::vec3(t.x(),0,t.y()), "world");
@@ -137,8 +133,6 @@ class ActionGoToEat : public BrainTree::Node
             float coordY;
             coordX = sp->getCoordXFood();
             coordY = sp->getCoordYFood();
-            qDebug() << "Coordenada x = " << coordX;
-            qDebug() << "Coordenada y = " << coordY;
             if((((coordX - sp->bState.x) < 20) && (coordX - sp->bState.x) > -20) && (((coordY - sp->bState.z) < 20) && (coordY - sp->bState.z) > -20))
 	        {
 	        	sp->differentialrobot_proxy -> setSpeedBase(0,0);
@@ -175,49 +169,82 @@ class ActionEat : public BrainTree::Node
 class ActionStandToDrink : public BrainTree::Node 
 {
     public:
-      /*  ActionStandToDrink(SpecificWorker* x)
+        ActionStandToDrink(SpecificWorker* x)
         {
             this->sp = x;
-        }*/
+        }
         Status update() override 
         {
-            std::cout << "Posicionandome para ir al bebedero!" << std::endl;
-            return Node::Status::Success;
+            std::cout << "En Stand to drink!" << std::endl;
+            QPointF t;
+            t = sp->getWaterDispenser();
+            float angle = 0;
+            //Paso el punto, de coord del mundo al robot
+            QVec p = sp->innerModel->transform("base", QVec::vec3(t.x(),0,t.y()), "world");
+            angle = qAtan2(p.x(),p.z()); // calculo angulo en rads
+            qDebug() << "Angulo = " << angle;
+            if( fabs(angle) < 0.001)
+            {
+                sp->differentialrobot_proxy -> setSpeedBase(0,0);
+                qDebug() << "Stand to drink --------> SUCCESS";
+                return Node::Status::Success;
+            }else
+            {
+                sp->differentialrobot_proxy -> setSpeedBase(0,angle);  
+                qDebug() << "Stand to drink --------> RUNNING";
+                return Node::Status::Running;
+            }
         }
     private:
-       // SpecificWorker* sp;
+        SpecificWorker* sp;
 };
 
 class ActionGoToDrink : public BrainTree::Node 
 {
     public:
-      /*  ActionGoToDrink(SpecificWorker* x)
+        ActionGoToDrink(SpecificWorker* x)
         {
             this->sp = x;
-        }*/
+        }
         Status update() override 
         {
-            std::cout << "De camino hacia el bebedero!" << std::endl;
-            return Node::Status::Success;
+            std::cout << "En go to drink!" << std::endl;
+            float coordX;
+            float coordY;
+            coordX = sp->getCoordXWater();
+            coordY = sp->getCoordYWater();
+            if((((coordX - sp->bState.x) < 20) && (coordX - sp->bState.x) > -20) && (((coordY - sp->bState.z) < 20) && (coordY - sp->bState.z) > -20))
+	        {
+	        	sp->differentialrobot_proxy -> setSpeedBase(0,0);
+                qDebug() << "Go to drink --------> SUCCESS";
+	        	return Node::Status::Success;
+	        }
+	        else
+	        {
+		        sp->differentialrobot_proxy -> setSpeedBase(500,0);
+                qDebug() << "Go to drink --------> RUNNING";
+                return Node::Status::Running;
+	        }	
         }
     private:
-       // SpecificWorker* sp;
+        SpecificWorker* sp;
 };
 
 class ActionDrink : public BrainTree::Node 
 { 
     public:
-       /* ActionDrink(SpecificWorker* x)
+        ActionDrink(SpecificWorker* x)
         {
             this->sp = x;
-        }*/
+        }
         Status update() override 
         {
             std::cout << "Estoy bebiendo!" << std::endl;
+            sp->waitTime(1);
             return Node::Status::Success;
         }
     private:
-      //  SpecificWorker* sp;
+        SpecificWorker* sp;
 };
 
 class ActionWalk : public BrainTree::Node 
