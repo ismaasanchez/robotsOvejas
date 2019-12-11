@@ -55,7 +55,7 @@ public:
     void goTo(int x);
     void waitTime(int x);
     void createTreeBuilders();
-    void createTreeManually();
+    void createTreeManually(BrainTree::BehaviorTree btree);
     int getCoordXFood();
     int getCoordYFood();
     int getCoordXWater();
@@ -67,6 +67,7 @@ public:
     QPointF waterDispenser;
     RoboCompGenericBase::TBaseState bState;
 	std::shared_ptr<InnerModel> innerModel;
+    BrainTree::BehaviorTree btree;
 private:
     
     

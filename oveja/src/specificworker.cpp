@@ -48,7 +48,8 @@ bool SpecificWorker::setParams(RoboCompCommonBehavior::ParameterList params)
 
 	timer.start(Period);
     srand(time(0));
-
+    createTreeManually(this.btree);
+    loadPoints();
 	return true;
 }
 
@@ -77,7 +78,7 @@ class ActionSleep : public BrainTree::Node
                 return Node::Status::Running;
             }   */
             std::cout << "Durmiendo!" << std::endl;
-            return Node::Status::Running;
+            return Node::Status::Success;
         }
     private:
         SpecificWorker* sp;
@@ -255,9 +256,9 @@ void SpecificWorker::createTreeBuilders()
         .build(); */
 }   
 
-void SpecificWorker::createTreeManually()
+void SpecificWorker::createTreeManually(BrainTree::BehaviorTree btree)
 {
-    BrainTree::BehaviorTree btree;
+    
     
     auto mainSequence = std::make_shared<BrainTree::Sequence>();
     auto sleepSequence = std::make_shared<BrainTree::Sequence>();
@@ -292,13 +293,14 @@ void SpecificWorker::createTreeManually()
     walkSequence->addChild(andar);
 
     btree.setRoot(mainSequence);
-    btree.update();
+    
 }
 
 void SpecificWorker::compute()
 {   
  //     btree->update();
-    createTreeManually();
+    readRobotState();
+    btree.update();
     
 	
 }
