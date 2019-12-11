@@ -93,6 +93,7 @@ class ActionStandToEat : public BrainTree::Node
         }
         Status update() override 
         {
+            std::cout << "En Stand to eat!" << std::endl;
             QPointF t;
             t = sp->getFoodDispenser();
             qDebug() << "Coordenada x = " << t.x();
@@ -130,6 +131,7 @@ class ActionGoToEat : public BrainTree::Node
         }
         Status update() override 
         {
+            std::cout << "En go to eat!" << std::endl;
             float coordX;
             float coordY;
             coordX = sp->getCoordXFood();
