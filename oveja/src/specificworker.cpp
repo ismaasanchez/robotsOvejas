@@ -61,8 +61,23 @@ class ActionSleep : public BrainTree::Node
         }
         Status update() override 
         {
-            sp->waitTime(2);
-            return Node::Status::Success;
+           /* QTime tStart;
+            tStart.start();
+            int waitingTime = 0;
+            QString msg;
+
+            qDebug() << msg;
+            if(tStart.elapsed() < waitingTime){
+                int seg = tStart.elapsed() / 1000;
+                qDebug() << "He estado durmiendo durante " << seg << " segundos.";
+                return Node::Status::Success;
+            }
+            else
+            {
+                return Node::Status::Running;
+            }   */
+            std::cout << "Durmiendo!" << std::endl;
+            return Node::Status::Running;
         }
     private:
         SpecificWorker* sp;
@@ -80,10 +95,16 @@ class ActionStandToEat : public BrainTree::Node
         {
             QPointF t;
             t = sp->getFoodDispenser();
+            qDebug() << "Coordenada x = " << t.x();
+            qDebug() << "Coordenada y = " << t.y();
+            t = sp->foodDispenser;
+            qDebug() << "Coordenada x = " << t.x();
+            qDebug() << "Coordenada y = " << t.y();
             float angle = 0;
             //Paso el punto, de coord del mundo al robot
             QVec p = sp->innerModel->transform("base", QVec::vec3(t.x(),0,t.y()), "world");
             angle = qAtan2(p.x(),p.z()); // calculo angulo en rads
+            qDebug() << "Angulo = " << angle;
             if( fabs(angle) < 0.001)
             {
                 sp->differentialrobot_proxy -> setSpeedBase(0,0);
