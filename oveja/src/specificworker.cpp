@@ -49,6 +49,7 @@ bool SpecificWorker::setParams(RoboCompCommonBehavior::ParameterList params)
     srand(time(0));
     createTreeManually(btree);
     loadPoints();
+    timeAction.start();
 	return true;
 }
 
@@ -66,25 +67,6 @@ void SpecificWorker::compute()
     btree.update();
 }
 
-void SpecificWorker::createTreeBuilders()
-{
-   /* auto btree = BrainTree::Builder()
-        .composite<BrainTree::Sequence>() // Dormir
-            .leaf(waitTime(2))
-        .composite<BrainTree::Sequence>() // Comer
-            .leaf(standTo(0))
-            .leaf(goTo(0))
-            .leaf(waitTime(0))
-        .composite<BrainTree::Sequence>() // Beber
-            .leaf(standTo(1))
-            .leaf(goTo(1))
-            .leaf(waitTime(1))
-        .composite<BrainTree::Sequence>() // Andar
-            .leaf(walk())
-        .end()
-        .build(); */
-}   
-
 void SpecificWorker::createTreeManually(BrainTree::BehaviorTree btree)
 {
     auto mainSequence = std::make_shared<BrainTree::Sequence>();
@@ -93,30 +75,47 @@ void SpecificWorker::createTreeManually(BrainTree::BehaviorTree btree)
     auto drinkSequence = std::make_shared<BrainTree::Sequence>();
     auto walkSequence = std::make_shared<BrainTree::Sequence>();
 
-    auto realizarAccionDormir = std::make_shared<ActionSleep>(this); //waitTime(2);
-    auto realizarAccionBeber = std::make_shared<ActionDrink>(this); //waitTime(1);
-    auto realizarAccionComer = std::make_shared<ActionEat>(this); //waitTime(0);
+    auto eatAction = std::make_shared<BrainTree::Sequence>();
+    auto drinkAction = std::make_shared<BrainTree::Sequence>();
+    
+    auto initSleep = std::make_shared<ActionInitSleep>(this);
+    auto initEat = std::make_shared<ActionInitEat>(this);
+    auto initDrink = std::make_shared<ActionInitDrink>(this);
+    auto initWalk = std::make_shared<ActionInitWalk>(this);
 
-    auto colocarseComer = std::make_shared<ActionStandToEat>(this); //standTo(0);
-    auto colocarseBeber = std::make_shared<ActionStandToDrink>(this); //standTo(1);
+    auto realizarAccionDormir = std::make_shared<ActionSleep>(this); 
+    auto realizarAccionBeber = std::make_shared<ActionDrink>(this); 
+    auto realizarAccionComer = std::make_shared<ActionEat>(this); 
 
-    auto irComer = std::make_shared<ActionGoToEat>(this); //goTo(0);
-    auto irBeber = std::make_shared<ActionGoToDrink>(this); //goTo(1);
+    auto colocarseComer = std::make_shared<ActionStandToEat>(this); 
+    auto colocarseBeber = std::make_shared<ActionStandToDrink>(this); 
 
-    auto andar = std::make_shared<ActionWalk>(); //walk();
+    auto irComer = std::make_shared<ActionGoToEat>(this); 
+    auto irBeber = std::make_shared<ActionGoToDrink>(this); 
+
+    auto andar = std::make_shared<ActionWalk>(this); 
 
     mainSequence->addChild(sleepSequence);
     mainSequence->addChild(eatSequence);
     mainSequence->addChild(drinkSequence);
     mainSequence->addChild(walkSequence);
 
+    sleepSequence->addChild(initSleep);
     sleepSequence->addChild(realizarAccionDormir);
+
+    eatSequence->addChild(initEat);
     eatSequence->addChild(colocarseComer);
-    eatSequence->addChild(irComer);
-    eatSequence->addChild(realizarAccionComer);
+    eatSequence->addChild(eatAction);
+        eatAction->addChild(irComer);
+        eatAction->addChild(realizarAccionComer);
+
+    drinkSequence->addChild(initDrink);
     drinkSequence->addChild(colocarseBeber);
-    drinkSequence->addChild(irBeber);
-    drinkSequence->addChild(realizarAccionBeber);
+    drinkSequence->addChild(drinkAction);
+        rinkAction->addChild(irBeber);
+        drinkAction->addChild(realizarAccionBeber);
+    
+    walkSequence->addChild(initWalk);
     walkSequence->addChild(andar);
 
     btree.setRoot(mainSequence);
@@ -137,9 +136,6 @@ void SpecificWorker::walk()
 }
 
 void SpecificWorker::andar(){
-    RoboCompLaser::TLaserData ldata = laser_proxy->getLaserData();
-    //sort laser data from small to large distances using a lambda function.
-    std::sort( ldata.begin(), ldata.end(), [](RoboCompLaser::TData a, RoboCompLaser::TData b){ return     a.dist < b.dist; });
     
     if( ldata.front().dist < 200)
 	{

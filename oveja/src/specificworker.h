@@ -54,7 +54,6 @@ public:
     void loadPoints();
     void goTo(int x);
     void waitTime(int x);
-    void createTreeBuilders();
     void createTreeManually(BrainTree::BehaviorTree btree);
     int getCoordXFood();
     int getCoordYFood();
@@ -68,9 +67,26 @@ public:
     RoboCompGenericBase::TBaseState bState;
 	std::shared_ptr<InnerModel> innerModel;
     BrainTree::BehaviorTree btree;
+
+    Qtime timeAction;
 private:    
 };
 
+class ActionInitSleep : public BrainTree::Node
+{
+    public:
+        ActionInitSleep(SpecificWorker* x)
+        {
+            this->sp = x;
+        }
+        Status update() override 
+        {
+            sp->timeAction.restart();
+            return Node::Status::Success;
+        }
+    private:
+        SpecificWorker* sp;
+};
 
 class ActionSleep : public BrainTree::Node 
 {
@@ -78,17 +94,11 @@ class ActionSleep : public BrainTree::Node
         ActionSleep(SpecificWorker* x)
         {
             this->sp = x;
-             qDebug() << "hola cos";
         }
         Status update() override 
         {
-           /* QTime tStart;
-            tStart.start();
-            int waitingTime = 0;
-            QString msg;
-
-            qDebug() << msg;
-            if(tStart.elapsed() < waitingTime){
+            int waitingTime = 10000; // 10 seconds sleeping
+            if(sp->timeAction.elapsed() => waitingTime){
                 int seg = tStart.elapsed() / 1000;
                 qDebug() << "He estado durmiendo durante " << seg << " segundos.";
                 return Node::Status::Success;
@@ -96,11 +106,7 @@ class ActionSleep : public BrainTree::Node
             else
             {
                 return Node::Status::Running;
-            }   */
-            qDebug() << "hola";
-            sp->waitTime(2);
-            //std::cout << "Durmiendo!" << std::endl;
-            return Node::Status::Success;
+            }   
         }
     private:
         SpecificWorker* sp;
@@ -170,6 +176,21 @@ class ActionGoToEat : public BrainTree::Node
     private:
         SpecificWorker* sp;    
 };
+class ActionInitEat : public BrainTree::Node
+{
+    public:
+        ActionInitEat(SpecificWorker* x)
+        {
+            this->sp = x;
+        }
+        Status update() override 
+        {
+            sp->timeAction.restart();
+            return Node::Status::Success;
+        }
+    private:
+        SpecificWorker* sp;
+};
 
 class ActionEat : public BrainTree::Node 
 {
@@ -180,8 +201,16 @@ class ActionEat : public BrainTree::Node
         }
         Status update() override 
         {
-            sp->waitTime(0);
-            return Node::Status::Success;
+            int waitingTime = 5000; // 5 seconds eating
+            if(sp->timeAction.elapsed() => waitingTime){
+                int seg = tStart.elapsed() / 1000;
+                qDebug() << "He estado comiendo durante " << seg << " segundos.";
+                return Node::Status::Success;
+            }
+            else
+            {
+                return Node::Status::Running;
+            }
         }
     private:
         SpecificWorker* sp;
@@ -251,6 +280,22 @@ class ActionGoToDrink : public BrainTree::Node
         SpecificWorker* sp;
 };
 
+class ActionInitDrink : public BrainTree::Node
+{
+    public:
+        ActionInitDrink(SpecificWorker* x)
+        {
+            this->sp = x;
+        }
+        Status update() override 
+        {
+            sp->timeAction.restart();
+            return Node::Status::Success;
+        }
+    private:
+        SpecificWorker* sp;
+};
+
 class ActionDrink : public BrainTree::Node 
 { 
     public:
@@ -260,28 +305,69 @@ class ActionDrink : public BrainTree::Node
         }
         Status update() override 
         {
-            std::cout << "Estoy bebiendo!" << std::endl;
-            sp->waitTime(1);
+            int waitingTime = 4000; // 4 seconds drinking
+            if(sp->timeAction.elapsed() => waitingTime){
+                int seg = tStart.elapsed() / 1000;
+                qDebug() << "He estado bebiendo durante " << seg << " segundos.";
+                return Node::Status::Success;
+            }
+            else
+            {
+                return Node::Status::Running;
+            }
+        }
+    private:
+        SpecificWorker* sp;
+};
+class ActionInitWalk : public BrainTree::Node
+{
+    public:
+        ActionInitWalk(SpecificWorker* x)
+        {
+            this->sp = x;
+        }
+        Status update() override 
+        {
+            sp->timeAction.restart();
             return Node::Status::Success;
         }
     private:
         SpecificWorker* sp;
 };
-
 class ActionWalk : public BrainTree::Node 
 {
     public:
-       /* ActionWalk(SpecificWorker* x)
+        ActionWalk(SpecificWorker* x)
         {
             this->sp = x;
-        }*/
+        }
         Status update() override 
         {
-            std::cout << "Estoy andando!" << std::endl;
-            return Node::Status::Success;
+            int waitingTime = 15000; // 15 seconds sleeping
+            if(sp->timeAction.elapsed() => waitingTime){
+                
+                return Node::Status::Success;
+            }
+            else
+            {
+                RoboCompLaser::TLaserData ldata = sp->laser_proxy->getLaserData();
+                //sort laser data from small to large distances using a lambda function.
+                std::sort( ldata.begin(), ldata.end(), [](RoboCompLaser::TData a, RoboCompLaser::TData b){ return     a.dist < b.dist; });
+    
+                if( ldata.front().dist < 300)
+	            {
+ 		            sp->differentialrobot_proxy->setSpeedBase(5, 0.6);
+		            usleep(rand()%(1500000-100000 + 1) + 100000);  // random wait between 1.5s and 0.1sec
+	            }
+                else
+                {
+                    sp->differentialrobot_proxy->setSpeedBase(700, 0);
+                }
+                return Node::Status::Running;
+            }
         }       
     private:
-      //  SpecificWorker* sp;
+        SpecificWorker* sp;
         
 };
 
