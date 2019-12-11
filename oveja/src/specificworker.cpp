@@ -42,227 +42,29 @@ bool SpecificWorker::setParams(RoboCompCommonBehavior::ParameterList params)
 	{
 		RoboCompCommonBehavior::Parameter par = params.at("InnerModelPath");
 		std::string innermodel_path = par.value;
-		innerModel = std::make_shared< InnerModel > (innermodel_path);
+		innerModel = std::make_shared<InnerModel> (innermodel_path);
 	}
 	catch(std::exception e) { qFatal("Error reading config params"); }
 
-	timer.start(Period);
     srand(time(0));
-    createTreeManually(this.btree);
+    createTreeManually(btree);
     loadPoints();
 	return true;
 }
 
-class ActionSleep : public BrainTree::Node 
+void SpecificWorker::initialize(int period)
 {
-    public:
-        ActionSleep(SpecificWorker* x)
-        {
-            this->sp = x;
-        }
-        Status update() override 
-        {
-           /* QTime tStart;
-            tStart.start();
-            int waitingTime = 0;
-            QString msg;
+	std::cout << "Initialize worker" << std::endl;
+	this->Period = period;
+	timer.start(Period);
 
-            qDebug() << msg;
-            if(tStart.elapsed() < waitingTime){
-                int seg = tStart.elapsed() / 1000;
-                qDebug() << "He estado durmiendo durante " << seg << " segundos.";
-                return Node::Status::Success;
-            }
-            else
-            {
-                return Node::Status::Running;
-            }   */
-            sp->waitTime(2);
-            //std::cout << "Durmiendo!" << std::endl;
-            return Node::Status::Success;
-        }
-    private:
-        SpecificWorker* sp;
-    
-};
+}
 
-class ActionStandToEat : public BrainTree::Node 
-{
-    public:
-        ActionStandToEat(SpecificWorker* x)
-        {
-            this->sp = x;
-        }
-        Status update() override 
-        {
-            std::cout << "En Stand to eat!" << std::endl;
-            QPointF t;
-            t = sp->getFoodDispenser();
-            float angle = 0;
-            //Paso el punto, de coord del mundo al robot
-            QVec p = sp->innerModel->transform("base", QVec::vec3(t.x(),0,t.y()), "world");
-            angle = qAtan2(p.x(),p.z()); // calculo angulo en rads
-            qDebug() << "Angulo = " << angle;
-            if( fabs(angle) < 0.001)
-            {
-                sp->differentialrobot_proxy -> setSpeedBase(0,0);
-                qDebug() << "Stand to eat --------> SUCCESS";
-                return Node::Status::Success;
-            }else
-            {
-                sp->differentialrobot_proxy -> setSpeedBase(0,angle);  
-                qDebug() << "Stand to eat --------> RUNNING";
-                return Node::Status::Running;
-            }
-        }
-    private:
-        SpecificWorker* sp;
-};
-
-class ActionGoToEat : public BrainTree::Node 
-{
-    public:
-        ActionGoToEat(SpecificWorker* x)
-        {
-            this->sp = x;
-        }
-        Status update() override 
-        {
-            std::cout << "En go to eat!" << std::endl;
-            float coordX;
-            float coordY;
-            coordX = sp->getCoordXFood();
-            coordY = sp->getCoordYFood();
-            if((((coordX - sp->bState.x) < 20) && (coordX - sp->bState.x) > -20) && (((coordY - sp->bState.z) < 20) && (coordY - sp->bState.z) > -20))
-	        {
-	        	sp->differentialrobot_proxy -> setSpeedBase(0,0);
-                qDebug() << "Go to eat --------> SUCCESS";
-	        	return Node::Status::Success;
-	        }
-	        else
-	        {
-		        sp->differentialrobot_proxy -> setSpeedBase(500,0);
-                qDebug() << "Go to eat --------> RUNNING";
-                return Node::Status::Running;
-	        }	
-        }
-    private:
-        SpecificWorker* sp;    
-};
-
-class ActionEat : public BrainTree::Node 
-{
-    public:
-        ActionEat(SpecificWorker* x)
-        {
-            this->sp = x;
-        }
-        Status update() override 
-        {
-            sp->waitTime(0);
-            return Node::Status::Success;
-        }
-    private:
-        SpecificWorker* sp;
-};
-
-class ActionStandToDrink : public BrainTree::Node 
-{
-    public:
-        ActionStandToDrink(SpecificWorker* x)
-        {
-            this->sp = x;
-        }
-        Status update() override 
-        {
-            std::cout << "En Stand to drink!" << std::endl;
-            QPointF t;
-            t = sp->getWaterDispenser();
-            float angle = 0;
-            //Paso el punto, de coord del mundo al robot
-            QVec p = sp->innerModel->transform("base", QVec::vec3(t.x(),0,t.y()), "world");
-            angle = qAtan2(p.x(),p.z()); // calculo angulo en rads
-            qDebug() << "Angulo = " << angle;
-            if( fabs(angle) < 0.001)
-            {
-                sp->differentialrobot_proxy -> setSpeedBase(0,0);
-                qDebug() << "Stand to drink --------> SUCCESS";
-                return Node::Status::Success;
-            }else
-            {
-                sp->differentialrobot_proxy -> setSpeedBase(0,angle);  
-                qDebug() << "Stand to drink --------> RUNNING";
-                return Node::Status::Running;
-            }
-        }
-    private:
-        SpecificWorker* sp;
-};
-
-class ActionGoToDrink : public BrainTree::Node 
-{
-    public:
-        ActionGoToDrink(SpecificWorker* x)
-        {
-            this->sp = x;
-        }
-        Status update() override 
-        {
-            std::cout << "En go to drink!" << std::endl;
-            float coordX;
-            float coordY;
-            coordX = sp->getCoordXWater();
-            coordY = sp->getCoordYWater();
-            if((((coordX - sp->bState.x) < 20) && (coordX - sp->bState.x) > -20) && (((coordY - sp->bState.z) < 20) && (coordY - sp->bState.z) > -20))
-	        {
-	        	sp->differentialrobot_proxy -> setSpeedBase(0,0);
-                qDebug() << "Go to drink --------> SUCCESS";
-	        	return Node::Status::Success;
-	        }
-	        else
-	        {
-		        sp->differentialrobot_proxy -> setSpeedBase(500,0);
-                qDebug() << "Go to drink --------> RUNNING";
-                return Node::Status::Running;
-	        }	
-        }
-    private:
-        SpecificWorker* sp;
-};
-
-class ActionDrink : public BrainTree::Node 
-{ 
-    public:
-        ActionDrink(SpecificWorker* x)
-        {
-            this->sp = x;
-        }
-        Status update() override 
-        {
-            std::cout << "Estoy bebiendo!" << std::endl;
-            sp->waitTime(1);
-            return Node::Status::Success;
-        }
-    private:
-        SpecificWorker* sp;
-};
-
-class ActionWalk : public BrainTree::Node 
-{
-    public:
-       /* ActionWalk(SpecificWorker* x)
-        {
-            this->sp = x;
-        }*/
-        Status update() override 
-        {
-            std::cout << "Estoy andando!" << std::endl;
-            return Node::Status::Success;
-        }       
-    private:
-      //  SpecificWorker* sp;
-        
-};
+void SpecificWorker::compute()
+{   
+    readRobotState();
+    btree.update();
+}
 
 void SpecificWorker::createTreeBuilders()
 {
@@ -285,8 +87,6 @@ void SpecificWorker::createTreeBuilders()
 
 void SpecificWorker::createTreeManually(BrainTree::BehaviorTree btree)
 {
-    
-    
     auto mainSequence = std::make_shared<BrainTree::Sequence>();
     auto sleepSequence = std::make_shared<BrainTree::Sequence>();
     auto eatSequence = std::make_shared<BrainTree::Sequence>();
@@ -294,14 +94,14 @@ void SpecificWorker::createTreeManually(BrainTree::BehaviorTree btree)
     auto walkSequence = std::make_shared<BrainTree::Sequence>();
 
     auto realizarAccionDormir = std::make_shared<ActionSleep>(this); //waitTime(2);
-    auto realizarAccionBeber = std::make_shared<ActionDrink>(); //waitTime(1);
+    auto realizarAccionBeber = std::make_shared<ActionDrink>(this); //waitTime(1);
     auto realizarAccionComer = std::make_shared<ActionEat>(this); //waitTime(0);
 
     auto colocarseComer = std::make_shared<ActionStandToEat>(this); //standTo(0);
-    auto colocarseBeber = std::make_shared<ActionStandToDrink>(); //standTo(1);
+    auto colocarseBeber = std::make_shared<ActionStandToDrink>(this); //standTo(1);
 
     auto irComer = std::make_shared<ActionGoToEat>(this); //goTo(0);
-    auto irBeber = std::make_shared<ActionGoToDrink>(); //goTo(1);
+    auto irBeber = std::make_shared<ActionGoToDrink>(this); //goTo(1);
 
     auto andar = std::make_shared<ActionWalk>(); //walk();
 
@@ -320,18 +120,9 @@ void SpecificWorker::createTreeManually(BrainTree::BehaviorTree btree)
     walkSequence->addChild(andar);
 
     btree.setRoot(mainSequence);
-    
-}
-
-void SpecificWorker::compute()
-{   
- //     btree->update();
-    readRobotState();
     btree.update();
     
-	
 }
-
 void SpecificWorker::walk()
 {
     QTime sTime;
@@ -392,7 +183,7 @@ void SpecificWorker::readRobotState()
     try
     {
         differentialrobot_proxy->getBaseState(bState);  
-        innerModel->updateTransformValues("base", bState.x, 0, bState.z, 0, bState.alpha, 0);
+        //innerModel->updateTransformValues("base", bState.x, 0, bState.z, 0, bState.alpha, 0);
     }      
     catch(const Ice::Exception &e)
     {

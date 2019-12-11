@@ -28,6 +28,7 @@ QObject()
 #endif
 
 {
+
 	differentialrobot_proxy = (*(DifferentialRobotPrx*)mprx["DifferentialRobotProxy"]);
 	laser_proxy = (*(LaserPrx*)mprx["LaserProxy"]);
 
@@ -39,7 +40,7 @@ QObject()
 	#endif
 	Period = BASIC_PERIOD;
 	connect(&timer, SIGNAL(timeout()), this, SLOT(compute()));
-// 	timer.start(Period);
+
 }
 
 /**

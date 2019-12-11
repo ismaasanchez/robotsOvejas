@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/ismael/robocomp/components/robotsOvejas/oveja
+CMAKE_SOURCE_DIR = /home/salabeta/robocomp/components/robotsOvejas/oveja
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/ismael/robocomp/components/robotsOvejas/oveja
+CMAKE_BINARY_DIR = /home/salabeta/robocomp/components/robotsOvejas/oveja
 
 # Utility rule file for MyFirstComp_autogen.
 
@@ -54,8 +54,8 @@ CMAKE_BINARY_DIR = /home/ismael/robocomp/components/robotsOvejas/oveja
 include src/CMakeFiles/MyFirstComp_autogen.dir/progress.make
 
 src/CMakeFiles/MyFirstComp_autogen:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/ismael/robocomp/components/robotsOvejas/oveja/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC and UIC for target MyFirstComp"
-	cd /home/ismael/robocomp/components/robotsOvejas/oveja/src && /usr/bin/cmake -E cmake_autogen /home/ismael/robocomp/components/robotsOvejas/oveja/src/CMakeFiles/MyFirstComp_autogen.dir ""
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/salabeta/robocomp/components/robotsOvejas/oveja/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC and UIC for target MyFirstComp"
+	cd /home/salabeta/robocomp/components/robotsOvejas/oveja/src && /usr/bin/cmake -E cmake_autogen /home/salabeta/robocomp/components/robotsOvejas/oveja/src/CMakeFiles/MyFirstComp_autogen.dir ""
 
 MyFirstComp_autogen: src/CMakeFiles/MyFirstComp_autogen
 MyFirstComp_autogen: src/CMakeFiles/MyFirstComp_autogen.dir/build.make
@@ -68,10 +68,10 @@ src/CMakeFiles/MyFirstComp_autogen.dir/build: MyFirstComp_autogen
 .PHONY : src/CMakeFiles/MyFirstComp_autogen.dir/build
 
 src/CMakeFiles/MyFirstComp_autogen.dir/clean:
-	cd /home/ismael/robocomp/components/robotsOvejas/oveja/src && $(CMAKE_COMMAND) -P CMakeFiles/MyFirstComp_autogen.dir/cmake_clean.cmake
+	cd /home/salabeta/robocomp/components/robotsOvejas/oveja/src && $(CMAKE_COMMAND) -P CMakeFiles/MyFirstComp_autogen.dir/cmake_clean.cmake
 .PHONY : src/CMakeFiles/MyFirstComp_autogen.dir/clean
 
 src/CMakeFiles/MyFirstComp_autogen.dir/depend:
-	cd /home/ismael/robocomp/components/robotsOvejas/oveja && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ismael/robocomp/components/robotsOvejas/oveja /home/ismael/robocomp/components/robotsOvejas/oveja/src /home/ismael/robocomp/components/robotsOvejas/oveja /home/ismael/robocomp/components/robotsOvejas/oveja/src /home/ismael/robocomp/components/robotsOvejas/oveja/src/CMakeFiles/MyFirstComp_autogen.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/salabeta/robocomp/components/robotsOvejas/oveja && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/salabeta/robocomp/components/robotsOvejas/oveja /home/salabeta/robocomp/components/robotsOvejas/oveja/src /home/salabeta/robocomp/components/robotsOvejas/oveja /home/salabeta/robocomp/components/robotsOvejas/oveja/src /home/salabeta/robocomp/components/robotsOvejas/oveja/src/CMakeFiles/MyFirstComp_autogen.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : src/CMakeFiles/MyFirstComp_autogen.dir/depend
 

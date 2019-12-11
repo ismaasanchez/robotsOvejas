@@ -82,9 +82,6 @@
 #include "commonbehaviorI.h"
 
 
-#include <DifferentialRobot.h>
-#include <GenericBase.h>
-#include <Laser.h>
 #include <GenericBase.h>
 
 
@@ -154,12 +151,12 @@ int ::MyFirstComp::run(int argc, char* argv[])
 	}
 	catch(const Ice::Exception& ex)
 	{
-		cout << "[" << PROGRAM_NAME << "]: Exception: " << ex;
+		cout << "[" << PROGRAM_NAME << "]: Exception creating proxy DifferentialRobot: " << ex;
 		return EXIT_FAILURE;
 	}
 	rInfo("DifferentialRobotProxy initialized Ok!");
-	mprx["DifferentialRobotProxy"] = (::IceProxy::Ice::Object*)(&differentialrobot_proxy);//Remote server proxy creation example
 
+	mprx["DifferentialRobotProxy"] = (::IceProxy::Ice::Object*)(&differentialrobot_proxy);//Remote server proxy creation example
 
 	try
 	{
@@ -171,13 +168,12 @@ int ::MyFirstComp::run(int argc, char* argv[])
 	}
 	catch(const Ice::Exception& ex)
 	{
-		cout << "[" << PROGRAM_NAME << "]: Exception: " << ex;
+		cout << "[" << PROGRAM_NAME << "]: Exception creating proxy Laser: " << ex;
 		return EXIT_FAILURE;
 	}
 	rInfo("LaserProxy initialized Ok!");
+
 	mprx["LaserProxy"] = (::IceProxy::Ice::Object*)(&laser_proxy);//Remote server proxy creation example
-
-
 
 	SpecificWorker *worker = new SpecificWorker(mprx);
 	//Monitor thread
@@ -196,18 +192,24 @@ int ::MyFirstComp::run(int argc, char* argv[])
 
 	try
 	{
-		// Server adapter creation and publication
-		if (not GenericMonitor::configGetString(communicator(), prefix, "CommonBehavior.Endpoints", tmp, ""))
-		{
-			cout << "[" << PROGRAM_NAME << "]: Can't read configuration for proxy CommonBehavior\n";
+		try {
+			// Server adapter creation and publication
+			if (not GenericMonitor::configGetString(communicator(), prefix, "CommonBehavior.Endpoints", tmp, "")) {
+				cout << "[" << PROGRAM_NAME << "]: Can't read configuration for proxy CommonBehavior\n";
+			}
+			Ice::ObjectAdapterPtr adapterCommonBehavior = communicator()->createObjectAdapterWithEndpoints("commonbehavior", tmp);
+			CommonBehaviorI *commonbehaviorI = new CommonBehaviorI(monitor);
+			adapterCommonBehavior->add(commonbehaviorI, Ice::stringToIdentity("commonbehavior"));
+			adapterCommonBehavior->activate();
 		}
-		Ice::ObjectAdapterPtr adapterCommonBehavior = communicator()->createObjectAdapterWithEndpoints("commonbehavior", tmp);
-		CommonBehaviorI *commonbehaviorI = new CommonBehaviorI(monitor );
-		adapterCommonBehavior->add(commonbehaviorI, communicator()->stringToIdentity("commonbehavior"));
-		adapterCommonBehavior->activate();
+		catch(const Ice::Exception& ex)
+		{
+			status = EXIT_FAILURE;
 
+			cout << "[" << PROGRAM_NAME << "]: Exception raised while creating CommonBehavior adapter: " << endl;
+			cout << ex;
 
-
+		}
 
 
 
@@ -217,10 +219,10 @@ int ::MyFirstComp::run(int argc, char* argv[])
 
 		// User defined QtGui elements ( main window, dialogs, etc )
 
-#ifdef USE_QTGUI
-		//ignoreInterrupt(); // Uncomment if you want the component to ignore console SIGINT signal (ctrl+c).
-		a.setQuitOnLastWindowClosed( true );
-#endif
+		#ifdef USE_QTGUI
+			//ignoreInterrupt(); // Uncomment if you want the component to ignore console SIGINT signal (ctrl+c).
+			a.setQuitOnLastWindowClosed( true );
+		#endif
 		// Run QT Application Event Loop
 		a.exec();
 
@@ -238,7 +240,6 @@ int ::MyFirstComp::run(int argc, char* argv[])
 	#ifdef USE_QTGUI
 		a.quit();
 	#endif
-
 
 	status = EXIT_SUCCESS;
 	monitor->terminate();
