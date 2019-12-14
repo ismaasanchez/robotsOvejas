@@ -62,39 +62,43 @@ void SpecificWorker::initialize(int period)
 void SpecificWorker::compute()
 {   
     readRobotState();
-   // qDebug() << "Mando tick";
-  //  btree.update();
-  //  qDebug() << "After update";
+    qDebug() << "Mando tick";
+    btree.update();
+    qDebug() << "After update";
 }
 
 void SpecificWorker::createTreeManually(BrainTree::BehaviorTree btree)
 {
     qDebug() << "Creando arbol";
     auto mainSequence = std::make_shared<BrainTree::Sequence>();
-    auto sleepSequence = std::make_shared<BrainTree::Sequence>();
-    auto eatSequence = std::make_shared<BrainTree::Sequence>();
-    auto drinkSequence = std::make_shared<BrainTree::Sequence>();
-    auto walkSequence = std::make_shared<BrainTree::Sequence>();
-
+  
     auto eatAction = std::make_shared<BrainTree::Sequence>();
     auto drinkAction = std::make_shared<BrainTree::Sequence>();
     
+    //Dormir
+    auto sleepSequence = std::make_shared<BrainTree::Sequence>();
+    //auto realizarAccionDormir = std::make_shared<ActionSleep>(); 
     auto initSleep = std::make_shared<ActionInitSleep>();
-    auto initEat = std::make_shared<ActionInitEat>();
-    auto initDrink = std::make_shared<ActionInitDrink>();
-    auto initWalk = std::make_shared<ActionInitWalk>();
 
-    auto realizarAccionDormir = std::make_shared<ActionSleep>(); 
-    auto realizarAccionBeber = std::make_shared<ActionDrink>(); 
+    //Comer
+    auto eatSequence = std::make_shared<BrainTree::Sequence>();
+    auto colocarseComer = std::make_shared<ActionStandToEat>();
+    auto irComer = std::make_shared<ActionGoToEat>(); 
+    auto initEat = std::make_shared<ActionInitEat>();
     auto realizarAccionComer = std::make_shared<ActionEat>(); 
 
-    auto colocarseComer = std::make_shared<ActionStandToEat>(); 
+    //Beber
+    auto drinkSequence = std::make_shared<BrainTree::Sequence>();
     auto colocarseBeber = std::make_shared<ActionStandToDrink>(); 
-
-    auto irComer = std::make_shared<ActionGoToEat>(); 
     auto irBeber = std::make_shared<ActionGoToDrink>(); 
+    auto initDrink = std::make_shared<ActionInitDrink>();
+    auto realizarAccionBeber = std::make_shared<ActionDrink>(); 
 
+    //Andar
+    auto walkSequence = std::make_shared<BrainTree::Sequence>();
+    auto initWalk = std::make_shared<ActionInitWalk>();
     auto andar = std::make_shared<ActionWalk>(); 
+
 
     mainSequence->addChild(sleepSequence);
     mainSequence->addChild(eatSequence);
@@ -108,14 +112,14 @@ void SpecificWorker::createTreeManually(BrainTree::BehaviorTree btree)
     eatSequence->addChild(colocarseComer);
     eatAction->addChild(irComer);
     eatSequence->addChild(eatAction);
-        eatSequence->addChild(initEat);
+        eatAction->addChild(initEat);
         eatAction->addChild(realizarAccionComer);
 
    
     drinkSequence->addChild(colocarseBeber);
     drinkAction->addChild(irBeber);
     drinkSequence->addChild(drinkAction);
-        drinkSequence->addChild(initDrink);    
+        drinkAction->addChild(initDrink);    
         drinkAction->addChild(realizarAccionBeber);
     
     walkSequence->addChild(initWalk);
