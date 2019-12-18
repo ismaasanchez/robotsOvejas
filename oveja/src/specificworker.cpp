@@ -62,74 +62,69 @@ void SpecificWorker::initialize(int period)
 void SpecificWorker::compute()
 {   
     readRobotState();
-    qDebug() << "Mando tick";
     btree.update();
-    qDebug() << "After update";
 }
 
-void SpecificWorker::createTreeManually(BrainTree::BehaviorTree btree)
+void SpecificWorker::createTreeManually(BrainTree::BehaviorTree &btree)
 {
     qDebug() << "Creando arbol";
     auto mainSequence = std::make_shared<BrainTree::Sequence>();
   
-    auto eatAction = std::make_shared<BrainTree::Sequence>();
-    auto drinkAction = std::make_shared<BrainTree::Sequence>();
+  //  auto eatAction = std::make_shared<BrainTree::Sequence>();
+  //  auto drinkAction = std::make_shared<BrainTree::Sequence>();
     
     //Dormir
     auto sleepSequence = std::make_shared<BrainTree::Sequence>();
-    //auto realizarAccionDormir = std::make_shared<ActionSleep>(); 
     auto initSleep = std::make_shared<ActionInitSleep>();
-
+ 
     //Comer
     auto eatSequence = std::make_shared<BrainTree::Sequence>();
-    auto colocarseComer = std::make_shared<ActionStandToEat>();
-    auto irComer = std::make_shared<ActionGoToEat>(); 
+    auto colocarseComer = std::make_shared<ActionStandToEat>(this);
+/*   auto irComer = std::make_shared<ActionGoToEat>(); 
     auto initEat = std::make_shared<ActionInitEat>();
     auto realizarAccionComer = std::make_shared<ActionEat>(); 
-
+/*
     //Beber
     auto drinkSequence = std::make_shared<BrainTree::Sequence>();
     auto colocarseBeber = std::make_shared<ActionStandToDrink>(); 
     auto irBeber = std::make_shared<ActionGoToDrink>(); 
     auto initDrink = std::make_shared<ActionInitDrink>();
     auto realizarAccionBeber = std::make_shared<ActionDrink>(); 
-
+/*
     //Andar
     auto walkSequence = std::make_shared<BrainTree::Sequence>();
     auto initWalk = std::make_shared<ActionInitWalk>();
     auto andar = std::make_shared<ActionWalk>(); 
-
+*/
 
     mainSequence->addChild(sleepSequence);
     mainSequence->addChild(eatSequence);
-    mainSequence->addChild(drinkSequence);
-    mainSequence->addChild(walkSequence);
+//    mainSequence->addChild(drinkSequence);
+//    mainSequence->addChild(walkSequence);
 
     sleepSequence->addChild(initSleep);
     //sleepSequence->addChild(realizarAccionDormir);
 
     
     eatSequence->addChild(colocarseComer);
-    eatAction->addChild(irComer);
+ /*   eatAction->addChild(irComer);
     eatSequence->addChild(eatAction);
         eatAction->addChild(initEat);
         eatAction->addChild(realizarAccionComer);
 
-   
+  */ /* 
     drinkSequence->addChild(colocarseBeber);
     drinkAction->addChild(irBeber);
     drinkSequence->addChild(drinkAction);
         drinkAction->addChild(initDrink);    
         drinkAction->addChild(realizarAccionBeber);
-    
+  */ /*  
     walkSequence->addChild(initWalk);
     walkSequence->addChild(andar);
-
+    */
     btree.setRoot(mainSequence);
+    btree.update();    
     
-    qDebug() << "Arbol creado";
-
-    btree.update();
 }
 
 
@@ -138,7 +133,7 @@ void SpecificWorker::readRobotState()
     try
     {
         differentialrobot_proxy->getBaseState(bState);  
-        //innerModel->updateTransformValues("base", bState.x, 0, bState.z, 0, bState.alpha, 0);
+        innerModel->updateTransformValues("base", bState.x, 0, bState.z, 0, bState.alpha, 0);
     }      
     catch(const Ice::Exception &e)
     {

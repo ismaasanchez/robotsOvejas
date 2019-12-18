@@ -48,7 +48,7 @@ public:
     void compute();
     void readRobotState();
     void loadPoints();
-    void createTreeManually(BrainTree::BehaviorTree btree);
+    void createTreeManually(BrainTree::BehaviorTree &btree);
     int getCoordXFood();
     int getCoordYFood();
     int getCoordXWater();
@@ -72,94 +72,59 @@ class ActionInitSleep : public BrainTree::Node
         ActionInitSleep(/*SpecificWorker* x*/)
         {
             qDebug() << "Constructor initSleep";
-          //  this->sp = x;
         }
         Status update() override 
         {
-          /*  if(first_epoch)
+            
+            if(first_epoch)
             { 
+                qDebug() << "Empiezo a dormir";
                 reloj.restart();
                 first_epoch = false;
                 return Node::Status::Running;        
             }
             else
             {
+                qDebug() << "Durmiendo...";
                 if(reloj.elapsed() > 4000)
                 {
-                    first_epoch = false;
+                    qDebug() << "Dormi suficiente";
+                    first_epoch = true;
                     return Node::Status::Success;       
                 }
                 else
+                {
+                 //   qDebug() << "Necesito seguir durmiendo";
                     return Node::Status::Running;
+                }
+                    
             }
-            
-            qDebug() << "InitSleep";
-            //sp->timeAction.restart();
-            //return Node::Status::Success;
-            */
-           qDebug() << "Durmiendo";
-           return Node::Status::Success;
         }
     private:
-     //   SpecificWorker* sp;
-     //   bool first_epoch = true;
-     //   QTime reloj;
-};
-
-class ActionSleep : public BrainTree::Node 
-{
-    public:
-        ActionSleep(/*SpecificWorker* x*/)
-        {
-            qDebug() << "Constructor sleep";
-          //  this->sp = x;
-        }
-        Status update() override 
-        {
-         /*   qDebug() << "Entro a sleep";
-            int waitingTime = 10000; // 10 seconds sleeping
-            qDebug()<< "Entro al if" << sp->timeAction.elapsed();
-            if(sp->timeAction.elapsed() > waitingTime){
-                qDebug() << "Estoy dentro del if";
-                int seg = sp->timeAction.elapsed() / 1000;
-                qDebug() << "He estado durmiendo durante " << seg << " segundos.";
-                return Node::Status::Success;
-            }
-            else
-            {
-                qDebug() << "Antes de Running";
-                return Node::Status::Running;
-                qDebug() << "Despues de Running";
-            } 
-            qDebug() << "Sleep";
-            */
-           qDebug() << "Durmiendo";
-           return Node::Status::Success;
-        }
-    private:
-     //   SpecificWorker* sp;
-    
+        SpecificWorker* sp;
+        bool first_epoch = true;
+        QTime reloj;
 };
 
 class ActionStandToEat : public BrainTree::Node 
 {
     public:
-        ActionStandToEat(/*SpecificWorker* x*/)
+        ActionStandToEat(SpecificWorker *x)
         {
-          //  this->sp = x;
+            this->sp = x;
             qDebug() << "Constructor StandToEat";
         }
         Status update() override 
         {
-            qDebug() << "StandToEat";
-          /*  QPointF t;
+            qDebug() << "Posicionandome hacia el comedero";
+            QPointF t;
             t = sp->getFoodDispenser();
             float angle = 0;
             //Paso el punto, de coord del mundo al robot
             QVec p = sp->innerModel->transform("base", QVec::vec3(t.x(),0,t.y()), "world");
             angle = qAtan2(p.x(),p.z()); // calculo angulo en rads
             qDebug() << "Angulo = " << angle;
-            if( fabs(angle) < 0.001)
+            if(fabs(angle) < 0.001)
             {
                 sp->differentialrobot_proxy -> setSpeedBase(0,0);
                 qDebug() << "Stand to eat --------> SUCCESS";
@@ -170,11 +135,9 @@ class ActionStandToEat : public BrainTree::Node
                 qDebug() << "Stand to eat --------> RUNNING";
                 return Node::Status::Running;
             }
-            */
-           return Node::Status::Success;
         }
     private:
-     //   SpecificWorker* sp;
+        SpecificWorker* sp;
 };
 
 class ActionGoToEat : public BrainTree::Node 
