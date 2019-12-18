@@ -69,9 +69,6 @@ void SpecificWorker::createTreeManually(BrainTree::BehaviorTree &btree)
 {
     qDebug() << "Creando arbol";
     auto mainSequence = std::make_shared<BrainTree::Sequence>();
-  
-  //  auto eatAction = std::make_shared<BrainTree::Sequence>();
-  //  auto drinkAction = std::make_shared<BrainTree::Sequence>();
     
     //Dormir
     auto sleepSequence = std::make_shared<BrainTree::Sequence>();
@@ -80,48 +77,40 @@ void SpecificWorker::createTreeManually(BrainTree::BehaviorTree &btree)
     //Comer
     auto eatSequence = std::make_shared<BrainTree::Sequence>();
     auto colocarseComer = std::make_shared<ActionStandToEat>(this);
-/*   auto irComer = std::make_shared<ActionGoToEat>(); 
+    auto irComer = std::make_shared<ActionGoToEat>(this); 
     auto initEat = std::make_shared<ActionInitEat>();
-    auto realizarAccionComer = std::make_shared<ActionEat>(); 
-/*
+
     //Beber
     auto drinkSequence = std::make_shared<BrainTree::Sequence>();
-    auto colocarseBeber = std::make_shared<ActionStandToDrink>(); 
-    auto irBeber = std::make_shared<ActionGoToDrink>(); 
-    auto initDrink = std::make_shared<ActionInitDrink>();
-    auto realizarAccionBeber = std::make_shared<ActionDrink>(); 
-/*
+    auto colocarseBeber = std::make_shared<ActionStandToDrink>(this); 
+    auto irBeber = std::make_shared<ActionGoToDrink>(this); 
+    auto initDrink = std::make_shared<ActionInitDrink>(); 
+
     //Andar
     auto walkSequence = std::make_shared<BrainTree::Sequence>();
-    auto initWalk = std::make_shared<ActionInitWalk>();
-    auto andar = std::make_shared<ActionWalk>(); 
-*/
+    auto initWalk = std::make_shared<ActionInitWalk>(this);
+    auto andar = std::make_shared<ActionWalk>(this); 
+
 
     mainSequence->addChild(sleepSequence);
     mainSequence->addChild(eatSequence);
-//    mainSequence->addChild(drinkSequence);
-//    mainSequence->addChild(walkSequence);
+    mainSequence->addChild(drinkSequence);
+    mainSequence->addChild(walkSequence);
 
     sleepSequence->addChild(initSleep);
-    //sleepSequence->addChild(realizarAccionDormir);
+   
 
     
     eatSequence->addChild(colocarseComer);
- /*   eatAction->addChild(irComer);
-    eatSequence->addChild(eatAction);
-        eatAction->addChild(initEat);
-        eatAction->addChild(realizarAccionComer);
-
-  */ /* 
+    eatSequence->addChild(irComer);
+    eatSequence->addChild(initEat);
+      
     drinkSequence->addChild(colocarseBeber);
-    drinkAction->addChild(irBeber);
-    drinkSequence->addChild(drinkAction);
-        drinkAction->addChild(initDrink);    
-        drinkAction->addChild(realizarAccionBeber);
-  */ /*  
+    drinkSequence->addChild(irBeber);
+    drinkSequence->addChild(initDrink);  
     walkSequence->addChild(initWalk);
     walkSequence->addChild(andar);
-    */
+    
     btree.setRoot(mainSequence);
     btree.update();    
     

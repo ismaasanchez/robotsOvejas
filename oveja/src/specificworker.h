@@ -69,7 +69,7 @@ private:
 class ActionInitSleep : public BrainTree::Node
 {
     public:
-        ActionInitSleep(/*SpecificWorker* x*/)
+        ActionInitSleep()
         {
             qDebug() << "Constructor initSleep";
         }
@@ -101,7 +101,6 @@ class ActionInitSleep : public BrainTree::Node
             }
         }
     private:
-        SpecificWorker* sp;
         bool first_epoch = true;
         QTime reloj;
 };
@@ -143,15 +142,15 @@ class ActionStandToEat : public BrainTree::Node
 class ActionGoToEat : public BrainTree::Node 
 {
     public:
-        ActionGoToEat(/*SpecificWorker* x*/)
+        ActionGoToEat(SpecificWorker *x)
         {
             qDebug() << "Constructor GoToEat";
-          //  this->sp = x;
+            this->sp = x;
         }
         Status update() override 
         {
-            qDebug() << "goToEat";
-         /*   float coordX;
+            qDebug() << "De camino al comedero";
+            float coordX;
             float coordY;
             coordX = sp->getCoordXFood();
             coordY = sp->getCoordYFood();
@@ -167,71 +166,63 @@ class ActionGoToEat : public BrainTree::Node
                 qDebug() << "Go to eat --------> RUNNING";
                 return Node::Status::Running;
 	        }	
-            */
+            
            return Node::Status::Success;
         }
     private:
-      //  SpecificWorker* sp;    
+        SpecificWorker* sp;    
 };
 class ActionInitEat : public BrainTree::Node
 {
     public:
-        ActionInitEat(/*SpecificWorker* x*/)
+        ActionInitEat()
         {
             qDebug() << "Constructor initEat";
-        //    this->sp = x;
         }
         Status update() override 
         {
-            qDebug() << "initEat";
-           // sp->timeAction.restart();
-            return Node::Status::Success;
-        }
-    private:
-     //   SpecificWorker* sp;
-};
-
-class ActionEat : public BrainTree::Node 
-{
-    public:
-        ActionEat(/*SpecificWorker* x*/)
-        {
-            qDebug() << "Constructor Eat";
-          //  this->sp = x;
-        }
-        Status update() override 
-        {
-         /*   qDebug() << "Eat";
-            int waitingTime = 5000; // 5 seconds eating
-            if(sp->timeAction.elapsed() > waitingTime){
-                int seg = sp->timeAction.elapsed() / 1000;
-                qDebug() << "He estado comiendo durante " << seg << " segundos.";
-                return Node::Status::Success;
+            if(first_epoch)
+            { 
+                qDebug() << "Empiezo a comer";
+                reloj.restart();
+                first_epoch = false;
+                return Node::Status::Running;        
             }
             else
             {
-                return Node::Status::Running;
-            }*/
-            qDebug() << "ActionEat";
-            return Node::Status::Success;
-            
+                qDebug() << "Comiendo...";
+                if(reloj.elapsed() > 4000)
+                {
+                    qDebug() << "Comi suficiente";
+                    first_epoch = true;
+                    return Node::Status::Success;       
+                }
+                else
+                {
+                    qDebug() << "Necesito seguir comiendo";
+                    return Node::Status::Running;
+                }
+                    
+            }
         }
     private:
-        SpecificWorker* sp;
-};
+        bool first_epoch = true;
+        QTime reloj;
+};     
+
 
 class ActionStandToDrink : public BrainTree::Node 
 {
     public:
-        ActionStandToDrink(/*SpecificWorker* x*/)
+        ActionStandToDrink(SpecificWorker* x)
         {
             qDebug() << "Constructor StandToDrink";
-           // this->sp = x;
+            this->sp = x;
         }
         Status update() override 
         {
             qDebug() << "StandToDrink";
-            /*QPointF t;
+            QPointF t;
             t = sp->getWaterDispenser();
             float angle = 0;
             //Paso el punto, de coord del mundo al robot
@@ -249,25 +240,23 @@ class ActionStandToDrink : public BrainTree::Node
                 qDebug() << "Stand to drink --------> RUNNING";
                 return Node::Status::Running;
             }
-            */
-           return Node::Status::Success;
         }
     private:
-     //   SpecificWorker* sp;
+        SpecificWorker* sp;
 };
 
 class ActionGoToDrink : public BrainTree::Node 
 {
     public:
-        ActionGoToDrink(/*SpecificWorker* x*/)
+        ActionGoToDrink(SpecificWorker* x)
         {
             qDebug() << "Constructor GoToDrink";
-            //this->sp = x;
+            this->sp = x;
         }
         Status update() override 
         {
             qDebug() << "GoToDrink";
-         /*   float coordX;
+            float coordX;
             float coordY;
             coordX = sp->getCoordXWater();
             coordY = sp->getCoordYWater();
@@ -283,70 +272,61 @@ class ActionGoToDrink : public BrainTree::Node
                 qDebug() << "Go to drink --------> RUNNING";
                 return Node::Status::Running;
 	        }	
-            */
-           return Node::Status::Success;
         }
     private:
-       // SpecificWorker* sp;
+        SpecificWorker* sp;
 };
 
 class ActionInitDrink : public BrainTree::Node
 {
     public:
-        ActionInitDrink(/*SpecificWorker* x*/)
+        ActionInitDrink()
         {
             qDebug() << "Constructor initDrink";
-        //    this->sp = x;
         }
         Status update() override 
         {
-            qDebug() << "initDrink";
-           // sp->timeAction.restart();
-            return Node::Status::Success;
-        }
-    private:
-        //SpecificWorker* sp;
-};
-
-class ActionDrink : public BrainTree::Node 
-{ 
-    public:
-        ActionDrink(/*SpecificWorker* x*/)
-        {
-            qDebug() << "Constructor Drink";
-          //  this->sp = x;
-        }
-        Status update() override 
-        {
-           /* qDebug() << "Drink";
-            int waitingTime = 4000; // 4 seconds drinking
-            if(sp->timeAction.elapsed() > waitingTime){
-                int seg = sp->timeAction.elapsed() / 1000;
-                qDebug() << "He estado bebiendo durante " << seg << " segundos.";
-                return Node::Status::Success;
+            if(first_epoch)
+            { 
+                qDebug() << "Empiezo a beber";
+                reloj.restart();
+                first_epoch = false;
+                return Node::Status::Running;        
             }
             else
             {
-                return Node::Status::Running;
-            }*/
-            qDebug() << "Bebiendo";
-            return Node::Status::Success;
+                qDebug() << "Bebiendo...";
+                if(reloj.elapsed() > 4000)
+                {
+                    qDebug() << "Bemi suficiente";
+                    first_epoch = true;
+                    return Node::Status::Success;       
+                }
+                else
+                {
+                    qDebug() << "Necesito seguir bebiendo";
+                    return Node::Status::Running;
+                }
+                    
+            }
         }
     private:
-        SpecificWorker* sp;
+        bool first_epoch = true;
+        QTime reloj;
 };
+
 class ActionInitWalk : public BrainTree::Node
 {
     public:
-        ActionInitWalk(/*SpecificWorker* x*/)
+        ActionInitWalk(SpecificWorker* x)
         {
             qDebug() << "Constructor initWalk";
-           // this->sp = x;
+            this->sp = x;
         }
         Status update() override 
         {
             qDebug() << "initWalk";
-          //  sp->timeAction.restart();
+            sp->timeAction.restart();
             return Node::Status::Success;
         }
     private:
@@ -355,17 +335,17 @@ class ActionInitWalk : public BrainTree::Node
 class ActionWalk : public BrainTree::Node 
 {
     public:
-        ActionWalk(/*SpecificWorker* x*/)
+        ActionWalk(SpecificWorker* x)
         {
             qDebug() << "Constructor Walk";
-          //  this->sp = x;
+            this->sp = x;
         }
         Status update() override 
         {
-          /*  qDebug() << "Walk";
+            qDebug() << "Walking";
             int waitingTime = 15000; // 15 seconds sleeping
             if(sp->timeAction.elapsed() > waitingTime){
-                
+                sp->differentialrobot_proxy->setSpeedBase(0,0);
                 return Node::Status::Success;
             }
             else
@@ -384,12 +364,10 @@ class ActionWalk : public BrainTree::Node
                     sp->differentialrobot_proxy->setSpeedBase(700, 0);
                 }
                 return Node::Status::Running;
-            }*/
-            qDebug() << "Andando";
-            return Node::Status::Success;
+            }
         }       
     private:
-       // SpecificWorker* sp;
+        SpecificWorker* sp;
         
 };
 
