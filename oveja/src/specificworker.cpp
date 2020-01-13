@@ -43,6 +43,8 @@ bool SpecificWorker::setParams(RoboCompCommonBehavior::ParameterList params)
 		RoboCompCommonBehavior::Parameter par = params.at("InnerModelPath");
 		std::string innermodel_path = par.value;
 		innerModel = std::make_shared<InnerModel> (innermodel_path);
+
+        robotName = params.at("RobotName").value;
 	}
 	catch(std::exception e) { qFatal("Error reading config params"); }
 	return true;
