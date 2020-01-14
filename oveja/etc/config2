@@ -5,7 +5,7 @@ CommonBehavior.Endpoints=tcp -p 10000
 LaserProxy = laser:tcp -h localhost -p 12003
 DifferentialRobotProxy = differentialrobot:tcp -h localhost -p 12004
 
-
+RobotName = base2
 
 InnerModelPath = /home/ismael/robocomp/files/innermodel/simpleworld.xml
 

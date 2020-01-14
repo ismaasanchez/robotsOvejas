@@ -124,7 +124,7 @@ void SpecificWorker::readRobotState()
     try
     {
         differentialrobot_proxy->getBaseState(bState);  
-        innerModel->updateTransformValues("base", bState.x, 0, bState.z, 0, bState.alpha, 0);
+        innerModel->updateTransformValues(robotName.c_str(), bState.x, 0, bState.z, 0, bState.alpha, 0);
     }      
     catch(const Ice::Exception &e)
     {

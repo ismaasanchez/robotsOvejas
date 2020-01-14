@@ -56,6 +56,8 @@ public:
     QPointF getFoodDispenser();
     QPointF getWaterDispenser();
     
+    std::string robotName;
+
     QPointF foodDispenser;
     QPointF waterDispenser;
     RoboCompGenericBase::TBaseState bState;
@@ -120,7 +122,7 @@ class ActionStandToEat : public BrainTree::Node
             t = sp->getFoodDispenser();
             float angle = 0;
             //Paso el punto, de coord del mundo al robot
-            QVec p = sp->innerModel->transform("base", QVec::vec3(t.x(),0,t.y()), "world");
+            QVec p = sp->innerModel->transform(sp->robotName.c_str(), QVec::vec3(t.x(),0,t.y()), "world");
             angle = qAtan2(p.x(),p.z()); // calculo angulo en rads
             qDebug() << "Angulo = " << angle;
             if(fabs(angle) < 0.001)
@@ -226,7 +228,7 @@ class ActionStandToDrink : public BrainTree::Node
             t = sp->getWaterDispenser();
             float angle = 0;
             //Paso el punto, de coord del mundo al robot
-            QVec p = sp->innerModel->transform("base", QVec::vec3(t.x(),0,t.y()), "world");
+            QVec p = sp->innerModel->transform(sp->robotName.c_str(), QVec::vec3(t.x(),0,t.y()), "world");
             angle = qAtan2(p.x(),p.z()); // calculo angulo en rads
             qDebug() << "Angulo = " << angle;
             if( fabs(angle) < 0.001)
