@@ -64,17 +64,35 @@
 				</translation>	
 				<translation id="robotGeometricCenter" tx="0" ty="0" tz="50">
 				</translation>
-			</differentialrobot>-->
-
-		<differentialrobot id="base1" port="11004">
-			<mesh id="base_robex1" file="/home/robocomp/robocomp/files/osgModels/robex/robex.ive"  tx="500" ty="0" tz="-500" scale="1000" collide="1"/>
+			</differentialrobot>
+		-->
+		<!-- 
+			<differentialrobot id="base1" port="11004">
+			<mesh id="base_robex1" file="/home/robocomp/robocomp/files/osgModels/robex/robex.ive"  tx="0" ty="0" tz="0" scale="1000" collide="1"/>
+				<translation id="laserPose1" tx="0" ty="140" tz="200">
+					<laser id="laser1" port="11003" measures="100" min="100" max="30000" angle="3" ifconfig="10000" />
+						<plane id="sensorL1" nz="1" pz="-200" size="100" repeat="1" texture="#ff0000" /> 
+				</translation>	
+				<translation id="robotGeometricCenter1" tx="0" ty="0" tz="50">
+				</translation>
+			</differentialrobot>
+		-->
+			
+		 
+		
+			<differentialrobot id="base1" port="11004">
+			<mesh id="base_robex1" file="/home/robocomp/robocomp/files/osgModels/robex/robex.ive"  tx="500" ty="0" tz="-500" scale="1000" collide="1"/>	
 				<translation id="laserPose1" tx="500" ty="140" tz="-300">
 					<laser id="laser1" port="11003" measures="100" min="100" max="30000" angle="3" ifconfig="10000" />
 						<plane id="sensorL1" nz="1" pz="-200" size="100" repeat="1" texture="#ff0000" /> 
 				</translation>	
-				<translation id="robotGeometricCenter1" tx="500" ty="0" tz="-450">
-				</translation>
+			 	<translation id="robotGeometricCenter1" tx="-500" ty="0" tz="550"> 
+				</translation> 
 			</differentialrobot>
+		
+			
+		
+		
 	</transform>
 
 <!--

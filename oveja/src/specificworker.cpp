@@ -63,8 +63,11 @@ void SpecificWorker::initialize(int period)
 
 void SpecificWorker::compute()
 {   
-    readRobotState();
-    btree.update();
+   // if(robotName == "fbase")
+  //  {
+        readRobotState();
+        btree.update();
+  //  }
 }
 
 void SpecificWorker::createTreeManually(BrainTree::BehaviorTree &btree)
@@ -74,7 +77,7 @@ void SpecificWorker::createTreeManually(BrainTree::BehaviorTree &btree)
     
     //Dormir
     auto sleepSequence = std::make_shared<BrainTree::Sequence>();
-    auto initSleep = std::make_shared<ActionInitSleep>();
+    auto initSleep = std::make_shared<ActionInitSleep>(this);
  
     //Comer
     auto eatSequence = std::make_shared<BrainTree::Sequence>();
@@ -123,8 +126,12 @@ void SpecificWorker::readRobotState()
 {
     try
     {
-        differentialrobot_proxy->getBaseState(bState);  
+        qDebug() << "EN METODO READROBOTSTATE";
+        qDebug() << "y: " << bState.z;
+        differentialrobot_proxy->getBaseState(bState);
         innerModel->updateTransformValues(robotName.c_str(), bState.x, 0, bState.z, 0, bState.alpha, 0);
+        qDebug() << "EN METODO READROBOTSTATE fin";
+        qDebug() << "y: " << bState.z;
     }      
     catch(const Ice::Exception &e)
     {

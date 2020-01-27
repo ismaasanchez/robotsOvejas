@@ -71,9 +71,11 @@ private:
 class ActionInitSleep : public BrainTree::Node
 {
     public:
-        ActionInitSleep()
+        ActionInitSleep(SpecificWorker *x)
         {
             qDebug() << "Constructor initSleep";
+            qDebug() << "Posicion X en empezando a dormir" << sp->bState.x;
+            qDebug() << "Posicion Y en empezando a dormir" << sp->bState.z;
         }
         Status update() override 
         {
@@ -92,6 +94,8 @@ class ActionInitSleep : public BrainTree::Node
                 {
                     qDebug() << "Dormi suficiente";
                     first_epoch = true;
+                    qDebug() << "Posicion X en findormir" << sp->bState.x;
+                    qDebug() << "Posicion Y en findormir" << sp->bState.z;
                     return Node::Status::Success;       
                 }
                 else
@@ -105,6 +109,7 @@ class ActionInitSleep : public BrainTree::Node
     private:
         bool first_epoch = true;
         QTime reloj;
+        SpecificWorker* sp;
 };
 
 class ActionStandToEat : public BrainTree::Node 
@@ -117,6 +122,8 @@ class ActionStandToEat : public BrainTree::Node
         }
         Status update() override 
         {
+            qDebug() << "Posicion X en standtoeat" << sp->bState.x;
+            qDebug() << "Posicion Y en standtoeat" << sp->bState.z;
             qDebug() << "Posicionandome hacia el comedero";
             QPointF t;
             t = sp->getFoodDispenser();
@@ -125,6 +132,9 @@ class ActionStandToEat : public BrainTree::Node
             QVec p = sp->innerModel->transform(sp->robotName.c_str(), QVec::vec3(t.x(),0,t.y()), "world");
             angle = qAtan2(p.x(),p.z()); // calculo angulo en rads
             qDebug() << "Angulo = " << angle;
+            qDebug() << "Posicion X en standtoeat" << sp->bState.x;
+            qDebug() << "Posicion Y en standtoeat" << sp->bState.z;
+            qDebug() << "------------------------------------------------";
             if(fabs(angle) < 0.001)
             {
                 sp->differentialrobot_proxy -> setSpeedBase(0,0);
