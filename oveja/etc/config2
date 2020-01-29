@@ -7,7 +7,7 @@ DifferentialRobotProxy = differentialrobot:tcp -h localhost -p 12004
 
 RobotName = base2
 
-InnerModelPath = /home/ismael/robocomp/files/innermodel/simpleworld.xml
+InnerModelPath = /home/ismael/robocomp/components/robotsOvejas/simpleworld.xml
 
 Ice.Warn.Connections=0
 Ice.Trace.Network=0

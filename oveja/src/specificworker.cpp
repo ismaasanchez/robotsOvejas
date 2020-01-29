@@ -63,11 +63,14 @@ void SpecificWorker::initialize(int period)
 
 void SpecificWorker::compute()
 {   
-   // if(robotName == "fbase")
-  //  {
+    if(robotName == "base")
+    {
         readRobotState();
+        qDebug() << "Nombre del robot: " << robotName.c_str();
         btree.update();
-  //  }
+    }else{
+        qDebug() << "Nombre del robot: " << robotName.c_str();
+    }
 }
 
 void SpecificWorker::createTreeManually(BrainTree::BehaviorTree &btree)
@@ -126,12 +129,12 @@ void SpecificWorker::readRobotState()
 {
     try
     {
-        qDebug() << "EN METODO READROBOTSTATE";
-        qDebug() << "y: " << bState.z;
+      //  qDebug() << "EN METODO READROBOTSTATE";
+      //  qDebug() << "y: " << bState.z;
         differentialrobot_proxy->getBaseState(bState);
         innerModel->updateTransformValues(robotName.c_str(), bState.x, 0, bState.z, 0, bState.alpha, 0);
-        qDebug() << "EN METODO READROBOTSTATE fin";
-        qDebug() << "y: " << bState.z;
+       // qDebug() << "EN METODO READROBOTSTATE fin";
+      //  qDebug() << "y: " << bState.z;
     }      
     catch(const Ice::Exception &e)
     {
