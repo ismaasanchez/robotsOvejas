@@ -73,6 +73,7 @@ class ActionInitSleep : public BrainTree::Node
     public:
         ActionInitSleep(SpecificWorker *x)
         {
+            this->sp = x;
             qDebug() << "Constructor initSleep";
             qDebug() << "Posicion X en empezando a dormir" << sp->bState.x;
             qDebug() << "Posicion Y en empezando a dormir" << sp->bState.z;
@@ -109,7 +110,7 @@ class ActionInitSleep : public BrainTree::Node
     private:
         bool first_epoch = true;
         QTime reloj;
-        SpecificWorker* sp;
+        SpecificWorker *sp;
 };
 
 class ActionStandToEat : public BrainTree::Node 
@@ -118,6 +119,7 @@ class ActionStandToEat : public BrainTree::Node
         ActionStandToEat(SpecificWorker *x)
         {
             this->sp = x;
+            reloj.restart();
             qDebug() << "Constructor StandToEat";
         }
         Status update() override 
@@ -125,12 +127,19 @@ class ActionStandToEat : public BrainTree::Node
             qDebug() << "Posicion X en standtoeat" << sp->bState.x;
             qDebug() << "Posicion Y en standtoeat" << sp->bState.z;
             qDebug() << "Posicionandome hacia el comedero";
+
+            
+            
             QPointF t;
             t = sp->getFoodDispenser();
             float angle = 0;
             //Paso el punto, de coord del mundo al robot
+            sp->bState.x=500;
+            sp->bState.z=-500;
             QVec p = sp->innerModel->transform(sp->robotName.c_str(), QVec::vec3(t.x(),0,t.y()), "world");
+            
             angle = qAtan2(p.x(),p.z()); // calculo angulo en rads
+            
             qDebug() << "Angulo = " << angle;
             qDebug() << "Posicion X en standtoeat" << sp->bState.x;
             qDebug() << "Posicion Y en standtoeat" << sp->bState.z;
@@ -142,13 +151,27 @@ class ActionStandToEat : public BrainTree::Node
                 return Node::Status::Success;
             }else
             {
+                if(reloj.elapsed() < 5000)
+                 
+                {
+                    qDebug() << sp->robotName.c_str();
+                    qDebug() << p << p.x() << p.y();
+                    qDebug() << "Waiting....1";
+                    sp->differentialrobot_proxy -> setSpeedBase(0,0);
+                    //sp->differentialrobot_proxy -> setSpeedBase(0,angle); 
+                    return Node::Status::Running;
+                }else{
+                    qDebug() << "Waiting....2";
                 sp->differentialrobot_proxy -> setSpeedBase(0,angle);  
-                qDebug() << "Stand to eat --------> RUNNING";
+                
                 return Node::Status::Running;
             }
+            }
+                
         }
     private:
-        SpecificWorker* sp;
+        QTime reloj;
+        SpecificWorker *sp;
 };
 
 class ActionGoToEat : public BrainTree::Node 
@@ -182,7 +205,7 @@ class ActionGoToEat : public BrainTree::Node
            return Node::Status::Success;
         }
     private:
-        SpecificWorker* sp;    
+        SpecificWorker *sp;    
 };
 class ActionInitEat : public BrainTree::Node
 {
@@ -226,7 +249,7 @@ class ActionInitEat : public BrainTree::Node
 class ActionStandToDrink : public BrainTree::Node 
 {
     public:
-        ActionStandToDrink(SpecificWorker* x)
+        ActionStandToDrink(SpecificWorker *x)
         {
             qDebug() << "Constructor StandToDrink";
             this->sp = x;
@@ -254,13 +277,13 @@ class ActionStandToDrink : public BrainTree::Node
             }
         }
     private:
-        SpecificWorker* sp;
+        SpecificWorker *sp;
 };
 
 class ActionGoToDrink : public BrainTree::Node 
 {
     public:
-        ActionGoToDrink(SpecificWorker* x)
+        ActionGoToDrink(SpecificWorker *x)
         {
             qDebug() << "Constructor GoToDrink";
             this->sp = x;
@@ -286,7 +309,7 @@ class ActionGoToDrink : public BrainTree::Node
 	        }	
         }
     private:
-        SpecificWorker* sp;
+        SpecificWorker *sp;
 };
 
 class ActionInitDrink : public BrainTree::Node
@@ -330,7 +353,7 @@ class ActionInitDrink : public BrainTree::Node
 class ActionInitWalk : public BrainTree::Node
 {
     public:
-        ActionInitWalk(SpecificWorker* x)
+        ActionInitWalk(SpecificWorker *x)
         {
             qDebug() << "Constructor initWalk";
             this->sp = x;
@@ -342,12 +365,12 @@ class ActionInitWalk : public BrainTree::Node
             return Node::Status::Success;
         }
     private:
-        SpecificWorker* sp;
+        SpecificWorker *sp;
 };
 class ActionWalk : public BrainTree::Node 
 {
     public:
-        ActionWalk(SpecificWorker* x)
+        ActionWalk(SpecificWorker *x)
         {
             qDebug() << "Constructor Walk";
             this->sp = x;
@@ -366,6 +389,8 @@ class ActionWalk : public BrainTree::Node
                 //sort laser data from small to large distances using a lambda function.
                 std::sort( ldata.begin(), ldata.end(), [](RoboCompLaser::TData a, RoboCompLaser::TData b){ return     a.dist < b.dist; });
     
+
+    
                 if( ldata.front().dist < 300)
 	            {
  		            sp->differentialrobot_proxy->setSpeedBase(5, 0.6);
@@ -379,7 +404,7 @@ class ActionWalk : public BrainTree::Node
             }
         }       
     private:
-        SpecificWorker* sp;
+        SpecificWorker *sp;
         
 };
 

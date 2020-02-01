@@ -45,6 +45,8 @@ bool SpecificWorker::setParams(RoboCompCommonBehavior::ParameterList params)
 		innerModel = std::make_shared<InnerModel> (innermodel_path);
 
         robotName = params.at("RobotName").value;
+        //bState.x=500;
+        //bState.z=-500;
 	}
 	catch(std::exception e) { qFatal("Error reading config params"); }
 	return true;
@@ -63,14 +65,14 @@ void SpecificWorker::initialize(int period)
 
 void SpecificWorker::compute()
 {   
-    if(robotName == "base")
-    {
-        readRobotState();
-        qDebug() << "Nombre del robot: " << robotName.c_str();
+   // if(robotName == "base")
+   // {
+        this->readRobotState();
+    //    qDebug() << "Nombre del robot: " << robotName.c_str();
         btree.update();
-    }else{
-        qDebug() << "Nombre del robot: " << robotName.c_str();
-    }
+    //}else{
+    //    qDebug() << "Nombre del robot: " << robotName.c_str();
+    //}
 }
 
 void SpecificWorker::createTreeManually(BrainTree::BehaviorTree &btree)
