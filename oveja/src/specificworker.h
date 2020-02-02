@@ -49,6 +49,11 @@ public:
     void readRobotState();
     void loadPoints();
     void createTreeManually(BrainTree::BehaviorTree &btree);
+    void createTree2(BrainTree::BehaviorTree &btree);
+    void createTree3(BrainTree::BehaviorTree &btree);
+    void createTree4(BrainTree::BehaviorTree &btree);
+    void createTree5(BrainTree::BehaviorTree &btree);
+
     int getCoordXFood();
     int getCoordYFood();
     int getCoordXWater();
@@ -63,6 +68,10 @@ public:
     RoboCompGenericBase::TBaseState bState;
 	std::shared_ptr<InnerModel> innerModel;
     BrainTree::BehaviorTree btree;
+    BrainTree::BehaviorTree btree2;
+    BrainTree::BehaviorTree btree3;
+    BrainTree::BehaviorTree btree4;
+    BrainTree::BehaviorTree btree5;
 
     QTime timeAction;
 private:    
