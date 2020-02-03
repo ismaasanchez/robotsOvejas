@@ -122,19 +122,19 @@ class ActionStandToEat : public BrainTree::Node
         }
         Status update() override 
         {
-            qDebug() << "Posicion X en standtoeat" << sp->bState.x;
-            qDebug() << "Posicion Y en standtoeat" << sp->bState.z;
-            qDebug() << "Posicionandome hacia el comedero";
+         //   qDebug() << "Posicion X en standtoeat" << sp->bState.x;
+        //    qDebug() << "Posicion Y en standtoeat" << sp->bState.z;
+         //   qDebug() << "Posicionandome hacia el comedero";
             QPointF t;
             t = sp->getFoodDispenser();
             float angle = 0;
             //Paso el punto, de coord del mundo al robot
             QVec p = sp->innerModel->transform(sp->robotName.c_str(), QVec::vec3(t.x(),0,t.y()), "world");
             angle = qAtan2(p.x(),p.z()); // calculo angulo en rads
-            qDebug() << "Angulo = " << angle;
-            qDebug() << "Posicion X en standtoeat" << sp->bState.x;
-            qDebug() << "Posicion Y en standtoeat" << sp->bState.z;
-            qDebug() << "------------------------------------------------";
+     //       qDebug() << "Angulo = " << angle;
+     //       qDebug() << "Posicion X en standtoeat" << sp->bState.x;
+     //       qDebug() << "Posicion Y en standtoeat" << sp->bState.z;
+      //      qDebug() << "------------------------------------------------";
             if(fabs(angle) < 0.001)
             {
                 sp->differentialrobot_proxy -> setSpeedBase(0,0);
@@ -158,10 +158,11 @@ class ActionGoToEat : public BrainTree::Node
         {
             qDebug() << "Constructor GoToEat";
             this->sp = x;
+            esquivar = false;
         }
         Status update() override 
         {
-            qDebug() << "De camino al comedero";
+            //qDebug() << "De camino al comedero";
             float coordX;
             float coordY;
             coordX = sp->getCoordXFood();
@@ -174,15 +175,90 @@ class ActionGoToEat : public BrainTree::Node
 	        }
 	        else
 	        {
-		        sp->differentialrobot_proxy -> setSpeedBase(500,0);
-                qDebug() << "Go to eat --------> RUNNING";
-                return Node::Status::Running;
+		        //comprobar obtaculos
+                    //
+                RoboCompLaser::TLaserData ldata = sp->laser_proxy->getLaserData();
+                float center = ldata[ldata.size()/2].dist;
+                float right = ldata.front().dist;
+                //sort laser data from small to large distances using a lambda function.
+                std::sort( ldata.begin(), ldata.end(), [](RoboCompLaser::TData a, RoboCompLaser::TData b){ return     a.dist < b.dist; });
+
+                if((ldata.front().dist < 350 || center < 350))
+	            {
+ 		            sp->differentialrobot_proxy->setSpeedBase(0, -0.6);
+                    qDebug() << " Comprobando si choco ";
+                    if(right > 450){
+                        esquivar = true;
+                    }
+                    qDebug() << " EMPIEZO A RODEAR ";
+                    return rodearObj(center,right);
+	            }
+
+                if(esquivar){
+                    qDebug() << "ME tengo que colocar";
+                    return colocarse();
+                    
+                }else
+                {
+		            sp->differentialrobot_proxy -> setSpeedBase(500,0);
+                    qDebug() << "Go to eat --------> RUNNING";
+                    return Node::Status::Running;
+                }
 	        }	
+        }
+        Status colocarse()
+        {
+            QPointF t;
+            t = sp->getFoodDispenser();
+            float angle = 0;
+            //Paso el punto, de coord del mundo al robot
+            QVec p = sp->innerModel->transform(sp->robotName.c_str(), QVec::vec3(t.x(),0,t.y()), "world");
+            angle = qAtan2(p.x(),p.z()); // calculo angulo en rads
+            qDebug() << "Angulo = " << angle;
+            if( fabs(angle) < 0.001)
+            {
+                sp->differentialrobot_proxy -> setSpeedBase(0,0);
+                qDebug() << "colocarse : estoy colocado";
+                esquivar = false;
+                return Node::Status::Running;
+            }else
+            {
+                sp->differentialrobot_proxy -> setSpeedBase(0,angle);  
+                qDebug() << "colocarse : colocandome";
+                return Node::Status::Running;
+            }
+        }
+
+        Status rodearObj(float c, float r)
+        {
             
-           return Node::Status::Success;
+            if(r > 400 && r < 500 && c > 450)
+            {
+                qDebug() << "rodear : avanzo ";
+                sp->differentialrobot_proxy -> setSpeedBase(100,0);
+                esquivar = true;
+                return Node::Status::Running;
+            }
+            else
+            {
+                if(r < 400 || c < 350)
+		        {
+                    qDebug() << "rodear : giro izq ";
+				    sp->differentialrobot_proxy -> setSpeedBase(100,-0.6);
+                    return Node::Status::Running;
+		        }
+		        else if(r > 500)
+		        {
+                    qDebug() << "rodear giro derecha";
+			    	sp->differentialrobot_proxy -> setSpeedBase(100,0.25);
+                    return Node::Status::Running;
+		        }
+            }
         }
     private:
-        SpecificWorker* sp;    
+        SpecificWorker* sp;
+        bool esquivar;
+        //void colocarse();    
 };
 class ActionInitEat : public BrainTree::Node
 {
@@ -264,6 +340,7 @@ class ActionGoToDrink : public BrainTree::Node
         {
             qDebug() << "Constructor GoToDrink";
             this->sp = x;
+            esquivar = false;
         }
         Status update() override 
         {
@@ -279,14 +356,91 @@ class ActionGoToDrink : public BrainTree::Node
 	        	return Node::Status::Success;
 	        }
 	        else
-	        {
-		        sp->differentialrobot_proxy -> setSpeedBase(500,0);
-                qDebug() << "Go to drink --------> RUNNING";
-                return Node::Status::Running;
-	        }	
+	        {       //comprobar obtaculos
+                    //
+                RoboCompLaser::TLaserData ldata = sp->laser_proxy->getLaserData();
+                float center = ldata[ldata.size()/2].dist;
+                float right = ldata.front().dist;
+                //sort laser data from small to large distances using a lambda function.
+                std::sort( ldata.begin(), ldata.end(), [](RoboCompLaser::TData a, RoboCompLaser::TData b){ return     a.dist < b.dist; });
+
+                if((ldata.front().dist < 350 || center < 350))
+	            {
+ 		            sp->differentialrobot_proxy->setSpeedBase(0, -0.6);
+                    qDebug() << " Comprobando si choco ";
+                    if(right > 450){
+                        esquivar = true;
+                    }
+                    qDebug() << " EMPIEZO A RODEAR ";
+                    return rodearObj(center,right);
+	            }
+
+                if(esquivar){
+                    qDebug() << "ME tengo que colocar";
+                    return colocarse();
+                    
+                }else
+                {
+		            sp->differentialrobot_proxy -> setSpeedBase(500,0);
+                    qDebug() << "Go to eat --------> RUNNING";
+                    return Node::Status::Running;
+                }
+            }	
         }
+        Status colocarse()
+        {
+            QPointF t;
+            t = sp->getWaterDispenser();
+            float angle = 0;
+            //Paso el punto, de coord del mundo al robot
+            QVec p = sp->innerModel->transform(sp->robotName.c_str(), QVec::vec3(t.x(),0,t.y()), "world");
+            angle = qAtan2(p.x(),p.z()); // calculo angulo en rads
+            qDebug() << "Angulo = " << angle;
+            if( fabs(angle) < 0.001)
+            {
+                sp->differentialrobot_proxy -> setSpeedBase(0,0);
+                qDebug() << "colocarse : estoy colocado";
+                esquivar = false;
+                return Node::Status::Running;
+            }else
+            {
+                sp->differentialrobot_proxy -> setSpeedBase(0,angle);  
+                qDebug() << "colocarse : colocandome";
+                return Node::Status::Running;
+            }
+        }
+        Status rodearObj(float c, float r)
+        {
+            
+            if(r > 400 && r < 500 && c > 450)
+            {
+                qDebug() << "rodear : avanzo ";
+                sp->differentialrobot_proxy -> setSpeedBase(100,0);
+                esquivar = true;
+                return Node::Status::Running;
+            }
+            else
+            {
+                if(r < 400 || c < 350)
+		        {
+                    qDebug() << "rodear : giro izq ";
+				    sp->differentialrobot_proxy -> setSpeedBase(100,-0.6);
+                    return Node::Status::Running;
+		        }
+		        else if(r > 500)
+		        {
+                    qDebug() << "rodear giro derecha";
+			    	sp->differentialrobot_proxy -> setSpeedBase(100,0.25);
+                    return Node::Status::Running;
+		        }
+            }
+        }
+        
     private:
         SpecificWorker* sp;
+        bool esquivar;
+     //   Status colocarse();
+     //   Status esquivar();
 };
 
 class ActionInitDrink : public BrainTree::Node
