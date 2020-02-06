@@ -63,14 +63,9 @@ void SpecificWorker::initialize(int period)
 
 void SpecificWorker::compute()
 {   
-    if(robotName == "base")
-    {
         readRobotState();
         qDebug() << "Nombre del robot: " << robotName.c_str();
-        btree.update();
-    }else{
-        qDebug() << "Nombre del robot: " << robotName.c_str();
-    }
+        btree.update();  
 }
 
 void SpecificWorker::createTreeManually(BrainTree::BehaviorTree &btree)
