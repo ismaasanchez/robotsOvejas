@@ -31,6 +31,8 @@
 #include <innermodel/innermodel.h>
 #include <QPointF>
 #include <BrainTree.h>
+#include <iostream>
+#include <fstream>
 #include <math.h>
 #include <QTime>
 #include <QString>
@@ -55,6 +57,8 @@ public:
     int getCoordYWater();
     QPointF getFoodDispenser();
     QPointF getWaterDispenser();
+    void escribirCoords(std::string nRobot, float x, float y);
+    int getIntName(std::string nRobot);
     
     std::string robotName;
 
@@ -63,7 +67,6 @@ public:
     RoboCompGenericBase::TBaseState bState;
 	std::shared_ptr<InnerModel> innerModel;
     BrainTree::BehaviorTree btree;
-
     QTime timeAction;
 private:    
 };
@@ -176,6 +179,7 @@ class ActionGoToEat : public BrainTree::Node
 	        {
 		        sp->differentialrobot_proxy -> setSpeedBase(500,0);
                 qDebug() << "Go to eat --------> RUNNING";
+                sp->escribirCoords(sp->robotName,sp->bState.x,sp->bState.z);
                 return Node::Status::Running;
 	        }	
             
@@ -207,6 +211,7 @@ class ActionInitEat : public BrainTree::Node
                 {
                     qDebug() << "Comi suficiente";
                     first_epoch = true;
+
                     return Node::Status::Success;       
                 }
                 else

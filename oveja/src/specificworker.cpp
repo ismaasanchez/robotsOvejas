@@ -174,3 +174,47 @@ QPointF SpecificWorker::getWaterDispenser()
 {
     return waterDispenser;
 }
+
+void SpecificWorker::escribirCoords(std::string nRobot, float x, float y)
+{
+    ofstream file;
+    int h = getIntName(nRobot);
+    qDebug
+    switch(h){
+        case 0:
+            file.open("/home/ismael/robocomp/components/robotsOvejas/oveja/ficherosCoords/archivoRobot1", ios::app);
+            break;
+        case 1:
+            file.open("/home/ismael/robocomp/components/robotsOvejas/oveja/ficherosCoords/archivoRobot2", ios::app);
+            break;
+        case 2:
+            file.open("/home/ismael/robocomp/components/robotsOvejas/oveja/ficherosCoords/archivoRobot3", ios::app);
+            break;
+        case 3:
+            file.open("/home/ismael/robocomp/components/robotsOvejas/oveja/ficherosCoords/archivoRobot4", ios::app);
+            break;
+        case 4:
+            file.open("/home/ismael/robocomp/components/robotsOvejas/oveja/ficherosCoords/archivoRobot5", ios::app);
+            break;
+    };
+    //file.open("/home/ismael/robocomp/components/robotsOvejas/oveja/ficherosCoords/archivoRobot1", ios::app);
+
+    if(file.fail())
+    {
+        qDebug() << "Error al abrir el archivo";
+    }
+
+    file <<  x << "#" << y << endl;
+
+    file.close();
+}
+
+
+int SpecificWorker::getIntName(std::string nRobot)
+{
+    if(nRobot == "base") return 0;
+    if(nRobot == "base1") return 1;
+    if(nRobot == "base2") return 2;
+    if(nRobot == "base3") return 3;
+    if(nRobot == "base4") return 4;
+}
