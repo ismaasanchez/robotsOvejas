@@ -57,7 +57,7 @@ public:
     int getCoordYWater();
     QPointF getFoodDispenser();
     QPointF getWaterDispenser();
-    void escribirCoords(std::string nRobot, float x, float y);
+    void escribirCoords(std::string nRobot, float x, float y); 
     int getIntName(std::string nRobot);
     
     std::string robotName;
