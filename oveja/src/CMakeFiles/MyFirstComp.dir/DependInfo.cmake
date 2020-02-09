@@ -24,7 +24,6 @@ set(CMAKE_CXX_COMPILER_ID "GNU")
 # Preprocessor definitions for this target.
 set(CMAKE_TARGET_DEFINITIONS_CXX
   "QT_CORE_LIB"
-  "QT_DLL"
   "QT_GUI_LIB"
   "QT_NO_DEBUG"
   "QT_OPENGL_LIB"
@@ -35,17 +34,17 @@ set(CMAKE_TARGET_DEFINITIONS_CXX
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "src/MyFirstComp_autogen/include"
-  "/usr/include/qt4"
-  "/usr/include/qt4/QtOpenGL"
-  "/usr/include/qt4/QtGui"
-  "/usr/include/qt4/QtXml"
-  "/usr/include/qt4/QtCore"
   "src"
   "src/."
   "/opt/robocomp/include"
   "/classes"
   "."
+  "/usr/include/qt4"
+  "/usr/include/qt4/QtOpenGL"
+  "/usr/include/qt4/QtGui"
+  "/usr/include/qt4/QtXml"
   "/usr/include/qt4/QtSql"
+  "/usr/include/qt4/QtCore"
   "/home/ismael/robocomp/classes"
   "/home/ismael/robocomp/libs"
   "/home/ismael/robocomp/interfaces"

@@ -55,7 +55,7 @@
 		</transform>-->
 			
 		<!-- <axes id="axis" length="1000"/>
-		 -->
+		 
 		<differentialrobot id="base" port="10004">
 			<mesh id="base_robex" file="/home/robocomp/robocomp/files/osgModels/robex/robex.ive"  tx="0" ty="0" tz="0" scale="1000" collide="1"/>
 				<translation id="laserPose" tx="0" ty="140" tz="200">
@@ -65,7 +65,7 @@
 				<translation id="robotGeometricCenter" tx="0" ty="0" tz="50">
 				</translation>
 			</differentialrobot>
-		
+		-->
 		<!-- 
 			<differentialrobot id="base1" port="11004">
 			<mesh id="base_robex1" file="/home/robocomp/robocomp/files/osgModels/robex/robex.ive"  tx="0" ty="0" tz="0" scale="1000" collide="1"/>

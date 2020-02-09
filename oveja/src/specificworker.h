@@ -55,7 +55,7 @@ public:
     int getCoordYWater();
     QPointF getFoodDispenser();
     QPointF getWaterDispenser();
-    
+    void createTree1(BrainTree::BehaviorTree &btree);
     std::string robotName;
 
     QPointF foodDispenser;
@@ -63,6 +63,7 @@ public:
     RoboCompGenericBase::TBaseState bState;
 	std::shared_ptr<InnerModel> innerModel;
     BrainTree::BehaviorTree btree;
+    BrainTree::BehaviorTree btree1;
 
     QTime timeAction;
 private:    
@@ -152,7 +153,6 @@ class ActionStandToEat : public BrainTree::Node
             }else
             {
                 if(reloj.elapsed() < 5000)
-                 
                 {
                     qDebug() << sp->robotName.c_str();
                     qDebug() << p << p.x() << p.y();
@@ -160,14 +160,14 @@ class ActionStandToEat : public BrainTree::Node
                     sp->differentialrobot_proxy -> setSpeedBase(0,0);
                     //sp->differentialrobot_proxy -> setSpeedBase(0,angle); 
                     return Node::Status::Running;
-                }else{
+                }
+                else
+                {
                     qDebug() << "Waiting....2";
-                sp->differentialrobot_proxy -> setSpeedBase(0,angle);  
-                
-                return Node::Status::Running;
-            }
-            }
-                
+                    sp->differentialrobot_proxy -> setSpeedBase(0,angle);  
+                    return Node::Status::Running;
+                }
+            }      
         }
     private:
         QTime reloj;

@@ -56,6 +56,7 @@ void SpecificWorker::initialize(int period)
 {
 	std::cout << "Initialize worker" << std::endl;
     createTreeManually(btree);
+    createTree1(btree1);
     loadPoints();
     timeAction.start();
 	this->Period = period;
@@ -65,14 +66,15 @@ void SpecificWorker::initialize(int period)
 
 void SpecificWorker::compute()
 {   
-   // if(robotName == "base")
-   // {
+    if(robotName == "base")
+    {
         this->readRobotState();
     //    qDebug() << "Nombre del robot: " << robotName.c_str();
         btree.update();
-    //}else{
+    }else{
     //    qDebug() << "Nombre del robot: " << robotName.c_str();
-    //}
+        btree1.update();
+    }
 }
 
 void SpecificWorker::createTreeManually(BrainTree::BehaviorTree &btree)
@@ -125,6 +127,59 @@ void SpecificWorker::createTreeManually(BrainTree::BehaviorTree &btree)
     btree.update();    
     
 }
+
+void SpecificWorker::createTree1(BrainTree::BehaviorTree &btree)
+{
+    qDebug() << "Creando arbol";
+    auto mainSequence = std::make_shared<BrainTree::Sequence>();
+    
+    //Dormir
+    auto sleepSequence = std::make_shared<BrainTree::Sequence>();
+    auto initSleep = std::make_shared<ActionInitSleep>(this);
+ 
+    //Comer
+    auto eatSequence = std::make_shared<BrainTree::Sequence>();
+    auto colocarseComer = std::make_shared<ActionStandToEat>(this);
+    auto irComer = std::make_shared<ActionGoToEat>(this); 
+    auto initEat = std::make_shared<ActionInitEat>();
+
+    //Beber
+    auto drinkSequence = std::make_shared<BrainTree::Sequence>();
+    auto colocarseBeber = std::make_shared<ActionStandToDrink>(this); 
+    auto irBeber = std::make_shared<ActionGoToDrink>(this); 
+    auto initDrink = std::make_shared<ActionInitDrink>(); 
+
+    //Andar
+    auto walkSequence = std::make_shared<BrainTree::Sequence>();
+    auto initWalk = std::make_shared<ActionInitWalk>(this);
+    auto andar = std::make_shared<ActionWalk>(this); 
+
+
+
+    mainSequence->addChild(drinkSequence);
+    mainSequence->addChild(walkSequence);
+    mainSequence->addChild(sleepSequence);
+    mainSequence->addChild(eatSequence);
+
+    sleepSequence->addChild(initSleep);
+    
+    eatSequence->addChild(colocarseComer);
+    eatSequence->addChild(irComer);
+    eatSequence->addChild(initEat);
+      
+    drinkSequence->addChild(colocarseBeber);
+    drinkSequence->addChild(irBeber);
+    drinkSequence->addChild(initDrink);  
+
+    walkSequence->addChild(initWalk);
+    walkSequence->addChild(andar);
+    
+    btree.setRoot(mainSequence);
+    btree.update();    
+    
+}
+
+
 
 
 void SpecificWorker::readRobotState()

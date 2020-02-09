@@ -456,8 +456,6 @@ bin/MyFirstComp: src/CMakeFiles/MyFirstComp.dir/DifferentialRobot.cpp.o
 bin/MyFirstComp: src/CMakeFiles/MyFirstComp.dir/Laser.cpp.o
 bin/MyFirstComp: src/CMakeFiles/MyFirstComp.dir/MyFirstComp_autogen/mocs_compilation.cpp.o
 bin/MyFirstComp: src/CMakeFiles/MyFirstComp.dir/build.make
-bin/MyFirstComp: /usr/lib/x86_64-linux-gnu/libIce.so
-bin/MyFirstComp: /usr/lib/x86_64-linux-gnu/libIceStorm.so
 bin/MyFirstComp: /usr/lib/x86_64-linux-gnu/libQtOpenGL.so
 bin/MyFirstComp: /usr/lib/x86_64-linux-gnu/libQtGui.so
 bin/MyFirstComp: /usr/lib/x86_64-linux-gnu/libQtXml.so
@@ -465,11 +463,6 @@ bin/MyFirstComp: /usr/lib/x86_64-linux-gnu/libQtSql.so
 bin/MyFirstComp: /usr/lib/x86_64-linux-gnu/libQtCore.so
 bin/MyFirstComp: /usr/lib/x86_64-linux-gnu/libIce.so
 bin/MyFirstComp: /usr/lib/x86_64-linux-gnu/libIceStorm.so
-bin/MyFirstComp: /usr/lib/x86_64-linux-gnu/libQtOpenGL.so
-bin/MyFirstComp: /usr/lib/x86_64-linux-gnu/libQtGui.so
-bin/MyFirstComp: /usr/lib/x86_64-linux-gnu/libQtXml.so
-bin/MyFirstComp: /usr/lib/x86_64-linux-gnu/libQtSql.so
-bin/MyFirstComp: /usr/lib/x86_64-linux-gnu/libQtCore.so
 bin/MyFirstComp: src/CMakeFiles/MyFirstComp.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/ismael/robocomp/components/robotsOvejas/oveja/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Linking CXX executable ../bin/MyFirstComp"
 	cd /home/ismael/robocomp/components/robotsOvejas/oveja/src && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/MyFirstComp.dir/link.txt --verbose=$(VERBOSE)
