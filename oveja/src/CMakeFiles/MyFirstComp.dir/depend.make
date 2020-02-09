@@ -491,6 +491,10 @@ src/CMakeFiles/MyFirstComp.dir/MyFirstComp_autogen/mocs_compilation.cpp.o: src/D
 src/CMakeFiles/MyFirstComp.dir/MyFirstComp_autogen/mocs_compilation.cpp.o: src/GenericBase.h
 src/CMakeFiles/MyFirstComp.dir/MyFirstComp_autogen/mocs_compilation.cpp.o: src/Laser.h
 src/CMakeFiles/MyFirstComp.dir/MyFirstComp_autogen/mocs_compilation.cpp.o: src/MyFirstComp_autogen/include/ui_mainUI.h
+src/CMakeFiles/MyFirstComp.dir/MyFirstComp_autogen/mocs_compilation.cpp.o: src/Scheduler/Cron.h
+src/CMakeFiles/MyFirstComp.dir/MyFirstComp_autogen/mocs_compilation.cpp.o: src/Scheduler/InterruptableSleep.h
+src/CMakeFiles/MyFirstComp.dir/MyFirstComp_autogen/mocs_compilation.cpp.o: src/Scheduler/Scheduler.h
+src/CMakeFiles/MyFirstComp.dir/MyFirstComp_autogen/mocs_compilation.cpp.o: src/Scheduler/ctpl_stl.h
 
 src/CMakeFiles/MyFirstComp.dir/commonbehaviorI.cpp.o: /home/ismael/robocomp/classes/qlog/qlog.h
 src/CMakeFiles/MyFirstComp.dir/commonbehaviorI.cpp.o: src/commonbehaviorI.cpp
@@ -2699,6 +2703,10 @@ src/CMakeFiles/MyFirstComp.dir/main.cpp.o: src/DifferentialRobot.h
 src/CMakeFiles/MyFirstComp.dir/main.cpp.o: src/GenericBase.h
 src/CMakeFiles/MyFirstComp.dir/main.cpp.o: src/Laser.h
 src/CMakeFiles/MyFirstComp.dir/main.cpp.o: src/MyFirstComp_autogen/include/ui_mainUI.h
+src/CMakeFiles/MyFirstComp.dir/main.cpp.o: src/Scheduler/Cron.h
+src/CMakeFiles/MyFirstComp.dir/main.cpp.o: src/Scheduler/InterruptableSleep.h
+src/CMakeFiles/MyFirstComp.dir/main.cpp.o: src/Scheduler/Scheduler.h
+src/CMakeFiles/MyFirstComp.dir/main.cpp.o: src/Scheduler/ctpl_stl.h
 
 src/CMakeFiles/MyFirstComp.dir/specificmonitor.cpp.o: /home/ismael/robocomp/classes/qlog/qlog.h
 src/CMakeFiles/MyFirstComp.dir/specificmonitor.cpp.o: src/config.h
@@ -3605,6 +3613,10 @@ src/CMakeFiles/MyFirstComp.dir/specificworker.cpp.o: src/DifferentialRobot.h
 src/CMakeFiles/MyFirstComp.dir/specificworker.cpp.o: src/GenericBase.h
 src/CMakeFiles/MyFirstComp.dir/specificworker.cpp.o: src/Laser.h
 src/CMakeFiles/MyFirstComp.dir/specificworker.cpp.o: src/MyFirstComp_autogen/include/ui_mainUI.h
+src/CMakeFiles/MyFirstComp.dir/specificworker.cpp.o: src/Scheduler/Cron.h
+src/CMakeFiles/MyFirstComp.dir/specificworker.cpp.o: src/Scheduler/InterruptableSleep.h
+src/CMakeFiles/MyFirstComp.dir/specificworker.cpp.o: src/Scheduler/Scheduler.h
+src/CMakeFiles/MyFirstComp.dir/specificworker.cpp.o: src/Scheduler/ctpl_stl.h
 src/CMakeFiles/MyFirstComp.dir/specificworker.cpp.o: src/config.h
 src/CMakeFiles/MyFirstComp.dir/specificworker.cpp.o: src/genericworker.h
 

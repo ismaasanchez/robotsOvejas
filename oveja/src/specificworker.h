@@ -36,7 +36,8 @@
 #include <math.h>
 #include <QTime>
 #include <QString>
-
+#include <Scheduler/Scheduler.h>
+#include <thread>
 
 class SpecificWorker : public GenericWorker
 {
@@ -59,7 +60,7 @@ public:
     QPointF getWaterDispenser();
     void escribirCoords(std::string nRobot, float x, float y); 
     int getIntName(std::string nRobot);
-    
+    void initCron();
     std::string robotName;
 
     QPointF foodDispenser;

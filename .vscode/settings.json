@@ -53,7 +53,8 @@
         "thread": "cpp",
         "typeinfo": "cpp",
         "qtime": "cpp",
-        "qstring": "cpp"
+        "qstring": "cpp",
+        "iomanip": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }

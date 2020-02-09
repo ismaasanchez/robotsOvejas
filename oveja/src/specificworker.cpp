@@ -58,21 +58,25 @@ void SpecificWorker::initialize(int period)
     timeAction.start();
 	this->Period = period;
 	timer.start(Period);
-
+  //  std::thread t1(&SpecificWorker::initCron);
+  //  t1.join();
 }
 
 void SpecificWorker::compute()
 {   
         readRobotState();
         qDebug() << "Nombre del robot: " << robotName.c_str();
+        
         btree.update();  
+
 }
 
 void SpecificWorker::createTreeManually(BrainTree::BehaviorTree &btree)
 {
     qDebug() << "Creando arbol";
     auto mainSequence = std::make_shared<BrainTree::Sequence>();
-    
+
+
     //Dormir
     auto sleepSequence = std::make_shared<BrainTree::Sequence>();
     auto initSleep = std::make_shared<ActionInitSleep>(this);
@@ -95,10 +99,14 @@ void SpecificWorker::createTreeManually(BrainTree::BehaviorTree &btree)
     auto andar = std::make_shared<ActionWalk>(this); 
 
 
+
     mainSequence->addChild(sleepSequence);
     mainSequence->addChild(eatSequence);
     mainSequence->addChild(drinkSequence);
     mainSequence->addChild(walkSequence);
+
+ 
+
 
     sleepSequence->addChild(initSleep);
    
@@ -113,7 +121,7 @@ void SpecificWorker::createTreeManually(BrainTree::BehaviorTree &btree)
     drinkSequence->addChild(initDrink);  
     walkSequence->addChild(initWalk);
     walkSequence->addChild(andar);
-    
+
     btree.setRoot(mainSequence);
     btree.update();    
     
@@ -179,7 +187,7 @@ void SpecificWorker::escribirCoords(std::string nRobot, float x, float y)
 {
     ofstream file;
     int h = getIntName(nRobot);
-    qDebug
+    qDebug() << "El numero es : " << h;
     switch(h){
         case 0:
             file.open("/home/ismael/robocomp/components/robotsOvejas/oveja/ficherosCoords/archivoRobot1", ios::app);
@@ -217,4 +225,18 @@ int SpecificWorker::getIntName(std::string nRobot)
     if(nRobot == "base2") return 2;
     if(nRobot == "base3") return 3;
     if(nRobot == "base4") return 4;
+}
+
+void SpecificWorker::initCron()
+{
+
+    int nHilos = 12;
+
+    Bosma::Scheduler s(nHilos);
+
+    s.interval(std::chrono::seconds(3), []() {
+      std::cout << "KJSABFHJABKJCBSDAKJBJKDASBFJKDBSAKJHBJHKLADSBCIUJHWBKJHCBASDKJBKJLHDABSFLJUHWASBVLHV" << std::endl;
+    }
+    );
+    std::this_thread::sleep_for(std::chrono::minutes(1));
 }
