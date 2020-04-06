@@ -53,7 +53,7 @@ bool SpecificWorker::setParams(RoboCompCommonBehavior::ParameterList params)
 void SpecificWorker::initialize(int period)
 {
 	std::cout << "Initialize worker" << std::endl;
-    createTreeManually(btree);
+    crearArboles();
     loadPoints();
     timeAction.start();
 	this->Period = period;
@@ -65,9 +65,29 @@ void SpecificWorker::initialize(int period)
 void SpecificWorker::compute()
 {   
         readRobotState();
-        qDebug() << "Nombre del robot: " << robotName.c_str();
+        escribirCoords(robotName,bState.x,bState.z);
+        if(robotName == "base"){
+             btree.update();  
+        }
+        else if(robotName == "base1")
+        {
+             btree1.update();  
+        }
+        else if(robotName == "base2")
+        {
+            btree2.update();
+        }
+        else if(robotName == "base3")
+        {
+            btree3.update();
+        }else if(robotName == "base4")
+        {
+            btree4.update();
+        }
         
-        btree.update();  
+        //qDebug() << "Nombre del robot: " << robotName.c_str();
+        
+       
 
 }
 
@@ -98,19 +118,72 @@ void SpecificWorker::createTreeManually(BrainTree::BehaviorTree &btree)
     auto initWalk = std::make_shared<ActionInitWalk>(this);
     auto andar = std::make_shared<ActionWalk>(this); 
 
-
-
-    mainSequence->addChild(sleepSequence);
-    mainSequence->addChild(eatSequence);
-    mainSequence->addChild(drinkSequence);
+    
+    
     mainSequence->addChild(walkSequence);
-
- 
-
+    mainSequence->addChild(sleepSequence);
+    mainSequence->addChild(sleepSequence);
+    mainSequence->addChild(sleepSequence);
+    mainSequence->addChild(drinkSequence); 
+    mainSequence->addChild(walkSequence);
+    mainSequence->addChild(eatSequence);
+    //mainSequence->addChild(walkSequence);
+    
+    
 
     sleepSequence->addChild(initSleep);
-   
 
+    eatSequence->addChild(colocarseComer);
+    eatSequence->addChild(irComer);
+    eatSequence->addChild(initEat);
+      
+    drinkSequence->addChild(colocarseBeber);
+    drinkSequence->addChild(irBeber);
+    drinkSequence->addChild(initDrink);  
+    walkSequence->addChild(initWalk);
+    walkSequence->addChild(andar);
+
+    btree.setRoot(mainSequence);
+   // btree.update();    
+    
+}
+
+void SpecificWorker::createTree1(BrainTree::BehaviorTree &btree)
+{
+    qDebug() << "Creando arbol";
+    auto mainSequence = std::make_shared<BrainTree::Sequence>();
+
+
+    //Dormir
+    auto sleepSequence = std::make_shared<BrainTree::Sequence>();
+    auto initSleep = std::make_shared<ActionInitSleep>(this);
+ 
+    //Comer
+    auto eatSequence = std::make_shared<BrainTree::Sequence>();
+    auto colocarseComer = std::make_shared<ActionStandToEat>(this);
+    auto irComer = std::make_shared<ActionGoToEat>(this); 
+    auto initEat = std::make_shared<ActionInitEat>();
+
+    //Beber
+    auto drinkSequence = std::make_shared<BrainTree::Sequence>();
+    auto colocarseBeber = std::make_shared<ActionStandToDrink>(this); 
+    auto irBeber = std::make_shared<ActionGoToDrink>(this); 
+    auto initDrink = std::make_shared<ActionInitDrink>(); 
+
+    //Andar
+    auto walkSequence = std::make_shared<BrainTree::Sequence>();
+    auto initWalk = std::make_shared<ActionInitWalk>(this);
+    auto andar = std::make_shared<ActionWalk>(this); 
+
+    mainSequence->addChild(drinkSequence);
+    mainSequence->addChild(walkSequence);
+    mainSequence->addChild(sleepSequence);
+    mainSequence->addChild(sleepSequence);
+    mainSequence->addChild(eatSequence);
+    mainSequence->addChild(walkSequence);
+    mainSequence->addChild(eatSequence);  
+
+    sleepSequence->addChild(initSleep);
     
     eatSequence->addChild(colocarseComer);
     eatSequence->addChild(irComer);
@@ -123,10 +196,169 @@ void SpecificWorker::createTreeManually(BrainTree::BehaviorTree &btree)
     walkSequence->addChild(andar);
 
     btree.setRoot(mainSequence);
-    btree.update();    
+  //  btree.update();    
     
 }
 
+void SpecificWorker::createTree2(BrainTree::BehaviorTree &btree)
+{
+    qDebug() << "Creando arbol";
+    auto mainSequence = std::make_shared<BrainTree::Sequence>();
+
+
+    //Dormir
+    auto sleepSequence = std::make_shared<BrainTree::Sequence>();
+    auto initSleep = std::make_shared<ActionInitSleep>(this);
+ 
+    //Comer
+    auto eatSequence = std::make_shared<BrainTree::Sequence>();
+    auto colocarseComer = std::make_shared<ActionStandToEat>(this);
+    auto irComer = std::make_shared<ActionGoToEat>(this); 
+    auto initEat = std::make_shared<ActionInitEat>();
+
+    //Beber
+    auto drinkSequence = std::make_shared<BrainTree::Sequence>();
+    auto colocarseBeber = std::make_shared<ActionStandToDrink>(this); 
+    auto irBeber = std::make_shared<ActionGoToDrink>(this); 
+    auto initDrink = std::make_shared<ActionInitDrink>(); 
+
+    //Andar
+    auto walkSequence = std::make_shared<BrainTree::Sequence>();
+    auto initWalk = std::make_shared<ActionInitWalk>(this);
+    auto andar = std::make_shared<ActionWalk>(this); 
+
+    
+    mainSequence->addChild(eatSequence);
+    mainSequence->addChild(walkSequence);
+    mainSequence->addChild(sleepSequence);
+    mainSequence->addChild(walkSequence);
+    mainSequence->addChild(drinkSequence);
+    mainSequence->addChild(sleepSequence);
+    mainSequence->addChild(sleepSequence);
+    mainSequence->addChild(eatSequence);
+    
+
+    sleepSequence->addChild(initSleep);
+    
+    eatSequence->addChild(colocarseComer);
+    eatSequence->addChild(irComer);
+    eatSequence->addChild(initEat);
+      
+    drinkSequence->addChild(colocarseBeber);
+    drinkSequence->addChild(irBeber);
+    drinkSequence->addChild(initDrink);  
+    walkSequence->addChild(initWalk);
+    walkSequence->addChild(andar);
+
+    btree.setRoot(mainSequence);
+  //  btree.update();    
+    
+}
+
+void SpecificWorker::createTree3(BrainTree::BehaviorTree &btree)
+{
+    qDebug() << "Creando arbol";
+    auto mainSequence = std::make_shared<BrainTree::Sequence>();
+
+    //Dormir
+    auto sleepSequence = std::make_shared<BrainTree::Sequence>();
+    auto initSleep = std::make_shared<ActionInitSleep>(this);
+ 
+    //Comer
+    auto eatSequence = std::make_shared<BrainTree::Sequence>();
+    auto colocarseComer = std::make_shared<ActionStandToEat>(this);
+    auto irComer = std::make_shared<ActionGoToEat>(this); 
+    auto initEat = std::make_shared<ActionInitEat>();
+
+    //Beber
+    auto drinkSequence = std::make_shared<BrainTree::Sequence>();
+    auto colocarseBeber = std::make_shared<ActionStandToDrink>(this); 
+    auto irBeber = std::make_shared<ActionGoToDrink>(this); 
+    auto initDrink = std::make_shared<ActionInitDrink>(); 
+
+    //Andar
+    auto walkSequence = std::make_shared<BrainTree::Sequence>();
+    auto initWalk = std::make_shared<ActionInitWalk>(this);
+    auto andar = std::make_shared<ActionWalk>(this); 
+
+    mainSequence->addChild(walkSequence);
+    mainSequence->addChild(sleepSequence);
+    mainSequence->addChild(eatSequence);
+    mainSequence->addChild(sleepSequence); 
+    mainSequence->addChild(walkSequence);
+    mainSequence->addChild(drinkSequence);
+    
+
+    sleepSequence->addChild(initSleep);
+    
+    eatSequence->addChild(colocarseComer);
+    eatSequence->addChild(irComer);
+    eatSequence->addChild(initEat);
+      
+    drinkSequence->addChild(colocarseBeber);
+    drinkSequence->addChild(irBeber);
+    drinkSequence->addChild(initDrink);  
+    walkSequence->addChild(initWalk);
+    walkSequence->addChild(andar);
+
+    btree.setRoot(mainSequence);
+  //  btree.update();    
+    
+}
+
+
+void SpecificWorker::createTree4(BrainTree::BehaviorTree &btree)
+{
+    qDebug() << "Creando arbol";
+    auto mainSequence = std::make_shared<BrainTree::Sequence>();
+
+
+    //Dormir
+    auto sleepSequence = std::make_shared<BrainTree::Sequence>();
+    auto initSleep = std::make_shared<ActionInitSleep>(this);
+ 
+    //Comer
+    auto eatSequence = std::make_shared<BrainTree::Sequence>();
+    auto colocarseComer = std::make_shared<ActionStandToEat>(this);
+    auto irComer = std::make_shared<ActionGoToEat>(this); 
+    auto initEat = std::make_shared<ActionInitEat>();
+
+    //Beber
+    auto drinkSequence = std::make_shared<BrainTree::Sequence>();
+    auto colocarseBeber = std::make_shared<ActionStandToDrink>(this); 
+    auto irBeber = std::make_shared<ActionGoToDrink>(this); 
+    auto initDrink = std::make_shared<ActionInitDrink>(); 
+
+    //Andar
+    auto walkSequence = std::make_shared<BrainTree::Sequence>();
+    auto initWalk = std::make_shared<ActionInitWalk>(this);
+    auto andar = std::make_shared<ActionWalk>(this); 
+    
+    mainSequence->addChild(walkSequence);
+    mainSequence->addChild(drinkSequence);
+    
+    mainSequence->addChild(sleepSequence);
+    mainSequence->addChild(walkSequence);
+    mainSequence->addChild(eatSequence);
+    mainSequence->addChild(walkSequence);
+    
+
+    sleepSequence->addChild(initSleep);
+    
+    eatSequence->addChild(colocarseComer);
+    eatSequence->addChild(irComer);
+    eatSequence->addChild(initEat);
+      
+    drinkSequence->addChild(colocarseBeber);
+    drinkSequence->addChild(irBeber);
+    drinkSequence->addChild(initDrink);  
+    walkSequence->addChild(initWalk);
+    walkSequence->addChild(andar);
+
+    btree.setRoot(mainSequence);
+  //  btree.update();    
+    
+}
 
 void SpecificWorker::readRobotState()
 {
@@ -146,10 +378,10 @@ void SpecificWorker::readRobotState()
 } 
 
 void SpecificWorker::loadPoints(){
-    foodDispenser.setX(2068.15);
-    foodDispenser.setY(1973.39);
-    waterDispenser.setX(-2068.15);
-    waterDispenser.setY(1973.39);
+    foodDispenser.setX(1868.15);
+    foodDispenser.setY(1773.39);
+    waterDispenser.setX(-1868.15);
+    waterDispenser.setY(-1773.39);
 }
 
 
@@ -190,19 +422,19 @@ void SpecificWorker::escribirCoords(std::string nRobot, float x, float y)
     qDebug() << "El numero es : " << h;
     switch(h){
         case 0:
-            file.open("/home/ismael/robocomp/components/robotsOvejas/oveja/ficherosCoords/archivoRobot1", ios::app);
+            file.open("/home/ismael/robocomp/components/robotsOvejas/oveja/ficherosCoords/archivoRobot1.txt", ios::app);
             break;
         case 1:
-            file.open("/home/ismael/robocomp/components/robotsOvejas/oveja/ficherosCoords/archivoRobot2", ios::app);
+            file.open("/home/ismael/robocomp/components/robotsOvejas/oveja/ficherosCoords/archivoRobot2.txt", ios::app);
             break;
         case 2:
-            file.open("/home/ismael/robocomp/components/robotsOvejas/oveja/ficherosCoords/archivoRobot3", ios::app);
+            file.open("/home/ismael/robocomp/components/robotsOvejas/oveja/ficherosCoords/archivoRobot3.txt", ios::app);
             break;
         case 3:
-            file.open("/home/ismael/robocomp/components/robotsOvejas/oveja/ficherosCoords/archivoRobot4", ios::app);
+            file.open("/home/ismael/robocomp/components/robotsOvejas/oveja/ficherosCoords/archivoRobot4.txt", ios::app);
             break;
         case 4:
-            file.open("/home/ismael/robocomp/components/robotsOvejas/oveja/ficherosCoords/archivoRobot5", ios::app);
+            file.open("/home/ismael/robocomp/components/robotsOvejas/oveja/ficherosCoords/archivoRobot5.txt", ios::app);
             break;
     };
     //file.open("/home/ismael/robocomp/components/robotsOvejas/oveja/ficherosCoords/archivoRobot1", ios::app);
@@ -225,6 +457,21 @@ int SpecificWorker::getIntName(std::string nRobot)
     if(nRobot == "base2") return 2;
     if(nRobot == "base3") return 3;
     if(nRobot == "base4") return 4;
+}
+
+void SpecificWorker::crearArboles()
+{
+    if(robotName == "base") createTreeManually(btree);;
+    if(robotName == "base1") createTree1(btree1);
+    if(robotName == "base2") createTree2(btree2);
+    if(robotName == "base3") createTree3(btree3);
+    if(robotName == "base4") createTree4(btree4);
+
+    
+   // differentialrobot_proxy -> setOdometerPose(500,0,bState.alpha);
+   // createTree1(btree1);
+   // createTree2(btree2);
+   // createTree2(btree3);
 }
 
 void SpecificWorker::initCron()

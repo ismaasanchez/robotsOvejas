@@ -1,9 +1,9 @@
-CommonBehavior.Endpoints=tcp -p 10000
+CommonBehavior.Endpoints=tcp -p 13000
 
 
 # Proxies for required interfaces
 LaserProxy = laser:tcp -h localhost -p 13003
-DifferentialRobotProxy = differentialrobot:tcp -h localhost -p 103004
+DifferentialRobotProxy = differentialrobot:tcp -h localhost -p 13004
 
 RobotName = base3
 

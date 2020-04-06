@@ -1,11 +1,11 @@
-CommonBehavior.Endpoints=tcp -p 10000
+CommonBehavior.Endpoints=tcp -p 14000
 
 
 # Proxies for required interfaces
 LaserProxy = laser:tcp -h localhost -p 14003
 DifferentialRobotProxy = differentialrobot:tcp -h localhost -p 14004
 
-
+RobotName = base4
 
 InnerModelPath = /home/ismael/robocomp/components/robotsOvejas/simpleworld.xml
 
